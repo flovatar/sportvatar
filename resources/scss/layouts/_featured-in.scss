@@ -1,0 +1,84 @@
+// ---------------------------------------------------------===
+// Featured In styles
+// ---------------------------------------------------------===
+
+.featured-in {
+    background: color(green, 1);
+    text-align: center;
+    padding: 60px 0 80px;
+    position: relative;
+    margin-bottom: 54px;
+
+    &:before,
+    &:after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 100%;
+        height: 55px;
+        background-image: url('#{$image-path}/sportvatar-pattern-green.svg');
+        background-size: 1430px auto;
+        background-repeat: repeat-x;
+        background-position: center;
+        transform: rotate(180deg);
+    }
+
+    h3 {
+        font: 700 32px/1.25 $korolev-compressed;
+        color: color(blue,6);
+        margin-bottom: 36px;
+    }
+
+    .logos {
+        @extend %listreset;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        margin: -30px -41px;
+
+        svg path {
+            fill: black;
+        }
+
+        @include media('<tablet') {
+            margin: -20px;
+        }
+
+        li {
+            padding: 30px 41px;
+
+            @include media('<tablet') {
+                padding: 20px;
+            }
+        }
+
+        .logo-wrap {
+
+            @include media('<desktop') {
+                max-width: 160px;
+            }
+
+            @include media('<tablet') {
+                max-width: 100px;
+            }
+
+        }
+
+        .logo-square {
+            width: 220px;
+
+            @include media('<tablet') {
+                max-width: 165px;
+            }
+        }
+        .logo-rect {
+            width: 311px;
+
+            @include media('<tablet') {
+                max-width: 233px;
+            }
+        }
+    }
+}

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="NOSE" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3000 3000">
+  <g id="Pug-Nose" class="nose">
+    <defs>
+      <style>
+        .facial-hair {
+          clip-path: url(#nose-mask);
+        }
+      </style>
+      <clipPath id="nose-mask">
+        <path d="M-9.41-6.03V3002.72H2999.33V-6.03H-9.41ZM1846.78,1185.38c-13,9.5-29.85,12.4-45.57,12.4-22.45,0-42.59-5.91-45.94-6.94-3.24-.64-17.9-4.36-27.24-20.92-13.6-24.13-9.38-62.64,12.55-114.47l1.57-3.72,4.04-.18c2.68-.12,65.95-2.55,100.59,30.58,14.46,13.83,21.8,31.79,21.8,53.37s-7.33,39.32-21.79,49.89Z" style="fill: #3eff3e;"/>
+      </clipPath>
+    </defs>
+    <g>
+      <path d="M1746.47,1057.94s115.7-5.17,115.7,77.55-105.37,49.12-105.37,49.12" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10; stroke-width: 12.8px;"/>
+      <path d="M1734.68,1188.04s66.37-28.92,97.18-20.66c30.81,8.26,30.81,53.72-9.48,61.98-40.29,8.26-111.4-10.33-87.7-41.32Z" style="opacity: .2;"/>
+    </g>
+    
+  </g>
+</svg>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg id="terminator" image-rendering="auto" baseProfile="basic" version="1.1" preserveAspectRatio="xMidYMid meet" x="0px" y="0px" width="3000" height="3000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3000 3000" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g id="Terminator-Eyes" class="eyes">
+    <g class="eyes-inner">
+      <defs>
+        <g id="pupil-red" overflow="visible">
+          <g id="pupil-red_0.0">
+            <g>
+              <g id="Layer7_0_FILL">
+                <path fill="#F00" stroke="none" d="M22.15 44.45Q31.35 44.45 37.85 37.95 44.35 31.45 44.35 22.25 44.35 13.05 37.85 6.55 31.35 .05 22.15 .05 12.95 .05 6.5 6.55 0 13.05 0 22.25 0 31.45 6.5 37.95 12.95 44.45 22.15 44.45Z"/>
+              </g>
+            </g>
+          </g>
+        </g>
+        <g id="pupil-glow" overflow="visible">
+          <g id="pupil-glow_0.0">
+            <g>
+              <g id="Layer8_0_FILL">
+                <path fill="url(#Gradient_1)" stroke="none" d="M201.9 64.15Q193.9 45.3 179.35 30.75 164.8 16.2 145.95 8.25 126.45 0 105.05 0 83.7 0 64.15 8.25 45.3 16.2 30.8 30.75 16.25 45.3 8.25 64.15 0 83.65 0 105.05 0 126.4 8.25 145.95 16.25 164.8 30.8 179.35 45.3 193.85 64.15 201.85 83.7 210.1 105.05 210.1 126.45 210.1 145.95 201.85 164.8 193.85 179.35 179.35 193.9 164.8 201.9 145.95 210.15 126.4 210.15 105.05 210.15 83.65 201.9 64.15Z"/>
+              </g>
+            </g>
+          </g>
+        </g>
+        <radialGradient id="Gradient_1" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="105.050" fx="0" fy="0" gradientTransform="translate(105.05 105.05)" spreadMethod="pad">
+          <stop offset="7.058%" stop-color="#F00"/>
+          <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <g id="Scene-1" overflow="visible">
+        <g>
+          <g id="Layer4_0_FILL">
+            <path fill="#FFF" stroke="none" d="M2043.05 876.25Q1989.3 876.25 1951.25 923.45 1913.25 970.65 1913.25 1037.45 1913.25 1104.2 1951.25 1151.4 1989.3 1198.65 2043.05 1198.65 2096.8 1198.65 2134.85 1151.4 2172.85 1104.2 2172.85 1037.45 2172.85 970.65 2134.85 923.45 2096.8 876.25 2043.05 876.25Z"/>
+            <path fill="#000" stroke="none" d="M1427.15 865.2Q1351.35 865.2 1297.7 916.8 1244.15 968.45 1244.15 1041.45 1244.15 1114.45 1297.7 1166.05 1351.35 1217.7 1427.15 1217.7 1502.95 1217.7 1556.55 1166.05 1610.2 1114.45 1610.2 1041.45 1610.2 968.45 1556.55 916.8 1502.95 865.2 1427.15 865.2Z"/>
+          </g>
+          <path id="Layer4_0_1_STROKES" stroke="#000" stroke-width="13" stroke-linejoin="round" stroke-linecap="round" fill="none" d="M1610.2 1041.45Q1610.2 1114.45 1556.55 1166.05 1502.95 1217.7 1427.15 1217.7 1351.35 1217.7 1297.7 1166.05 1244.15 1114.45 1244.15 1041.45 1244.15 968.45 1297.7 916.8 1351.35 865.2 1427.15 865.2 1502.95 865.2 1556.55 916.8 1610.2 968.45 1610.2 1041.45ZM2172.85 1037.45Q2172.85 1104.2 2134.85 1151.4 2096.8 1198.65 2043.05 1198.65 1989.3 1198.65 1951.25 1151.4 1913.25 1104.2 1913.25 1037.45 1913.25 970.65 1951.25 923.45 1989.3 876.25 2043.05 876.25 2096.8 876.25 2134.85 923.45 2172.85 970.65 2172.85 1037.45Z"/>
+        </g>
+        <g display="none">
+          <g>
+            <g id="Layer3_0_FILL">
+              <path fill="#000" stroke="none" d="M2101.15 1024.45Q2094.5 1017.55 2085.1 1017.55 2075.7 1017.55 2069.1 1024.45 2062.45 1031.35 2062.45 1041.15 2062.45 1050.95 2069.1 1057.85 2075.7 1064.75 2085.1 1064.75 2094.5 1064.75 2101.15 1057.85 2107.8 1050.95 2107.8 1041.15 2107.8 1031.35 2101.15 1024.45Z"/>
+            </g>
+          </g>
+          <animate attributeName="display" repeatCount="indefinite" dur="5s" keyTimes="0;.147;1" values="none;inline;inline"/>
+        </g>
+        <g>
+          <g>
+            <g id="Layer2_0_FILL">
+              <path fill="#000" stroke="none" d="M2101.15 1024.45Q2094.5 1017.55 2085.1 1017.55 2075.7 1017.55 2069.1 1024.45 2062.45 1031.35 2062.45 1041.15 2062.45 1050.95 2069.1 1057.85 2075.7 1064.75 2085.1 1064.75 2094.5 1064.75 2101.15 1057.85 2107.8 1050.95 2107.8 1041.15 2107.8 1031.35 2101.15 1024.45Z"/>
+            </g>
+          </g>
+          <animate attributeName="display" repeatCount="indefinite" dur="5s" keyTimes="0;.127;1" values="inline;none;none"/>
+        </g>
+        <g display="none">
+          <g>
+            <path id="Layer1_0_1_STROKES" stroke="#000" stroke-width="14" stroke-linejoin="round" stroke-linecap="round" fill="none" d="M2068.95 1041.5L2105.05 1041.5"/>
+          </g>
+          <animate attributeName="display" repeatCount="indefinite" dur="5s" keyTimes="0;.127;.147;1" values="none;inline;none;none"/>
+        </g>
+        <g display="none">
+          <use xlink:href="#pupil-glow" transform="translate(1323.25 935.25)">
+            <animate attributeName="opacity" repeatCount="indefinite" dur="5s" keyTimes="0;.34699;.347;.35299;.353;.35999;.36;.36699;.367;.37299;.373;.37999;.38;.38699;.387;.39299;.393;.39999;.4;.40699;.407;.41299;.413;.41999;.42;.42699;.427;.43299;.433;.43999;.44;.44699;.447;.45299;.453;.45999;.46;.46699;.467;.47299;.473;.47999;.48;.48699;.487;.49299;.493;.49999;.5;.50699;.507;.51299;.513;.51999;.52;.52699;.527;.53299;.533;.53999;.54;.54699;.547;.55299;.553;.55999;.56;.56699;.567;.57299;.573;.57999;.58;.58699;.587;.59299;.593;.59999;.6;.60699;.607;1" values="1;1;.98;.98;.95;.95;.93;.93;.9;.9;.88;.88;.85;.85;.82;.82;.8;.8;.77;.77;.75;.75;.73;.73;.7;.7;.68;.68;.65;.65;.63;.63;.6;.6;.57;.57;.55;.55;.52;.52;.5;.5;.48;.48;.45;.45;.43;.43;.4;.4;.38;.38;.35;.35;.32;.32;.3;.3;.27;.27;.25;.25;.23;.23;.2;.2;.18;.18;.15;.15;.13;.13;.1;.1;.07;.07;.05;.05;.02;.02;0;0" calcMode="discrete"/>
+          </use>
+          <animate attributeName="display" repeatCount="indefinite" dur="5s" keyTimes="0;.34;.673;1" values="none;inline;none;none"/>
+        </g>
+        <g display="none">
+          <use xlink:href="#pupil-glow" transform="translate(1323.25 935.25)"/>
+          <animate attributeName="display" repeatCount="indefinite" dur="5s" keyTimes="0;.3;.307;.313;.32;.327;.333;.68;.687;.693;1" values="none;inline;none;inline;none;inline;none;inline;none;inline;inline"/>
+        </g>
+        <g>
+          <use xlink:href="#pupil-glow" transform="translate(1323.25 935.25)"/>
+          <animate attributeName="display" repeatCount="indefinite" dur="5s" keyTimes="0;.293;1" values="inline;none;none"/>
+        </g>
+        <g display="none">
+          <use xlink:href="#pupil-red" transform="translate(1408.15 1022.1)">
+            <animate attributeName="opacity" repeatCount="indefinite" dur="5s" keyTimes="0;.49999;.5;.50699;.507;.51299;.513;.51999;.52;.52699;.527;.53299;.533;.53999;.54;.54699;.547;.55299;.553;.55999;.56;1" values="1;1;.95;.95;.9;.9;.85;.85;.8;.8;.75;.75;.7;.7;.65;.65;.6;.6;.55;.55;.5;.5" calcMode="discrete"/>
+          </use>
+          <animate attributeName="display" repeatCount="indefinite" dur="5s" keyTimes="0;.34;.673;1" values="none;inline;none;none"/>
+        </g>
+        <g display="none">
+          <use xlink:href="#pupil-red" transform="translate(1408.15 1022.1)"/>
+          <animate attributeName="display" repeatCount="indefinite" dur="5s" keyTimes="0;.3;.307;.313;.32;.327;.333;.68;.687;.693;1" values="none;inline;none;inline;none;inline;none;inline;none;inline;inline"/>
+        </g>
+        <g>
+          <use xlink:href="#pupil-red" transform="translate(1408.15 1022.1)"/>
+          <animate attributeName="display" repeatCount="indefinite" dur="5s" keyTimes="0;.293;1" values="inline;none;none"/>
+        </g>
+        <g id="eyes-shade" transform="translate(1209.45 862)">
+          <g>
+            <g id="Layer6_0_FILL">
+              <path fill="#000" stroke="none" d="M104.2 83.8Q115.7 57.65 134.7 36.35 154.15 14.6 179.55 0 152.95 6.05 129.35 19.6 94.2 29.95 66.1 52.95 38.95 75.2 22.1 106.15 5.2 137.1 1.2 171.95 -2.95 208.05 7.4 243.2 17.75 278.35 40.8 306.5 63 333.65 93.95 350.5 124.9 367.4 159.75 371.4 195.85 375.55 231 365.2 251.55 359.15 269.85 348.6L268.45 348.9Q289.5 343 308.65 332 272.9 340.05 237.15 333.6 202.6 327.4 172.8 308.55 143 289.7 122.55 261.2 101.4 231.65 93.35 195.9 86.9 167.3 89.85 138.3 92.7 109.9 104.2 83.8M806.9 13.55Q790.7 17.25 775.7 25.6 761 33.75 748.3 45.9 715.7 65.7 696.25 102.6 676.3 140.55 676.3 185.5 676.3 217.35 686.7 246.45 696.7 274.6 715 296.25 733.3 317.95 757 329.85 781.55 342.15 808.4 342.15 822.35 342.1 835.85 338.75 849.35 335.35 861.65 328.85 880.7 323.9 897.25 313 884.8 315.95 871.45 315.95 844 315.95 818.9 303.3 794.7 291.05 776 268.8 757.3 246.5 747.05 217.6 736.45 187.7 736.45 154.95 736.45 109.95 755.95 71.6 774.9 34.4 806.9 13.55Z" fill-opacity=".2"/>
+            </g>
+          </g>
+        </g>
+        <g id="eye-edge" transform="translate(1457.55 878.3)">
+          <g id="eye-edge_0.0">
+            <g>
+              <g id="Layer5_0_FILL">
+                <path fill="#414141" stroke="none" d="M62.05 20.5Q53.7 15.65 44.65 11.8 23.05 2.6 0 0 3 1.15 5.95 2.4 15.6 6.5 24.55 11.7 44.5 23.2 61 39.95 85 64.2 98.15 95.65 111.75 128.2 111.75 163.85 111.75 199.5 98.15 232.05 85 263.5 61 287.75 44.45 304.5 24.55 316 19.1 319.15 13.45 321.9 9.8 323.7 6.05 325.3 25.9 322.25 44.65 314.2 48.2 312.7 51.65 311 56.95 308.45 62.05 305.5 80.7 294.75 96.2 279.05 118.65 256.35 131 226.9 143.75 196.4 143.75 163 143.75 129.6 131 99.15 118.65 69.7 96.2 47 80.75 31.3 62.05 20.5Z"/>
+              </g>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

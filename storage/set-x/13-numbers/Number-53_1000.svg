@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3000 3000">
+  <g id="number-10" class="number-mod">
+
+    <defs>
+      <style>
+
+        .number {
+          opacity: 0 !important;
+        }
+
+        .number1 .number._5,
+        .number2 .number._3 {
+          opacity: 1 !important;
+          transform: translate(0, 0) !important;
+        }
+
+
+        .af-jersey .number1  .number._5,
+        .af-jersey .number2  .number._3,
+        .volleyball .numbers-shorts .number1 .number._5,
+        .volleyball .numbers-shorts .number2 .number._3,
+        .numbers-arm .number._5,
+        .numbers-arm .number._3,
+        .football-shirt .number._5,
+        .football-shirt .number._3,
+        .basketball-shirt .number._5,
+        .basketball-shirt .number._3,
+        .baseball-shirt .number._5,
+        .baseball-shirt .number._3 {
+          transform: translate(0, 0) !important;
+        }
+
+      </style>
+    </defs>
+
+
+  </g>
+</svg>

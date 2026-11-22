@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="MOUTH" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3000 3000">
+  <g id="Lipstick-Red" class="mouth">
+    <defs>
+      <style>
+        .under-mouth {
+          clip-path: url(#facial-hair-mask);
+        }
+        .lip-color path {
+          fill: #C10000; 
+        }
+      </style>
+      <clipPath id="facial-hair-mask" >
+        <path d="M-2.64-16.19V3012.89H3026.44V-16.19H-2.64ZM1772.79,1422.11c-99.95,10.16-106.73-55.91-106.73-55.91,0,0-20.33,2.54-28.8-1.69,0,0,91.48-89.79,144-42.35,0,0,54.21-50.82,99.95,27.11,0,0-6.83,2.01-20.14,4.67,1.03,8.66,2.99,58.9-88.28,68.18Z" style="fill: #ffbc27;"/>
+      </clipPath>
+    </defs>
+    <g class="lip-color">
+      <path d="M1637.27,1364.51s91.48-89.79,144-42.35c0,0,54.21-50.82,99.95,27.11,0,0-6.83,2.01-20.14,4.67,1.03,8.66,2.99,58.9-88.28,68.18-99.95,10.16-106.73-55.91-106.73-55.91,0,0-20.33,2.54-28.8-1.69Z" style="stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 13px;"/>
+      
+    </g>
+    <path d="M1860.04,1355.2c-65.22,21.18-163.48,12.71-163.48,12.71" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 13px;"/>
+    <path d="M1679.62,1428.04s-1.69-33.88,41.51-35.58,99.95-5.93,112.66-7.62,19.48,45.74-22.87,57.6c-22.28,6.24-124.52,27.11-131.29-14.4Z" style="opacity: .2;"/>
+    
+  </g>
+</svg>

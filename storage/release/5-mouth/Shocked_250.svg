@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="MOUTH" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3000 3000">
+  <g id="Shocked-Mouth" class="mouth">>
+    <defs>
+      <style>
+        .under-mouth {
+          clip-path: url(#static-mouth-mask);
+        }
+
+      </style>
+
+      <clipPath id="static-mouth-mask">
+        <path d="M-29.41-4.9V3008.37l3025.52-12.26V-17.15L-29.41-4.9ZM1840.24,1385.51c-2.08,38.12-34.68,69.14-72.67,69.14-18.5,0-35.54-7.23-47.97-20.36-12.52-13.22-18.85-30.79-17.84-49.48,2.08-38.12,34.68-69.14,72.67-69.14,18.5,0,35.54,7.23,47.97,20.36,12.52,13.22,18.85,30.79,17.84,49.48Z" style="fill: #ff7c10;"/>
+      </clipPath>
+      
+    </defs>
+    <ellipse cx="1771" cy="1385.16" rx="64.62" ry="61.18" transform="translate(-454.4 1705.65) rotate(-46.23)" style="fill: #330a19; stroke: #000; stroke-miterlimit: 10; stroke-width: 13px;"/>
+    
+  </g>
+</svg>

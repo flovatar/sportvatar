@@ -1,0 +1,58 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Sportbit;
+use App\Models\Sportvatar;
+use App\Models\SportvatarSeries;
+use App\Models\SportvatarTemplate;
+use App\Models\SaleOffer;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Routing\Controller as BaseController;
+use Cache;
+
+class Controller extends BaseController
+{
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+
+    protected function paramString(){
+        return implode('--', request()->all());
+    }
+
+    protected function getTemplates(){
+        return Cache::remember('db-templates', now()->addMinutes(60), function() {
+            return SportvatarTemplate::orderBy('id', 'asc')->get();
+        });
+    }
+
+    protected function getSeries($series = 1){
+        return Cache::remember('db-sportvatar-series-'.$series, now()->addMinutes(60), function() use ($series) {
+            return SportvatarSeries::whereFlowId($series)->orderBy('id', 'asc')->get();
+        });
+    }
+
+
+    protected function getFlameSales(){
+        $self = $this;
+        return Cache::remember('db-flame-sales-builder', now()->addSeconds(10), function() use($self) {
+            return [
+                'common' => $self->getFlameSaleByRarity('common'),
+                'rare' => $self->getFlameSaleByRarity('rare'),
+                'epic' => $self->getFlameSaleByRarity('epic'),
+                'legendary' => $self->getFlameSaleByRarity('legendary')
+            ];
+        });
+    }
+    protected function getFlameSaleByRarity($rarity){
+        $templatesRarity = SportvatarTemplate::select('id')->whereLayer(0)->whereRarity($rarity)->get()->flatten();
+        return SaleOffer::whereItemType(Sportbit::class)->whereHasMorph('item', [Sportvatar::class, Sportbit::class], function (Builder $query, $type) use($templatesRarity){
+            if($type === Sportbit::class){
+                $query->whereIn('sportvatar_template_id', $templatesRarity);
+            }
+        })->orderBy('price', 'asc')->orderBy('created_at', 'asc')->first();
+    }
+}

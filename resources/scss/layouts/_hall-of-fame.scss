@@ -1,0 +1,445 @@
+// ---------------------------------------------------------
+// Hall of Fame styles
+// ---------------------------------------------------------
+
+// ---------------------------------------------------------
+// Leaderboard Table
+// ---------------------------------------------------------
+
+.leaderboard-rank {
+  width: 70px;
+  text-align: center;
+
+  @include media('<largescreen') {
+
+  }
+}
+
+.leaderboard-score {
+  width: 100px;
+  text-align: center;
+}
+.leaderboard-collection {
+  flex-grow: 1;
+}
+.leaderboard-owner {
+  span {
+    display: block;
+  }
+  span.highlight {
+    color: white;
+  }
+}
+
+.transaction-table {
+  th.leaderboard-collection {
+    padding-left: 20px;
+  }
+}
+
+.transaction-table.leaderboard {
+    min-width: 800px;
+
+    @include media('<desktop') {
+      width: auto;
+    }
+}
+
+.collection-wrapper {
+  display: flex;
+  flex-direction: row;
+  margin-right: 20px;
+
+  .collection-sportvatar {
+    overflow: visible;
+    background: transparent;
+
+    img {
+      width: 100%;
+      height: 100%;
+      min-width: 75px;
+      max-width: 250px;
+    }
+  }
+
+  .collection-sportvatar:last-child {
+    flex-grow: 1;
+  }
+}
+
+// ---------------------------------------------------------
+// Podium Classic
+// ---------------------------------------------------------
+
+.podium-stands {
+  width: 100%;
+  height: 44vw;
+  max-height: 600px;
+  min-height: 150px;
+  position: relative;
+  display: flex;
+  margin-bottom: 40px;
+
+  .podium-wrapper {
+    display: flex;
+    width: 33.3%;
+    position: relative;
+
+    .podium {
+      position: absolute;
+      max-width: 100%;
+      width: 100%;
+      bottom: 0px;
+    }
+
+    .podium-collection-wrapper {
+      position: absolute;
+      max-width: 100%;
+      width: 100%;
+      bottom: 0px;
+      display: flex;
+      flex-direction: row;
+    }
+
+    .podium-collection-inner {
+      display: flex;
+    }
+
+    .podium-collection-sportvatar {
+      overflow: visible;
+      background: transparent;
+
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+
+    .podium-1 {
+      z-index: 2;
+      transform: translate(0, 25%);
+    }
+    .team-1 {
+      width: 100%;
+      display: flex;
+      position: relative;
+    }
+    .team-1 .sportvatar-1 {
+      z-index: 2;
+      transform: translate(8%, -30%);
+    }
+    .team-1 .sportvatar-2 {
+      z-index: 2;
+      transform: translate(2%, -31%);
+    }
+    .team-1 .sportvatar-3 {
+      z-index: 2;
+      transform: translate(-4%, -32%);
+    }
+    .team-1 .sportvatar-4 {
+      z-index: 2;
+      transform: translate(-10%, -33%);
+    }
+    .team-1 .sportvatar-5 {
+      z-index: 2;
+      transform: translate(-16%, -34%);
+    }
+    .podium-number-1 {
+      z-index: 2;
+      transform: translate(19%, 36%) scale(0.15);
+      opacity: .25;
+    }
+
+    .podium-2 {
+      z-index: 3;
+      transform: translate(33.6%, 40%);
+    }
+    .team-2 {
+      width: 100%;
+      display: flex;
+      position: relative;
+    }
+    .team-2 .sportvatar-1 {
+      z-index: 3;
+      transform: translate(40%, -21%);
+    }
+    .team-2 .sportvatar-2 {
+      z-index: 3;
+      transform: translate(34%, -22%);
+    }
+    .team-2 .sportvatar-3 {
+      z-index: 3;
+      transform: translate(28%, -23%);
+    }
+    .team-2 .sportvatar-4 {
+      z-index: 3;
+      transform: translate(22%, -24%);
+    }
+    .team-2 .sportvatar-5 {
+      z-index: 3;
+      transform: translate(16%, -25%);
+    }
+    .podium-number-2 {
+      z-index: 3;
+      transform: translate(52%, 42%) scale(0.15);
+      opacity: .25;
+    }
+
+    .podium-3 {
+      transform: translate(-33.6%, 45%);
+    }
+    .team-3 {
+      width: 100%;
+      display: flex;
+      position: relative;
+    }
+    .team-3 .sportvatar-1 {
+      z-index: 1;
+      transform: translate(-24%, -18%);
+    }
+    .team-3 .sportvatar-2 {
+      z-index: 1;
+      transform: translate(-30%, -19%);
+    }
+    .team-3 .sportvatar-3 {
+      z-index: 1;
+      transform: translate(-36%, -20%);
+    }
+    .team-3 .sportvatar-4 {
+      z-index: 1;
+      transform: translate(-42%, -21%);
+    }
+    .team-3 .sportvatar-5 {
+      z-index: 1;
+      transform: translate(-48%, -22%);
+    }
+    .podium-number-3 {
+      transform: translate(-15%, 43%) scale(0.15);
+      opacity: .25;
+    }
+
+    .sportvatar-2 {
+      filter: brightness(85%);
+    }
+    .sportvatar-3 {
+      filter: brightness(70%);
+    }
+    .sportvatar-4 {
+      filter: brightness(55%);
+    }
+    .sportvatar-5 {
+      filter: brightness(40%);
+    }
+  }
+}
+
+// ---------------------------------------------------------
+// Podium Large
+// ---------------------------------------------------------
+
+
+.podium-large-stands {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 900px;
+    margin-bottom: 40px;
+
+    @include media('<1400px') {
+      height: 60vw;
+    }
+
+    @include media('<tablet') {
+      height: 74vw;
+    }
+
+    .podium-large-outer {
+      position: relative;
+      width: 80%;
+      margin: 0 10% 10% 10%;
+      margin: 0 10%;
+      display: inline-block;
+
+      @include media('<1400px') {
+        margin: 0 10%;
+      }
+
+      @include media('<tablet') {
+        margin: 0;
+        width: 100%;
+      }
+    }
+
+    .podium-large-wrapper {
+      position: absolute;
+      display: flex;
+      height: 900px;
+      width: 100%;
+
+      @include media('<1400px') {
+        height: 60vw;
+      }
+
+      @include media('<tablet') {
+        height: 72vw;
+      }
+    }
+
+    .podium-large {
+      bottom: 0;
+    }
+
+    .podium-large-1 {
+      position: absolute;
+      width: 88%;
+      transform: translate(0, -15.3%);
+    }
+    .team-large-1 {
+      width: 100%;
+      display: flex;
+      position: relative;
+      bottom: 0;
+    }
+    .podium-large-2 {
+      position: absolute;
+      width: 88%;
+      transform: translate(6.8%, -15.2%);
+    }
+    .podium-large-3 {
+      position: absolute;
+      width: 88%;
+      transform: translate(13.6%, -15%);
+    }
+
+    .sportvatar-large {
+      width: 20%;
+    }
+
+    .sportvatar-large {
+      position: absolute;
+      bottom: 0;
+      z-index: 3;
+    }
+
+    .team-info {
+      font-family: $korolev-compressed;
+      font-size: 20px;
+      color: white;
+      width: 100%;
+      display: flex;
+      position: absolute;
+      bottom: 0;
+      padding: 10px 20px;
+      z-index: 5;
+    }
+
+    .team-info-1 {
+      position: absolute;
+      top: 31%;
+      left: 5%;
+      transform: translate(0, -40%);
+
+      @include media('<1400px') {
+        top: 26.5%;
+        left: 5.5%;
+      }
+
+      @include media('<desktop') {
+        font-size: 95%;
+      }
+
+      @include media('<tablet') {
+        top: 26%;
+        left: 4%;
+        font-size: 90%;
+      }
+
+      @include media('<phone') {
+        top: 26.5%;
+        left: 2.5%;
+        font-size: 70%;
+      }
+    }
+
+    .team-large-1 .sportvatar-1 {
+      transform: translate(2%, -294%);
+    }
+    .team-large-1 .sportvatar-2 {
+      transform: translate(82%, -294%);
+    }
+    .team-large-1 .sportvatar-3 {
+      transform: translate(164%, -294%);
+    }
+    .team-large-1 .sportvatar-4 {
+      transform: translate(246%, -294%);
+    }
+    .team-large-1 .sportvatar-5 {
+      transform: translate(328%, -294%);
+    }
+
+    .team-large-2 {
+      margin-left: 6%;
+    }
+    .team-large-2 .sportvatar-1 {
+      transform: translate(2%, -175%);
+    }
+    .team-large-2 .sportvatar-2 {
+      transform: translate(82%, -175%);
+    }
+    .team-large-2 .sportvatar-3 {
+      transform: translate(164%, -175%);
+    }
+    .team-large-2 .sportvatar-4 {
+      transform: translate(246%, -175%);
+    }
+    .team-large-2 .sportvatar-5 {
+      transform: translate(328%, -175%);
+    }
+
+    .team-large-3 {
+      margin-left: 11%;
+    }
+    .team-large-3 .sportvatar-1 {
+      transform: translate(2%, -55%);
+    }
+    .team-large-3 .sportvatar-2 {
+      transform: translate(82%, -55%);
+    }
+    .team-large-3 .sportvatar-3 {
+      transform: translate(164%, -55%);
+    }
+    .team-large-3 .sportvatar-4 {
+      transform: translate(246%, -55%);
+    }
+    .team-large-3 .sportvatar-5 {
+      transform: translate(328%, -55%);
+    }
+
+    .podium-text {
+      font-size: 100px;
+      fill: white;
+      font-family: $korolev-compressed;
+    }
+
+    #team1-info,
+    #team2-info,
+    #team3-info {
+      width: 90%;
+      position: absolute;
+      bottom: 0;
+      z-index: 5;
+    }
+
+    #team1-info {
+      transform: translate(2%, -1406%) scale(0.875);
+    }
+
+    #team2-info {
+      transform: translate(9%, -795%) scale(.875);
+    }
+
+    #team3-info {
+      transform: translate(15.5%, -178%) scale(.875);
+    }
+}

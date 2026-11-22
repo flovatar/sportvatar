@@ -1,0 +1,38 @@
+// ---------------------------------------------------------===
+// Fontface
+// ---------------------------------------------------------===
+
+@font-face {
+  font-family: 'name_smile';
+  src: url('/fonts/smile/name_smile-webfont.woff2') format('woff2'),
+       url('/fonts/smile/name_smile-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'bradley_hand';
+  src: url('/fonts/bradley/bradhitc-webfont.woff2') format('woff2'),
+       url('/fonts/bradley/bradhitc-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+@font-face {
+  font-family: 'korolev-compressed';
+  src: url('/fonts/korolev-compressed/Korolev-Compressed-Bold.woff2') format('woff2'),
+       url('/fonts/korolev-compressed/Korolev-Compressed-Bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+
+}
+
+@font-face {
+  font-family: 'varsity-team-bold';
+  src: url('/fonts/varsity-team-bold/VarsityTeamBold.woff2') format('woff2'),
+       url('/fonts/varsity-team-bold/VarsityTeamBold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+
+}

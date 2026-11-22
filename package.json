@@ -1,0 +1,52 @@
+{
+    "private": true,
+    "scripts": {
+        "dev": "npm run development",
+        "development": "mix",
+        "watch": "mix watch",
+        "watch-poll": "mix watch -- --watch-options-poll=1000",
+        "hot": "mix watch --hot",
+        "prod": "npm run production",
+        "production": "mix --production"
+    },
+    "devDependencies": {
+        "alpinejs": "^3.10.2",
+        "axios": "^0.21",
+        "jquery": "^3.3.1",
+        "laravel-mix": "^6.0.49",
+        "lodash": "^4.17.19",
+        "postcss": "^8.4.14",
+        "postcss-import": "^14.1.0",
+        "resolve-url-loader": "^5.0.0",
+        "sass": "^1.53.0",
+        "sass-loader": "^12.6.0",
+        "webpack-glsl-loader": "^1.0.1"
+    },
+    "dependencies": {
+        "@alpinejs/persist": "^3.10.2",
+        "@discordjs/rest": "*",
+        "@microsoft/signalr": "^6.0.6",
+        "@onflow/fcl": "^1.1",
+        "@onflow/transport-grpc": "^1.1.0",
+        "@onflow/types": "^1.0",
+        "@ryangjchandler/alpine-clipboard": "^2.2.0",
+        "chart.js": "^3.9.0",
+        "discord-api-types": "^0.23.1",
+        "discord.js": "^13.8.1",
+        "gsap": "^3.10.4",
+        "html2canvas": "^1.4.1",
+        "interactjs": "^1.10.17",
+        "jdenticon": "^3.1.0",
+        "js-cookie": "^3.0.1",
+        "luxon": "^1.26.0",
+        "node-polyfill-webpack-plugin": "^1.1.0",
+        "parallax-js": "^3.1.0",
+        "party-js": "^2.2.0",
+        "scrollxp": "^2.0.7",
+        "select2": "^4.1.0-rc.0",
+        "slick-carousel": "^1.8.1",
+        "sly-scrolling": "^1.6.1",
+        "swiper": "^7.3.1",
+        "three": "^0.134.0"
+    }
+}

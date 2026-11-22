@@ -1,0 +1,15 @@
+<svg id="ACCESSORY" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3000 3000">
+  <g id="Paper-Boat" class="accessory">
+    <polygon points="1467.85 2877.36 1173.08 2884.13 1325.55 2914.63 2148.89 2914.63 2314.91 2887.52 2118.39 2867.19 1467.85 2877.36" style="opacity: 0.2"/>
+    <polygon points="1016.96 2464.13 1574.84 2545.64 1743.57 2287.8 1927.16 2546.94 2488.67 2475.5 2138.87 2893.55 1363.92 2897.82 1016.96 2464.13" style="fill: #f2f2f2;stroke: #000;stroke-linecap: round;stroke-linejoin: round;stroke-width: 11.961019158363342px"/>
+    <polygon points="1030.71 2469.98 1518.35 2642.95 1575.39 2549.11 1030.71 2469.98" style="fill: #b2b2b2"/>
+    <polygon points="1372.98 2893.22 1741.01 2727.6 2125.6 2891.38 1372.98 2893.22" style="fill: #d8d8d8"/>
+    <polygon points="1520.19 2641.11 1741.01 2727.6 1983.91 2642.95 1743.57 2287.8 1520.19 2641.11" style="fill: #e6e6e6"/>
+    <polygon points="1741.01 2727.6 2138.87 2893.55 2486.27 2479.18 1741.01 2727.6" style="fill: #ccc"/>
+    <polyline points="1016.96 2464.13 1737.89 2723.87 2475.4 2481.19" style="fill: none;stroke: #000;stroke-linecap: round;stroke-linejoin: round;stroke-width: 11.961019158363342px"/>
+    <polyline points="1363.92 2897.82 1743.57 2725.76 2138.87 2893.55" style="fill: none;stroke: #000;stroke-linecap: round;stroke-linejoin: round;stroke-width: 11.961019158363342px"/>
+    <polyline points="1516.06 2642.34 1743.57 2287.8 1986.25 2636.65" style="fill: none;stroke: #000;stroke-linecap: round;stroke-linejoin: round;stroke-width: 11.961019158363342px"/>
+    <line x1="1743.57" y1="2287.81" x2="1743.57" y2="2725.76" style="fill: none;stroke: #000;stroke-linecap: round;stroke-linejoin: round;stroke-width: 11.961019158363342px"/>
+    <polygon points="1016.96 2464.13 1574.84 2545.64 1743.57 2287.8 1927.16 2546.94 2488.67 2475.5 2138.87 2893.55 1363.92 2897.82 1016.96 2464.13" style="fill: none;stroke: #000;stroke-linecap: round;stroke-linejoin: round;stroke-width: 11.961019158363342px"/>
+  </g>
+</svg>

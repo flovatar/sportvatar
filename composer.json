@@ -1,0 +1,88 @@
+{
+    "name": "laravel/laravel",
+    "type": "project",
+    "description": "The Laravel Framework.",
+    "keywords": ["framework", "laravel"],
+    "license": "MIT",
+    "require": {
+        "php": "^7.3|^8.0",
+        "atymic/twitter": "^3.1",
+        "codezero/laravel-localized-routes": "^2.9",
+        "codezero/laravel-localizer": "^1.7",
+        "dedmytro/laravel-cloudflare-images": "^0.1.8",
+        "fruitcake/laravel-cors": "^2.0",
+        "guzzlehttp/guzzle": "^7.0.1",
+        "laravel/cashier": "^13.4",
+        "laravel/framework": "^8.54",
+        "laravel/jetstream": "^2.3",
+        "laravel/nova": "*",
+        "laravel/sanctum": "^2.6",
+        "laravel/tinker": "^2.5",
+        "league/flysystem-aws-s3-v3": "^1.0",
+        "livewire/livewire": "^2.5",
+        "mayvenstudios/flow-php-sdk": "^0.2.3",
+        "predis/predis": "^1.1",
+        "queueit/knownuserv3": "^3.7"
+    },
+    "require-dev": {
+        "facade/ignition": "^2.5",
+        "fakerphp/faker": "^1.9.1",
+        "laravel-lang/attributes": "^2.3",
+        "laravel-lang/lang": "^12.18",
+        "laravel-lang/publisher": "^14.6",
+        "laravel/sail": "^1.0.1",
+        "maestroerror/html-strings-affixer": "^1.2",
+        "mockery/mockery": "^1.4.2",
+        "nunomaduro/collision": "^5.0",
+        "phpunit/phpunit": "^9.3.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover --ansi"
+        ],
+        "post-update-cmd": [
+            "@php artisan vendor:publish --tag=laravel-assets --ansi",
+            "@php artisan nova:publish"
+        ],
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "post-create-project-cmd": [
+            "@php artisan key:generate --ansi"
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "dont-discover": []
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "allow-plugins": {
+            "0.0.0/composer-include-files": true
+        }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "./nova"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

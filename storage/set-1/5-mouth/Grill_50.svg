@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3000 3000">
+    <g id="Grill" class="mouth">
+      <defs>
+        <style>
+          .under-mouth {
+            clip-path: url(#facial-hair-mask);
+          }
+        </style>
+        <clipPath id="facial-hair-mask" >
+          <path d="M-9.41-13.93V3003.85H3003.85V-13.93H-9.41ZM1944.09,1392.04c-6.6,48.39-48.39,70.39-83.58,72.58l-259.55,13.2c-47.18,0-85.78-38.6-85.78-85.78h0c0-47.18,38.6-85.78,85.78-85.78l268.16-4.18c54.99,0,74.97,42.78,74.97,89.96h0Z" style="fill: #ffa624;"/>
+        </clipPath>
+      </defs>
+      <g>
+        <path d="M1860.5,1443.63,1601,1456.82a86,86,0,0,1-85.79-85.78h0a86,86,0,0,1,85.79-85.78l268.16-4.18c55,0,75,42.78,75,90h0C1937.49,1419.43,1895.7,1441.43,1860.5,1443.63Z" style="fill: #fff;stroke: #000;stroke-miterlimit: 10;stroke-width: 13px"/>
+        <line x1="1574.56" y1="1291.86" x2="1589.96" y2="1454.62" style="fill: #fff;stroke: #000;stroke-miterlimit: 10;stroke-width: 13px"/>
+        <line x1="1650" y1="1287.39" x2="1653.74" y2="1456.82" style="fill: #fff;stroke: #000;stroke-miterlimit: 10;stroke-width: 13px"/>
+        <line x1="1717.63" y1="1286.49" x2="1717.53" y2="1450.22" style="fill: #fff;stroke: #000;stroke-miterlimit: 10;stroke-width: 13px"/>
+        <line x1="1786.16" y1="1284.69" x2="1779.12" y2="1443.63" style="fill: #fff;stroke: #000;stroke-miterlimit: 10;stroke-width: 13px"/>
+        <line x1="1850.18" y1="1283.78" x2="1838.51" y2="1443.63" style="fill: #fff;stroke: #000;stroke-miterlimit: 10;stroke-width: 13px"/>
+        <line x1="1906.99" y1="1291" x2="1893.5" y2="1437.03" style="fill: #fff;stroke: #000;stroke-miterlimit: 10;stroke-width: 13px"/>
+        <path d="M1476,1395.93s-4.86,80.69,95.77,95.49" style="fill: none;stroke: #000;stroke-linecap: round;stroke-miterlimit: 10;stroke-width: 13px"/>
+        <path d="M1943.06,1349.61a32.8,32.8,0,0,0-7-12.58,55.41,55.41,0,0,0-4.62-10.78c1.09.5,4.3-3.33,5.35-2.79-12.09-23.43-37-40.58-73-40.58L1601,1285.26a86,86,0,0,0-85.79,85.78h0a85.94,85.94,0,0,0,41.35,73.29A85.07,85.07,0,0,1,1544,1399.9h0a86,86,0,0,1,85.78-85.79l203.52,3.42c28.5,3.27,91.41,13.84,93.5,43.8,2.7,38.72-2.71,43.28-10.82,53.2C1916,1414.53,1954.78,1391.09,1943.06,1349.61Z" style="opacity: 0.2"/>
+      </g>
+    </g>
+</svg>

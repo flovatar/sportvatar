@@ -1,0 +1,80 @@
+<svg id="ACCESSORY" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3000 3000">
+  <g id="Medal-Gold" class="accessory">
+    <defs>
+      <style>
+
+        @keyframes shine {
+          0% { opacity: 0; }
+          50% { opacity: 1; }
+          100% { opacity: 0; }
+        }
+
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+
+        .sparkle {
+          animation-duration: 2s;
+          animation-name: spin;
+          animation-fill-mode: forwards;
+          animation-iteration-count: infinite;
+          animation-timing-function: linear;
+          transform-origin: center;
+          transform-box: fill-box; 
+        }
+
+        .sparkle1,
+        .sparkle2 {
+          animation-duration: 3s;
+          animation-name: shine;
+          animation-fill-mode: forwards;
+          animation-iteration-count: infinite;
+          transform-origin: center;
+          transform-box: fill-box; 
+          opacity: 0;
+        }
+
+        .sparkle2 {
+          animation-delay: 1.5s;
+        }
+
+        .medal-color {
+          fill: #ccb450;
+        }
+
+      </style>
+    </defs>
+    <g class="under-head">
+      <g class="under-hat">
+        <g class="under-hair">
+
+          <path class="medal-strap-back" d="M1660,1651.54c-14.88,1.92-29.54,3.54-44,4.91l-83,196.55h110l147.86-232.08c-39.02,13.85-82.46,24.39-130.86,30.63Z" style="fill: #061b3f; stroke: #000; stroke-miterlimit: 10; stroke-width: 13px;"/>
+          <g>
+            <g>
+              <path class="medal-color" d="M1703.39,1962.28l1.27-.29-33.11-146.12-184,3.49-21.81,153.15,.22,.11c-8.93,18.06-13.94,38.41-13.94,59.92,0,74.83,60.66,135.49,135.49,135.49s135.49-60.66,135.49-135.49c0-25.73-7.17-49.77-19.61-70.26Zm-194.2-120.11h142.92l6.86,37.73s-90.32-13.72-154.35,3.43l4.57-41.16Z" />
+              <g class="medal-sheen" style="opacity: .3;">
+                <path d="M1583,1963c-14,4,41,33,19,52s-22-15-48-22-47,39-47,39c-3,53,39,66,71,78s29-32,32-53,37,16,54-5-8-57-18-76-49-17-63-13Z" style="fill: #fff;"/>
+                <path d="M1703.39,1962.28c-23.77-39.11-66.77-65.23-115.88-65.23-53.32,0-99.44,30.8-121.55,75.57-8.93,18.06-13.94,38.41-13.94,59.92,0,74.83,60.66,135.49,135.49,135.49s135.49-60.66,135.49-135.49c0-25.73-7.17-49.77-19.61-70.26Zm-115.88,179.3c-60.22,0-109.04-48.82-109.04-109.04s48.82-109.04,109.04-109.04,109.04,48.82,109.04,109.04-48.82,109.04-109.04,109.04Z" style="fill: #fff;"/>
+              </g>
+            </g>
+            <g class="medal-outline">
+              <path d="M1703.39,1962.28c12.44,20.49,19.61,44.53,19.61,70.26,0,74.83-60.66,135.49-135.49,135.49s-135.49-60.66-135.49-135.49c0-21.51,5.01-41.86,13.94-59.92,22.11-44.77,68.23-75.57,121.55-75.57,49.11,0,92.11,26.12,115.88,65.23Z" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 13px;"/>
+              <polyline points="1465.74 1972.51 1487.55 1819.36 1671.55 1815.87 1704.66 1961.99 1704.71 1962.22" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 13px;"/>
+              <path d="M1509.19,1842.17h142.92l6.86,37.73s-90.32-13.72-154.35,3.43l4.57-41.16Z" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 13px;"/>
+              <circle cx="1587.51" cy="2032.54" r="109.04" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 10.46px;"/>
+            </g>
+          </g>
+           <path class="medal-strap-front" d="M1294.66,1640.6l225.34,213.4h123l-127.79-192.26c-80.6,.77-153.98-7.13-220.55-21.14Z" style="fill: #082154; stroke: #000; stroke-miterlimit: 10; stroke-width: 13px;"/>
+
+          <g class="sparkle">
+            <polygon class="sparkle2" points="1518.32 1966.07 1541.1 1959.37 1518.32 1952.67 1511.62 1929.89 1504.91 1952.67 1482.14 1959.37 1504.91 1966.07 1511.62 1988.85 1518.32 1966.07" style="fill: #fff;"/>
+          </g>
+          <g class="sparkle">
+            <polygon class="sparkle1" points="1669.75 2116.11 1692.53 2109.4 1669.75 2102.7 1663.05 2079.92 1656.34 2102.7 1633.57 2109.4 1656.34 2116.11 1663.05 2138.88 1669.75 2116.11" style="fill: #fff;"/>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

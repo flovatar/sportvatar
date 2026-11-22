@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="EYES" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3000 3000">
+  <g id="Surprised-Eyes" class="eyes">
+    <g class="eyes-inner">
+      <defs>
+        <style>
+            @keyframes blink-shut {
+              0% { opacity: 0; }
+              50% { opacity: 0; }
+              51% { opacity: 1; }
+              60% { opacity: 1; }
+              61% { opacity: 0; }
+              100% { opacity: 0; }
+            }
+
+            @keyframes blink-open {
+              0% { opacity: 1; }
+              50% { opacity: 1; }
+              51% { opacity: 0; }
+              60% { opacity: 0; }
+              61% { opacity: 1; }
+              100% { opacity: 1; }
+            }
+
+            .eyes-blink {
+              animation-duration: 2s;
+              animation-name: blink-shut;
+              animation-fill-mode: forwards;
+              animation-iteration-count: infinite;
+            }
+
+            .eye-white,
+            .eye-line-top,
+            .eye-line-bottom,
+            .eyes-pupils {
+              animation-duration: 2s;
+              animation-name: blink-open;
+              animation-fill-mode: forwards;
+              animation-iteration-count: infinite;
+            }
+
+            /* ----------------------------------
+            /* Hide blink by default 
+            /* ----------------------------------
+
+            .eyes-blink {
+              opacity: 0;
+            }
+
+            /* ----------------------------------
+        </style>
+      </defs>
+      <g>
+        <g>
+          <path class="eye-white" d="M1270.67,948.83c-100.7,211.6,120.3,315.1,248.6,240.6,75.8-45.2,131.1-159.4,33-278.3-122-4.7-166-24.5-281.6,37.7Z" style="fill: #fff;"/>
+          <path class="eye-white" d="M1934.87,939.53c-117,369.6,369.5,313.2,197.5-16.7-75.1-26.3-124.1-2.5-197.5,16.7Z" style="fill: #fff;"/>
+          <ellipse cx="2041.97" cy="1036.23" rx="128.6" ry="159.8" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 13.11px;"/>
+          <ellipse cx="1426.97" cy="1038.53" rx="181.8" ry="175.7" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 13.11px;"/>
+          <path d="M1517.77,1193.83c-12.8,2.9-26,4.4-39.6,4.4-99.5,0-180.1-80.6-180.1-180.1,0-66.9,36.5-125.2,90.6-156.3-17.9,4-34.7,10.7-50.2,19.6-74.6,22-129.1,91-129.1,172.8,0,99.5,80.6,180.1,180.1,180.1,32.6,0,63.1-8.7,89.5-23.8-.5,.1-.9,.2-1.4,.3,14.3-4.1,27.7-9.8,40.2-17Z" style="isolation: isolate; opacity: .2;"/>
+          <path d="M2106.37,1174.83c-8.3,1.9-16.9,2.9-25.8,2.9-74.6,0-135-72.1-135-161,0-61,28.5-114.1,70.5-141.4-21.9,5-41.9,16.4-58.6,32.4-42.7,25.9-72,78.7-72,139.6,0,86.5,59.1,156.7,132.1,156.7,19,0,37-4.8,53.3-13.3,12.5-3.4,24.5-8.7,35.5-15.9Z" style="isolation: isolate; opacity: .2;"/>
+          
+          <path class="eye-line-top" d="M1939.87,939.53c57.1-30,125.9-36.9,187.8-18.9" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 13.11px;"/>
+          <path class="eye-line-top" d="M1270.67,948.83c89-47.2,191.6-55.3,288.8-28.7" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 13.11px;"/>
+
+          <g class="eyes-pupils">
+            <ellipse cx="1504.57" cy="1053.32" rx="25.61" ry="26.68"/>
+            <ellipse cx="2080.94" cy="1050.65" rx="22.66" ry="23.6"/>
+          </g>
+          <g class="eyes-blink">
+            <line x1="1245.93" y1="1054.49" x2="1606.77" y2="1039.24" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 13px;"/>
+            <line x1="1913.41" y1="1034.16" x2="2169.22" y2="1056.18" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 13px;"/>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

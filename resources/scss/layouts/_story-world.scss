@@ -1,0 +1,61 @@
+// ---------------------------------------------------------===
+// Story World styles
+// ---------------------------------------------------------===
+
+.story-world {
+    background: color(blue,6);
+    font: 32px/1.093 $korolev-compressed;
+
+    @include media('<tablet') {
+        font-size: 28px;
+    }
+
+    .top {
+        padding: 50px 0 34px;
+        text-align: center;
+
+        > .container {
+            position: relative;
+            z-index: 2;
+            max-width: 960px;
+        }
+
+        h2 {
+            text-transform: uppercase;
+            color: color(blue,7);
+            margin-bottom: 22px;
+
+            @include media('>=tablet') {
+                font: 700 56px/1 $korolev-compressed;
+            }
+        }
+
+        .desc {
+            max-width: 740px;
+            margin: 0 auto;
+        }
+    }
+
+    .btm {
+        margin-bottom: -15%;
+        position: relative;
+
+        &:before {
+            content: '';
+            position: absolute;
+            left: -50px;
+            right: -50px;
+            bottom: -6px;
+            height: 39%;
+            background: white;
+            transform: rotate(-8deg);
+            transform-origin: 0 0;
+            z-index: 1;
+        }
+
+        > .container {
+            position: relative;
+            z-index: 2;
+        }
+    }
+}

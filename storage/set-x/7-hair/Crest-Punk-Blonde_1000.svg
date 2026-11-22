@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="HAIR" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3000 3000">
+  <g id="Crest-Punk-Blonde" class="hair">
+    <g class="hair-inner">
+      <defs>
+        <style>
+          .hair-color {
+            fill: #F4E8A8;
+          }
+          .stubble ellipse {
+            fill: #F4E8A8;
+          }
+        </style>
+      </defs>
+      <g>
+        <g class="stubble" style="opacity: .3;">
+          <ellipse cx="901.54" cy="812.59" rx="13.7" ry="9.8" transform="translate(-85.01 1519.56) rotate(-77.66)"/>
+          <ellipse cx="847.48" cy="867.93" rx="13.7" ry="9.8" transform="translate(-181.57 1510.25) rotate(-77.66)"/>
+          <ellipse cx="811.07" cy="983.61" rx="13.7" ry="9.8" transform="translate(-323.19 1565.64) rotate(-77.66)"/>
+          <ellipse cx="814.44" cy="895.92" rx="13.7" ry="9.8" transform="translate(-234.89 1499.99) rotate(-77.66)"/>
+          <ellipse cx="884.54" cy="857.96" rx="13.7" ry="9.8" transform="translate(-142.69 1538.62) rotate(-77.66)"/>
+          <ellipse cx="868.91" cy="912.12" rx="13.7" ry="9.8" transform="translate(-207.89 1565.93) rotate(-77.66)"/>
+          <ellipse cx="826.57" cy="935.31" rx="13.7" ry="9.8" transform="translate(-263.83 1542.8) rotate(-77.66)"/>
+          <ellipse cx="792.94" cy="947.7" rx="13.7" ry="9.8" transform="translate(-302.37 1519.69) rotate(-77.66)"/>
+          <ellipse cx="850.46" cy="975.81" rx="13.7" ry="9.8" transform="translate(-284.62 1597.98) rotate(-77.66)"/>
+          <ellipse cx="912.65" cy="895.45" rx="13.7" ry="9.8" transform="translate(-157.22 1595.55) rotate(-77.66)"/>
+          <ellipse cx="897.43" cy="950.41" rx="13.7" ry="9.8" transform="translate(-222.87 1623.9) rotate(-77.66)"/>
+          <ellipse cx="883.91" cy="1012.39" rx="13.7" ry="9.8" transform="translate(-294.04 1659.42) rotate(-77.66)"/>
+          <ellipse cx="929.52" cy="842.04" rx="13.7" ry="9.8" transform="translate(-91.77 1570.05) rotate(-77.66)"/>
+          <ellipse cx="953.9" cy="798.01" rx="13.7" ry="9.8" transform="translate(-29.6 1559.25) rotate(-77.66)"/>
+          <ellipse cx="973.76" cy="846.55" rx="13.7" ry="9.8" transform="translate(-61.39 1616.81) rotate(-77.66)"/>
+          <ellipse cx="944.73" cy="729.42" rx="13.7" ry="9.8" transform="translate(30.2 1496.36) rotate(-77.66)"/>
+          <ellipse cx="985.77" cy="699.04" rx="13.7" ry="9.8" transform="translate(92.15 1512.56) rotate(-77.66)"/>
+          <ellipse cx="1075.96" cy="705.76" rx="13.7" ry="9.8" transform="translate(156.48 1605.95) rotate(-77.66)"/>
+          <ellipse cx="1130.41" cy="653.4" rx="13.7" ry="9.8" transform="translate(250.44 1617.99) rotate(-77.66)"/>
+          <ellipse cx="1223.15" cy="598.49" rx="13.7" ry="9.8" transform="translate(377 1665.4) rotate(-77.66)"/>
+          <ellipse cx="1198.73" cy="639.76" rx="13.7" ry="9.8" transform="translate(317.48 1674) rotate(-77.66)"/>
+          <ellipse cx="1285.43" cy="610.76" rx="13.7" ry="9.8" transform="translate(413.97 1735.89) rotate(-77.66)"/>
+          <ellipse cx="1356.53" cy="587.42" rx="13.7" ry="9.8" transform="translate(492.67 1787) rotate(-77.66)"/>
+          <ellipse cx="1158.36" cy="615.63" rx="13.7" ry="9.8" transform="translate(309.32 1615.59) rotate(-77.66)"/>
+          <ellipse cx="1083.25" cy="645.69" rx="13.7" ry="9.8" transform="translate(220.89 1565.84) rotate(-77.66)"/>
+          <ellipse cx="1035.63" cy="684.83" rx="13.7" ry="9.8" transform="translate(145.22 1550.11) rotate(-77.66)"/>
+          <ellipse cx="879.25" cy="790.39" rx="13.7" ry="9.8" transform="translate(-80.84 1480.33) rotate(-77.66)"/>
+          <ellipse cx="850.49" cy="817.69" rx="13.7" ry="9.8" transform="translate(-130.13 1473.7) rotate(-77.66)"/>
+          <ellipse cx="919.52" cy="772.68" rx="13.7" ry="9.8" transform="translate(-31.89 1505.75) rotate(-77.66)"/>
+          <ellipse cx="976.74" cy="747.69" rx="13.7" ry="9.8" transform="translate(37.51 1541.99) rotate(-77.66)"/>
+          <ellipse cx="998.76" cy="790.9" rx="13.7" ry="9.8" transform="translate(12.62 1597.48) rotate(-77.66)"/>
+          <ellipse cx="1020.89" cy="726.45" rx="13.7" ry="9.8" transform="translate(92.98 1568.42) rotate(-77.66)"/>
+          <ellipse cx="1050.29" cy="759.73" rx="13.7" ry="9.8" transform="translate(83.58 1623.31) rotate(-77.66)"/>
+        </g>
+
+        <path class="hair-color" d="M1788.5,209.2c-36.1-8.2-69.5-6.2-104.2-3.7,10.5-15.8,24.2-26.2,39.4-33.7-42.2,4.6-84.2,10.9-125.9,19,13.9-18.3,24.3-35.1,30.9-53.2-49.2,8.9-97,25.6-141,49.4,10.4-26,18.3-38.6,26.2-51.2-42.6,9.9-84.5,22.8-125.3,38.6,6-25.2,12-38.2,18.1-51.2-44.4,15.4-85.5,40-120,71.9-4.1-29-5.2-41.1-6.3-53.2-32.3,23.1-63.1,48.3-92.2,75.4-5.8-15.3-6.4-26-7-36.6-38.8,28-72.8,62.7-100,102-2.1-22.8-1.1-34.8,0-46.7-33,34.1-61.3,72.9-83.6,114.9-3.3-3.7-6.5-7.4-9.7-11.1-40.3,53.8-69.8,111.2-93.1,171.1-1.8-20.5-1.2-41.2,1.7-61.6-42,122.5-68.6,268.2-78.9,397.4,78.1-94.1,207.5-202.4,356.4-237.5,148.8-35,312.3-21.1,460.2,17.9,.2-.03,.39-.05,.58-.08,9.11,8.01,34.32,9.37,52.62,8.48,22.3-1.3,48.3-1.4,48.3-22.1,17.8-122.3,48.3-282,52.8-404.1-.02,.05-.04,.09-.05,.14,.02-.08,.04-.16,.05-.24Z" style="stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 13px;"/>
+        
+        <g class="crest-shade" opacity=".2">
+          <path d="M827.22,834.16c60.41-103.67,153.65-186.73,260.52-241.27,106.88-54.54,226.94-81.19,346.89-84.27,41.58-1.07,84.79,.32,122.76-16.67,44.45-19.89,74.48-61.66,102.35-101.59,42.49-60.86,84.97-121.73,129.45-186.15-37.69,306.14-51.92,413.68-57.15,420.33-3.49,4.44-2.6,3.26-8.07,4.68-25.69,6.64-53.21,6.06-80.71,.07-121.44-27.55-246.01-51.13-369.88-38.38-172.55,17.76-336.29,109.19-446.17,243.26Z" style="isolation: isolate;" />
+          <path d="M1787.48,225.5l-49.69,377.22s4.52,31.62-37.27,35.01-46.31-12.42-39.53-30.49,117.46-384,117.46-384l9.04,2.26Z" />
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

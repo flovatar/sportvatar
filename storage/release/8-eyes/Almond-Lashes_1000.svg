@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="EYES" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3000 3000">
+  <g id="Almond-Lashes-Eyes" class="eyes">
+    <defs>
+        <style>
+            @keyframes blink-shut {
+              0% { opacity: 0; }
+              50% { opacity: 0; }
+              51% { opacity: 1; }
+              60% { opacity: 1; }
+              61% { opacity: 0; }
+              100% { opacity: 0; }
+            }
+
+            @keyframes blink-open {
+              0% { opacity: 1; }
+              50% { opacity: 1; }
+              51% { opacity: 0; }
+              60% { opacity: 0; }
+              61% { opacity: 1; }
+              100% { opacity: 1; }
+            }
+
+            .eyes-blink {
+              animation-duration: 2.2s;
+              animation-name: blink-shut;
+              animation-fill-mode: forwards;
+              animation-iteration-count: infinite;
+            }
+
+            .eyes-pupils,
+            .eyes-whites {
+              animation-duration: 2.2s;
+              animation-name: blink-open;
+              animation-fill-mode: forwards;
+              animation-iteration-count: infinite;
+            }
+
+            .eyes-blink {
+              opacity: 0;
+            }
+        </style>
+    </defs>
+    <g class="eyes-inner">
+      <g class="eyes-whites">
+        <path d="M1923.57,1047.71s49.13-168.28,198.21-129.88c0,0,82.45,80.19,26.26,204.42,0,0-156.71,60.99-224.47-74.54Z" style="fill: #fff; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 13px;"/>
+        <path d="M1623.36,1051.26s5.69-144.98-154.6-165.07c-132.24-16.57-216.32,73.05-230.63,132.72,0,0,18.32,99.05,207.01,119.28,112.5,14.55,160.55-45.89,178.22-86.93Z" style="fill: #fff; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 13px;"/>
+      </g>
+      <g class="eyes-pupils">
+        <ellipse cx="1505.52" cy="1018.37" rx="30.88" ry="31.6"/>
+        <ellipse cx="2079.14" cy="1028.9" rx="25.69" ry="26.15"/>
+        <g>
+          <path d="M1223.9,923.92s6.62,38.38,42.35,35.74" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 13px;"/>
+          <path d="M1193.41,935.9s8.47,49.13,54.21,45.74" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 13px;"/>
+        </g>
+        <g>
+          <path d="M2174.46,912.02s-.85,33.92-32.43,31.58" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 13px;"/>
+          <path d="M2201.41,922.61s-7.49,43.42-47.91,40.42" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 13px;"/>
+        </g>
+      </g>
+       <g class="eyes-blink">
+        <path d="M1238.13,1018.91s274.76-11.54,385.23,32.35" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 13px;"/>
+        <path d="M1923.57,1047.71s196.52-28.8,242.26-16.94" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 13px;"/>
+        <g>
+          <path d="M1282.57,965.93s-12.15,33.11,17.45,47.49" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 13px;"/>
+          <path d="M1247.82,952.81s-15.56,42.39,22.33,60.78" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 13px;"/>
+        </g>
+        <g>
+          <path d="M2175.81,984.1s6.21,27.82-18.66,39.9" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 13px;"/>
+          <path d="M2204.79,974.87s3.39,49.13-32.19,52.52" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 13px;"/>
+        </g>
+      </g>
+      <g id="eyes-shade">
+        <path d="M1242.54,1032.47s59.29,66.07,233.79,71.15c96.56,3.39,142.31-40.66,142.31-40.66,0,0-27.11,128.75-203.29,113.51-176.19-15.25-172.8-144-172.8-144Z" style="opacity: .2;"/>
+        <path d="M1937.12,1069.74s105.04,59.29,220.23,22.02l-28.8,64.38s-130.45,44.05-191.43-86.4Z" style="opacity: .2;"/>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,113 @@
+// ---------------------------------------------------------===
+// Video Modal styles
+// ---------------------------------------------------------===
+
+body.video-active {
+    overflow: hidden;
+}
+
+#video-wrap {
+    @include animate(opacity visibility);
+    opacity: 0;
+    visibility: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(#000, 0.6);
+    overflow: auto;
+    z-index: 9999;
+    display: flex;
+
+    &.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .video-overlay {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .video-container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        overflow: auto;
+    }
+
+    .video-wrap {
+        max-width: 1296px;
+        width: 100%;
+        padding: 50px 30px;
+        margin: 0 auto;
+
+        @include media('<tablet') {
+            padding: 50px 24px;
+        }
+    }
+
+    .video-frame{
+        width: 100%;
+        position: relative;
+        padding-top: 56.25%;
+    }
+
+    .close-video {
+        position: absolute;
+        right: 0;
+        top: -20px;
+        width: 30px;
+        height: 30px;
+        padding: 0;
+        line-height: 1;
+        background: none;
+        border: none;
+
+        @include media('<widescreen') {
+            right: 0;
+            top: -10px;
+            width: 20px;
+            height: 20px;
+        }
+
+        @include media('<tablet') {
+            top: -20px;
+        }
+
+        &:hover:before {
+            opacity: 0.8;
+        }
+
+        &:before {
+            @include animate(opacity);
+            content: "\e90e";
+            font: 27px/1 "icomoon";
+            color: white;
+
+            @include media('<widescreen') {
+                font-size: 20px;
+            }
+        }
+    }
+
+    video,
+    iframe {
+       position: absolute;
+       top: 0;
+       right: 0;
+       bottom: 0;
+       left: 0;
+       width: 100%;
+       height: 100%;
+       border-radius: 10px;
+       overflow: hidden;
+    }
+}

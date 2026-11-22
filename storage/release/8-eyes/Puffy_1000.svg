@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="EYES" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3000 3000">
+  <g id="Puffy-Eyes" class="eyes">
+    <defs>
+      <style>
+          @keyframes blink-shut {
+            0% { opacity: 0; }
+            50% { opacity: 0; }
+            51% { opacity: 1; }
+            60% { opacity: 1; }
+            61% { opacity: 0; }
+            100% { opacity: 0; }
+          }
+
+          @keyframes blink-open {
+            0% { opacity: 1; }
+            50% { opacity: 1; }
+            51% { opacity: 0; }
+            60% { opacity: 0; }
+            61% { opacity: 1; }
+            100% { opacity: 1; }
+          }
+
+          .eyes-blink {
+            animation-duration: 2s;
+            animation-name: blink-shut;
+            animation-fill-mode: forwards;
+            animation-iteration-count: infinite;
+          }
+
+          .eye-line,
+          .eye-pupil,
+          .eye-white {
+            animation-duration: 2s;
+            animation-name: blink-open;
+            animation-fill-mode: forwards;
+            animation-iteration-count: infinite;
+          }
+      </style>
+    </defs>
+    <g class="eyes-inner">
+      <g>
+        <path class="eye-white" d="M1308.61,1156.14c79.06,10.16,115.2,10.16,163.76,4.52,26.59-3.09,72.13-16.68,107.91-28.34,17.5-27.27,27.62-59.48,27.62-94,0-41.16-14.38-79.04-38.51-109.16-38.28-4.38-86.62-7.44-142.2-5.68-68.32,2.17-125.43,19.96-166.36,37.86-11.52,23.29-17.97,49.4-17.97,76.98,0,44.28,16.64,84.78,44.17,115.89,6.47,.29,13.63,.91,21.58,1.93Z" style="fill: #fff;"/>
+        <path class="eye-white" d="M1953.5,1138.07c38.29,9.12,123.66,18.23,186.64,9.53,19.33-29.85,30.98-68.31,30.98-110.29,0-29.18-5.63-56.66-15.55-80.73-79.04-23.84-170.86-20.22-228.35-14.14-13.95,27.19-22.08,59.8-22.08,94.87s8.62,69.62,23.34,97.29c7.7,.29,16.06,1.33,25.02,3.47Z" style="fill: #fff;"/>
+        <ellipse class="eye-pupil" cx="1504.57" cy="1053.32" rx="25.61" ry="26.68"/>
+
+        <g class="eye-line">
+          <path d="M1259.37,964.65c32.45-16.51,93.04-39.73,179.12-41.17,68.35-1.15,109.23,2.67,134.25,6.55" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 13px;"/>
+          <path d="M1601.12,905.41c15.81,12.42,7.91,25.98-2.26,27.11-5,.56-1.94,1.26-26.13-2.49" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 13px;"/>
+          <path d="M1259.37,964.65c-18.22,9.27-27.56,16.42-27.56,16.42" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 13px;"/>
+          <path d="M1603.38,1132.42c-6.38-1.28-12.75-1.47-20.35,.23" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 13px;"/>
+          <path d="M1583.03,1132.65c-5.86,1.31-12.44,3.74-20.31,7.68-110.68,39.53-215.72,22.59-263.15,13.55-5.83-1.11-11.05-1.88-15.72-2.37" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 13px;"/>
+          <path d="M1283.86,1151.5c-33.28-3.53-38.49,6.89-38.49,6.89" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 13px;"/>
+          <path d="M1572.74,930.03c23.47,30.17,37.41,67.81,37.41,108.65,0,34.45-9.92,66.63-27.11,93.97" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 13px;"/>
+          <path d="M1259.37,964.65c-10.45,22.57-16.27,47.63-16.27,74.02,0,42.74,15.27,81.99,40.75,112.83" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 13px;"/>
+        </g>
+
+        <g>
+          <path d="M1299.57,1153.88c28.27,5.85,53.37,9.17,74.14,10.88-45.58-32.67-75.29-86.09-75.29-146.46,0-27.36,6.11-53.29,17.03-76.51-38.12,10.85-69.55,27.56-90.97,41.13-9.47,21.89-14.71,46.03-14.71,71.4,0,37.14,11.25,71.65,30.52,100.32,15.83-4.07,35.64-5.65,59.28-.76Z" style="opacity: .2;"/>
+          <path d="M1335.71,1214.87c3.29,2.4,118.59,38.4,211.2-13.55,0,0,14.68-16.94-1.13-15.81s-72.28,23.72-187.48,15.81c-22.59-1.13-35.01,4.52-22.59,13.55Z" style="opacity: .2;"/>
+        </g>
+
+        <ellipse class="eye-pupil" cx="2080.94" cy="1050.65" rx="22.66" ry="23.6"/>
+
+        <g class="eye-line">
+          <path d="M1915.1,921.22s-14.3,23.1,12.47,21.53" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 13px;"/>
+          <path d="M1927.57,942.75c.36-.02,.71-.04,1.08-.07,27.47-2.2,126.55-16.15,226.54,15.33" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 13px;"/>
+          <path d="M1926.39,1129.03s94.54,35.24,209.79,16.94" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 13px;"/>
+          <path d="M1927.65,1131.96c-10.14-.24-15.94,3.84-15.94,3.84" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 13px;"/>
+          <path d="M1927.65,1131.96c3.65,.08,7.86,.72,12.57,2.32" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 13px;"/>
+          <path d="M2155.19,958.01c10.13,23.6,15.88,50.59,15.88,79.27,0,41.14-11.83,78.81-31.45,107.96" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 13px;"/>
+          <path d="M1927.57,942.75c-14.69,26.9-23.29,59.45-23.29,94.53s8.63,67.75,23.38,94.68" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 13px;"/>
+        </g>
+
+        <g>
+          <path d="M1967.05,1139.2c11.69,3.46,23.29,6.01,34.42,7.87-33.65-29.28-55.52-76.66-55.52-130.14,0-27.32,5.72-53.05,15.79-75.59-15.53,1.18-30.69,2.72-44.24,4.28-19.77,27.38-31.72,62.94-31.72,101.82,0,32.35,8.27,62.4,22.43,87.36,13.29-3,32.48-3.42,58.85,4.39Z" style="opacity: .2;"/>
+          <path d="M1979.48,1175.34s79.06,22.59,128.75,2.26c0,0,13.55,4.52-3.39,18.07s-76.8,14.68-109.55,3.39-15.81-23.72-15.81-23.72Z" style="opacity: .2;"/>
+        </g>
+      </g>
+
+      <g class="eyes-blink">
+        <path d="M1229.55,1069.17s227.43-11.37,300.63-15.85,86.76-11.26,99.18-11.26" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 13px;"/>
+        <path d="M1886.87,1044.33s236.05,12.42,283.48,3.39" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 13px;"/>
+      </g>
+
+    </g>
+  </g>
+</svg>

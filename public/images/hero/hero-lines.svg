@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="lines" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 499.58">
+  <path id="line1" d="M1401.97,471.38c-184.07-25.21-417.23-40.28-670.87-40.28-281.45,0-537.68,18.55-729.6,48.93" style="fill: none; stroke: #d4ff36; stroke-miterlimit: 10;"/>
+  <path id="line2" d="M1.5,402.21c191.92-19.16,448.15-30.86,729.6-30.86,253.64,0,486.8,9.5,670.87,25.4" style="fill: none; stroke: #d4ff36; stroke-miterlimit: 10;"/>
+  <path id="line3" d="M1.5,328.8c191.92-11.74,448.15-18.91,729.6-18.91,253.64,0,486.8,5.82,670.87,15.57" style="fill: none; stroke: #d4ff36; stroke-miterlimit: 10;"/>
+  <path id="line4" d="M1401.97,248.54c-184.07,3.99-417.23,6.38-670.87,6.38-281.45,0-537.68-2.94-729.6-7.75" style="fill: none; stroke: #d4ff36; stroke-miterlimit: 10;"/>
+  <path id="line5" d="M1.5,173.23c191.92,11.74,448.15,18.91,729.6,18.91,253.64,0,486.8-5.82,670.87-15.57" style="fill: none; stroke: #d4ff36; stroke-miterlimit: 10;"/>
+  <path id="line6" d="M1.5,99.82c191.92,19.16,448.15,30.86,729.6,30.86,253.64,0,486.8-9.5,670.87-25.4" style="fill: none; stroke: #d4ff36; stroke-miterlimit: 10;"/>
+  <path id="line7" d="M1.5,23.02c191.92,30.38,448.15,48.93,729.6,48.93,253.64,0,486.8-15.07,670.87-40.28" style="fill: none; stroke: #d4ff36; stroke-miterlimit: 10;"/>
+</svg>

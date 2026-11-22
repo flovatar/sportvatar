@@ -1,0 +1,21 @@
+<svg id="ACCESSORY" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3000 3000">
+  <g id="Pirate-Cutlass" class="accessory">
+    <g>
+      <circle cx="2368.48" cy="1890.48" r="24.5" style="fill: #e8c42d;stroke: #000;stroke-linecap: round;stroke-linejoin: round;stroke-width: 13px"/>
+      <path d="M2436,1813c-1,7.09,72.11,22.41,119,6,111.37-39,221.33-238,9.33-366.66,0,0-162.66-74-206.66,46,3.8,45.35,67.24,94.3,120.91,115.86C2542,1651,2557,1760,2436,1813Z" style="fill: #e8c42d;stroke: #000;stroke-linecap: round;stroke-linejoin: round;stroke-width: 13px"/>
+      <g>
+        <path d="M2686.31,471.65S2752.67,689.29,2499.2,1458c33,12.19,57.22,25.18,72.45,39,297.33-668,382.66-894.66,300-1283.55C2801,369,2686.31,471.65,2686.31,471.65Z" style="fill: #ccc;stroke: #000;stroke-linecap: round;stroke-linejoin: round;stroke-width: 13px"/>
+        <path d="M2391.22,1798.82l-16.22,4.06-22.32,59.53,14.65,23.39,40.71-1.92,21.54-59.86-1.7-8.88,7.18-12.81c-18.15-5-25.52-18.11-39-31.89Z" style="fill: #e8c42d;stroke: #000;stroke-linecap: round;stroke-linejoin: round;stroke-width: 13px"/>
+      </g>
+      <path d="M2613,1497s27.18,153.76-116,120c-140.76-33.18-135.18-118.25-138-110,0,0,26-92,135-73S2613,1497,2613,1497Z" style="fill: #fff;opacity: 0.1"/>
+      <path d="M2871,229c-7.68,74-13.55,157.54-72.33,229.33,40.26,146.37-41.24,438.76-192.77,832.86,18.58,53.71,8.64,89.63-.9,125.8l214-508c24.37-7.24,107.95-504.69,83-488C2897,424.32,2871,229,2871,229Z" style="fill: #fff;opacity: 0.30000000000000004"/>
+      <path d="M2606.65,1291.65c151.53-394.1,232.26-687,192-833.33" style="fill: none;stroke: #000;stroke-linecap: round;stroke-linejoin: round;stroke-width: 13px"/>
+      <path d="M2471.31,1450c-35,1-65.28,9.42-84.36,41.11" style="fill: none;stroke: #ff0;stroke-linecap: round;stroke-miterlimit: 10;stroke-width: 13px"/>
+      <path d="M2609,1488c122.27,165.72-71.81,288-165,324,27.95,16.61,60.41,21.65,99,11,44.94-15.43,82.17-52.38,117-96,15.84-34.62,23-76,25-110S2639,1519,2609,1488Z" style="opacity: 0.15"/>
+      <path d="M2391.22,1798.82c5.14,6.74,6.68,20.1,4.43,22.83l-24.67,58-11.33.67-4-8-2.67,9.33s18.67,18,12.67,27.33,24-2,24-2l11.33-24.66,7.06,1.56,21.54-59.86,16.07-18.37-49.58-35.21Z" style="opacity: 0.15"/>
+      <path d="M2871,229l.67,10.66c-4,22.67-115.66,202.31-169.34,236C2741.65,765,2612,1157,2513,1458l-13.78,0c118.38-369.45,221.84-728.05,187.11-986.31C2748.31,419.45,2870.62,236.77,2871,229Z" style="fill: #fff;opacity: 0.6000000000000001"/>
+      <path d="M2475.65,1471.32c35,8,78,33.26,88,50" style="fill: none;stroke: #ff0;stroke-linecap: round;stroke-miterlimit: 10;stroke-width: 13px"/>
+      <path d="M2686.31,471.65S2752.67,689.29,2499.2,1458c33,12.19,57.22,25.18,72.45,39,297.33-668,382.66-894.66,300-1283.55C2801,369,2686.31,471.65,2686.31,471.65Z" style="fill: none;stroke: #000;stroke-linecap: round;stroke-linejoin: round;stroke-width: 13px"/>
+    </g>
+  </g>
+</svg>

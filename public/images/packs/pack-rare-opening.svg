@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1920 1000">
+  <g id="pack-wrapper">
+    <defs>
+        <style>
+            svg {
+                background-color: transparent;
+            }
+
+            #pack-wrapper {
+              transform: scale(.3) translateX(1700px);
+            }
+
+            @keyframes shake {
+                0% { transform: rotate(-3deg) }
+                50% { transform: rotate(3deg) }
+                100% { transform: rotate(-3deg) }
+            }
+            #pack-wrapper.loading #pack {
+                animation-name: shake;
+                animation-duration: .1s;
+                animation-iteration-count: infinite;
+                transform-origin: center;
+                transform-box: fill-box;
+            }
+
+            @keyframes blow-side {
+                0% {  }
+                100% { transform: translate(-9000px, -20px) rotate(-45deg) scale(3)  }
+            }
+            #pack-wrapper.open #pack-side {
+              animation-name: blow-side;
+              animation-fill-mode: forwards;
+              animation-duration: .5s;
+              animation-iteration-count: 1;
+              transform-origin: center;
+              transform-box: fill-box;
+            }
+
+            @keyframes blow-front {
+                0% {  }
+                100% { transform: translate(9000px, -20px) rotate(-45deg) scale(3) }
+            }
+            #pack-wrapper.open #pack-front {
+              animation-name: blow-front;
+              animation-fill-mode: forwards;
+              animation-duration: .5s;
+              animation-iteration-count: 1;
+              transform-origin: center;
+              transform-box: fill-box;
+            }
+
+            @keyframes blow-top {
+                0% {  }
+                100% { transform: translate(0px, -9000px) rotate(-45deg) scale(3) }
+            }
+            #pack-wrapper.open #pack-top {
+              animation-name: blow-top;
+              animation-fill-mode: forwards;
+              animation-duration: .5s;
+              animation-iteration-count: 1;
+              transform-origin: center;
+              transform-box: fill-box;
+            }
+
+            @keyframes blow-dial {
+                0% {  }
+                100% { transform: translate(9000px, -500px) rotate(-50deg) scale(2.5) }
+            }
+            #pack-wrapper.open #dial-wrapper,
+            #pack-wrapper.open #dial-handle {
+              animation-name: blow-dial;
+              animation-fill-mode: forwards;
+              animation-duration: .5s;
+              animation-iteration-count: 1;
+              transform-origin: center;
+              transform-box: fill-box;
+            }
+
+            #pack-wrapper.open #pack-edges {
+              opacity: 0;
+            }
+            #pack-wrapper.open #pack-shadow {
+              opacity: 0;
+            }
+
+            #glow {
+              transform-origin: center;
+            }
+
+            @keyframes blast {
+                0% { opacity: 1 }
+                40% { transform: scale(30) }
+                41% { transform: scale(30); opacity: 1 }
+                100% { transform: scale(30); opacity: 0 }
+            }
+            #pack-wrapper.open #glow {
+              animation-name: blast;
+              animation-fill-mode: forwards;
+              animation-duration: 2s;
+              animation-iteration-count: 1;
+              transform-origin: center;
+              transform-box: fill-box;
+            }
+
+            @keyframes dial-spin {
+                  0% { transform: rotate(0deg) }
+                  100% { transform: rotate(360deg) }
+            }
+            #dial-wrapper {
+              transform: rotateY(-31deg) rotateX(4deg) rotateZ(0deg) translate(607px,203px) scale(0.85)
+            }
+            #dial {
+              animation-name: dial-spin;
+              animation-duration: 5s;
+              animation-iteration-count: infinite;
+              transform-origin: center;
+              transform-box: fill-box;
+            }
+
+            .dial-dot {
+              fill: #23EDFC;
+            }
+
+            @keyframes pack-glow {
+                0% { fill: #000 }
+                50% { fill: #23EDFC }
+                100% { fill: #000 }
+            }
+
+            #beam1, 
+            #beam2, 
+            #light-side,
+            #light-front {
+              animation-name: pack-glow;
+              animation-duration: 4s;
+              animation-iteration-count: infinite;
+              transform-origin: center;
+              transform-box: fill-box;
+            }
+
+          </style>
+
+          <radialGradient id="pack-radial-gradient" cx="1500" cy="1500" fx="1500" fy="1500" r="292" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#fff"/>
+            <stop offset=".15" stop-color="#fff" stop-opacity=".99"/>
+            <stop offset=".28" stop-color="#fff" stop-opacity=".95"/>
+            <stop offset=".4" stop-color="#fff" stop-opacity=".88"/>
+            <stop offset=".52" stop-color="#fff" stop-opacity=".78"/>
+            <stop offset=".63" stop-color="#fff" stop-opacity=".66"/>
+            <stop offset=".74" stop-color="#fff" stop-opacity=".5"/>
+            <stop offset=".85" stop-color="#fff" stop-opacity=".32"/>
+            <stop offset=".95" stop-color="#fff" stop-opacity=".11"/>
+            <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+        </radialGradient>
+    </defs>
+
+    <g id="pack-shadow">
+      <ellipse cx="1500" cy="2818.06" rx="792.98" ry="77.1" style="fill: #070f2d; opacity: .3;"/>
+    </g>
+    <circle id="glow" cx="1500" cy="1500" r="292" style="fill: url(#pack-radial-gradient);"/>
+
+      <g id="pack">
+        <g id="pack-top">
+          <path d="M324.89,681.79s4.52-40.66,144.56-76.8,393.03-108.42,393.03-108.42c0,0,63.25-18.07,153.6-13.55s1594.73,94.87,1594.73,94.87c0,0,49.69,27.11,49.69,99.39,0,0-298.7,73.66-528.56,72.28-445.42-2.68-989.84-36.14-1034.54-36.14-67.76,0-704.75-18.07-772.52-31.62Z" style="fill: #152223; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 20px;"/>
+        </g>
+        <g id="pack-side">
+          <path d="M917.1,374.8c-13.07,49.72-27.48,128.46-27.48,233.96v2020.69s-2.04,84.01,28.61,165.16c-50.5-7.65-113.95-24.84-180.33-61.71-186.21-103.45-234.49-131.04-234.49-131.04,0,0-165.51-75.86-165.51-365.52s-13.8-1596.55-17.24-1593.1c0,0,17.24-96.55,124.13-131.03,106.9-34.49,389.66-124.14,389.66-124.14,0,0,29.24-8.53,82.65-13.27Z" style="fill: #4b5556;"/>
+          <path d="M917.1,374.8c-53.41,4.74-82.65,13.27-82.65,13.27,0,0-282.76,89.65-389.66,124.14-106.89,34.48-124.13,131.03-124.13,131.03,3.44-3.45,17.24,1303.45,17.24,1593.1s165.51,365.52,165.51,365.52c0,0,48.28,27.59,234.49,131.04,66.38,36.87,129.83,54.06,180.33,61.71" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 20px;"/>
+          <path d="M298.92,568.28s11.86,28.8,66.07,8.47l523.48-155.86V2785.88s-91.48-20.33-116.89-32.19-328.66-182.96-328.66-182.96c0,0-74.54-22.02-110.12-91.48-23.72-49.13-25.41-74.54-25.41-74.54,0,0,0-23.72,13.55-38.96s23.72-42.35,20.33-62.68-16.94-1577.22-16.94-1577.22c0,0-30.49,6.78-32.19-33.88s6.78-118.59,6.78-123.67Z" style="opacity: .3;"/>
+          <g>
+            <polygon id="beam2" points="385.41 860.48 385.41 2260.48 433.69 2263.93 433.69 850.14 385.41 860.48" style="stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 20px;"/>
+            <path d="M376.48,2091.45v27.11l77.93,3.39v184.66s-91.48,15.25-91.48-44.05v-152.47l13.55-18.64Z" style="fill: #6d7777; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 20px;"/>
+            <path d="M375.48,1035.92v-27.11s77.93-3.39,77.93-3.39v-184.66s-91.48-15.25-91.48,44.05,0,152.47,0,152.47l13.55,18.64Z" style="fill: #6d7777; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 20px;"/>
+          </g>
+          <path d="M290.44,710.59v-83.01s-13.55-145.69,176.19-130.45c0,0-62.68,20.33-93.18,54.21s-23.72,166.02-23.72,166.02c0,0-40.66,20.33-59.29-6.78Z" style="fill: #6d7777; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 20px;"/>
+          <path d="M342.96,2325.08l-35.58,66.07s3.39,154.16,164.33,186.35c0,0-103.34-111.81-110.12-186.35s-18.64-66.07-18.64-66.07Z" style="fill: #6d7777; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 20px;"/>
+          <g>
+            <g>
+              <g>
+                <path d="M582,1186.76c99.92,5.48,180.74,188.07,180.53,407.8s-81.37,393.42-181.29,387.93c-99.91-5.49-180.74-188.07-180.52-407.8,.21-219.74,81.37-393.42,181.28-387.93Zm-18.1,697.85c70.05,4.2,126.84-126.66,126.84-292.26s-56.79-303.26-126.84-307.46c-70.06-4.19-126.84,126.67-126.84,292.27s56.78,303.26,126.84,307.45Z" style="fill: #4b5556;"/>
+                <path d="M690.74,1592.36c0,165.6-56.79,296.46-126.84,292.26-70.06-4.19-126.84-141.83-126.84-307.45s56.78-296.46,126.84-292.27c70.05,4.2,126.84,141.85,126.84,307.46Z" style="fill: #131919;"/>
+              </g>
+              <g>
+                <path d="M400.72,1574.69c-.22,219.74,80.61,402.31,180.52,407.8,99.92,5.49,181.09-168.19,181.29-387.93s-80.61-402.32-180.53-407.8c-99.91-5.49-181.08,168.19-181.28,387.93Z" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 20px;"/>
+                <path d="M437.05,1577.17c0,165.61,56.78,303.26,126.84,307.45,70.05,4.2,126.84-126.66,126.84-292.26s-56.79-303.26-126.84-307.46c-70.06-4.19-126.84,126.67-126.84,292.27Z" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 20px;"/>
+              </g>
+            </g>
+            <g>
+              <g>
+                <path id="light-side" d="M545.42,1400.91c46.73,2.49,84.47,86.21,84.29,187-.18,100.79-38.22,180.48-84.95,177.99s-84.47-86.21-84.29-187c.18-100.78,38.21-180.48,84.95-177.99Zm29.62,185.89c0-71.4-23.35-130.74-52.14-132.55-28.81-1.8-52.15,54.61-52.15,126.01s23.35,130.74,52.15,132.54c28.79,1.81,52.14-54.6,52.14-125.99Z" />
+                <path d="M522.9,1454.25c28.79,1.81,52.14,61.15,52.14,132.55s-23.35,127.81-52.14,125.99c-28.81-1.8-52.15-61.15-52.15-132.54s23.35-127.81,52.15-126.01Z" style="fill: #4b5556;"/>
+              </g>
+              <g>
+                <ellipse cx="545.09" cy="1583.41" rx="84.6" ry="182.56" transform="translate(-19.41 6.81) rotate(-.7)" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 20px;"/>
+                <path d="M470.75,1580.26c0,71.39,23.35,130.74,52.15,132.54,28.79,1.81,52.14-54.6,52.14-125.99s-23.35-130.74-52.14-132.55c-28.81-1.8-52.15,54.61-52.15,126.01Z" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 20px;"/>
+              </g>
+            </g>
+          </g>
+          <g>
+            <polygon id="beam1" points="727.41 829.45 727.41 2374.28 775.69 2377.72 775.69 819.1 727.41 829.45" style="stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 20px;"/>
+            <path d="M719.34,2218.35v27.11l77.93,3.39v184.66s-91.48,15.25-91.48-44.05v-152.47l13.55-18.64Z" style="fill: #6d7777; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 20px;"/>
+            <path d="M714.26,978.09v-27.11s77.93-3.39,77.93-3.39v-184.66s-91.48-15.25-91.48,44.05,0,152.47,0,152.47l13.55,18.64Z" style="fill: #6d7777; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 20px;"/>
+          </g>
+        </g>
+        <g id="pack-front">
+          <g id="bg">
+            <rect x="1089.85" y="597.08" width="1472.4" height="1975.34" style="fill: #131919;"/>
+          </g>
+          <g>
+            <g>
+              <path d="M2672.38,2470.83s13.79,137.93-248.28,168.96c-262.07,31.04-1396.55,158.62-1396.55,158.62,0,0-43.75,6.13-109.32-3.8-30.65-81.15-28.61-165.16-28.61-165.16V608.76c0-105.5,14.41-184.24,27.48-233.96,36.45-3.24,84.14-4.72,141.49-.52,141.38,10.34,1486.2,103.44,1486.2,103.44,0,0,127.59-6.89,127.59,165.52v1827.59Zm-162.07-393.11V988.07c0-265.52-251.72-286.21-251.72-286.21,0,0-482.76-31.03-789.66-41.38-187.04-6.3-258.8,94.98-286.33,175.05-17.64,51.31-17.12,93.92-17.12,93.92v1327.58c0,63.71,11.48,112.67,29.97,150.23,76.58,155.56,273.48,115.29,273.48,115.29,0,0,575.86-51.72,806.9-86.21,231.03-34.48,234.48-358.62,234.48-358.62Z" style="fill: #4b5556;"/>
+              <path d="M2510.31,988.07v1089.65s-3.45,324.14-234.48,358.62c-231.04,34.49-806.9,86.21-806.9,86.21,0,0-196.9,40.27-273.48-115.29,82.81,84.4,218.09,56.74,218.09,56.74,0,0,593.37-47.89,807.27-79.81,213.89-31.93,217.09-332.02,217.09-332.02v-1008.83c0-245.82-233.06-264.98-233.06-264.98,0,0-507.17-28.73-791.3-38.31-122.91-4.14-192.05,41.9-230.94,95.48,27.53-80.07,99.29-181.35,286.33-175.05,306.9,10.35,789.66,41.38,789.66,41.38,0,0,251.72,20.69,251.72,286.21Z" style="fill: #242b2b;"/>
+            </g>
+            <path d="M917.1,374.8c-13.07,49.72-27.48,128.46-27.48,233.96v2020.69s-2.04,84.01,28.61,165.16" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 20px;"/>
+            <g>
+              <path d="M917.1,374.8c36.45-3.24,84.14-4.72,141.49-.52,141.38,10.34,1486.2,103.44,1486.2,103.44,0,0,127.59-6.89,127.59,165.52v1827.59s13.79,137.93-248.28,168.96c-262.07,31.04-1396.55,158.62-1396.55,158.62,0,0-43.75,6.13-109.32-3.8" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 21.34px;"/>
+              <path d="M917.1,374.8c-13.07,49.72-27.48,128.46-27.48,233.96v2020.69s-2.04,84.01,28.61,165.16" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 21.34px;"/>
+              <path d="M1182.6,835.53c-17.64,51.31-17.12,93.92-17.12,93.92v1327.58c0,63.71,11.48,112.67,29.97,150.23" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 21.34px;"/>
+              <path d="M1182.6,835.53c27.53-80.07,99.29-181.35,286.33-175.05,306.9,10.35,789.66,41.38,789.66,41.38,0,0,251.72,20.69,251.72,286.21v1089.65s-3.45,324.14-234.48,358.62c-231.04,34.49-806.9,86.21-806.9,86.21,0,0-196.9,40.27-273.48-115.29" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 21.34px;"/>
+              <path d="M1182.6,835.53c38.89-53.58,108.03-99.62,230.94-95.48,284.13,9.58,791.3,38.31,791.3,38.31,0,0,233.06,19.16,233.06,264.98v1008.83s-3.2,300.09-217.09,332.02c-213.9,31.92-807.27,79.81-807.27,79.81,0,0-135.28,27.66-218.09-56.74" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 21.34px;"/>
+            </g>
+          </g>
+          <path d="M2479.28,474.28s25.38-29.67,106.9-17.24c60.1,9.16,106.49,45.67,117.24,113.79,10.34,65.52-5.55,121.12-5.55,121.12,0,0-70.31,10.24-115.14-10.45,0,0,27.59-169.29-103.45-207.23Z" style="fill: #6d7777; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 20px;"/>
+          <path d="M2471.28,2634.36s81.61,14.23,124.86,2.44c37.93-10.34,86.55-38.92,100.38-97,17.24-72.41,6.9-145.17,6.9-145.17,0,0-62.07-30.69-106.9,17.59,0,0,30.11,183.93-125.24,222.15Z" style="fill: #6d7777; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 20px;"/>
+          <g>
+            <ellipse cx="1477.55" cy="541.52" rx="53.45" ry="60.34" style="fill: #616b6b; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 20px;"/>
+            <ellipse cx="1040.47" cy="1098.83" rx="60.71" ry="68.55" style="fill: #616b6b; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 20px;"/>
+            <ellipse cx="1040.47" cy="2144.18" rx="60.71" ry="68.55" style="fill: #616b6b; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 20px;"/>
+            <ellipse cx="1040.47" cy="1603.67" rx="60.71" ry="68.55" style="fill: #616b6b; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 20px;"/>
+            <ellipse cx="2588.97" cy="1579.14" rx="43.23" ry="49.39" style="fill: #616b6b; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 20px;"/>
+            <ellipse cx="2588.97" cy="2052.36" rx="43.23" ry="49.39" style="fill: #616b6b; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 20px;"/>
+            <ellipse cx="2588.97" cy="1135.51" rx="43.23" ry="49.39" style="fill: #616b6b; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 20px;"/>
+            <ellipse cx="1865.66" cy="558.76" rx="53.45" ry="60.34" style="fill: #616b6b; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 20px;"/>
+            <ellipse cx="2212.03" cy="586.34" rx="53.45" ry="60.34" style="fill: #616b6b; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 20px;"/>
+            <ellipse cx="1477.55" cy="2631.17" rx="53.45" ry="60.34" style="fill: #616b6b; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 20px;"/>
+            <ellipse cx="1867.66" cy="2589.79" rx="53.45" ry="60.34" style="fill: #616b6b; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 20px;"/>
+            <ellipse cx="2212.03" cy="2551.86" rx="53.45" ry="60.34" style="fill: #616b6b; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 20px;"/>
+          </g>
+          <path d="M1345.89,2193.34V1003.63s-3.3-79.09,85.69-75.8,797.54,32.96,797.54,32.96c0,0,82.39,19.77,82.39,108.76v972.21s6.59,171.37-118.64,184.55c-125.23,13.18-800.83,56.03-800.83,56.03,0,0-42.84,6.59-46.14-88.98Z" style="fill: #4b5556; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 20px;"/>
+          <path id="light-front" d="M1357.07,2395.42c-17.06,0-40.41-3.71-62.16-19.64-33.98-24.88-52.56-70.47-55.22-135.52l-.02-.82V1007.74c-.62-9.75-3.93-88.96,46.05-141.93,29.87-31.65,71.9-47.17,124.94-46.06,160.37,3.27,794.23,33.11,815.96,34.14,8.1,0,71.88,1.56,119.41,48.28,33.58,33.01,50.61,79.79,50.61,139.03v989.65c.43,7.38,3.1,64.69-12.73,126.87-22.93,90.07-73.62,146.26-146.58,162.51-132.97,29.61-809.86,70.09-857.67,72.92-3.86,.83-12.02,2.26-22.59,2.26Zm-77.4-156.39c2.14,51.03,15.45,87.05,38.48,104.19,23.74,17.66,51.36,11.27,53.44,10.76l2.09-.6,1.94-.05c7.2-.42,721.21-42.78,853.02-72.13,58.08-12.93,97.28-57.79,116.52-133.34,15.05-59.11,11.58-114.51,11.54-115.06l-.04-1.33v-990.26c0-47.93-12.9-85.01-38.35-110.21-37.56-37.19-91.28-37.09-91.82-37.1h-.64s-.57-.02-.57-.02c-6.52-.31-653.59-30.83-815.42-34.13-41.26-.82-73.24,10.44-95.03,33.53-40.16,42.56-35.26,111.53-35.2,112.22l.06,.78v1232.76Z" style="fill: #eb3cf2;"/>
+          <path d="M851.69,2805.66s-82.76-37.93-72.41-213.79c13.79,0,113.79-58.62,234.48,10.34l-6.9,193.45,48.28,6.55s-65.52,68.97-203.45,3.45Z" style="fill: #6d7777; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 20px;"/>
+          <path d="M851.69,368.94s-82.76,37.93-72.41,213.79c13.79,0,113.79,58.62,234.48-10.34l-6.9-194.45,48.28-5.55s-65.52-68.97-203.45-3.45Z" style="fill: #6d7777; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 20px;"/>
+          <path d="M786.82,2630.02s115.2-40.66,193.13,13.55l-10.16,169.41s40.66,0,40.66-40.66v-64.38l1578.91-159.25s16.94-71.15,13.55-101.65c0,0,50.82-27.11,67.76-13.55s30.49,121.98-3.39,159.25-98.26,50.82-138.92,47.44-81.32-6.78-138.92,3.39-1304.47,145.69-1304.47,145.69c0,0-67.76,67.76-152.47,44.05s-145.69-67.76-145.69-203.29Z" style="opacity: .3;"/>
+        </g>
+        <g id="dial-handle">
+          <g>
+            <g>
+              <g>
+                <path d="M1852.95,1184.75c188.35-5.64,341.05,170.41,341.05,393.23s-152.7,408.02-341.05,413.67c-188.36,5.64-341.05-170.42-341.05-393.24s152.69-408.02,341.05-413.66Zm265.21,395.82c0-166.44-113.88-297.94-254.36-293.72-140.49,4.21-254.37,142.55-254.37,308.98s113.88,297.93,254.37,293.72c140.48-4.22,254.36-142.55,254.36-308.98Z" style="fill: #4b5556;"/>
+                <path d="M1863.8,1286.85c140.48-4.22,254.36,127.28,254.36,293.72s-113.88,304.76-254.36,308.98c-140.49,4.21-254.37-127.29-254.37-293.72s113.88-304.77,254.37-308.98Z" style="fill: #131919;"/>
+              </g>
+              <g>
+                <path d="M2194,1577.98c0,222.82-152.7,408.02-341.05,413.67-188.36,5.64-341.05-170.42-341.05-393.24s152.69-408.02,341.05-413.66c188.35-5.64,341.05,170.41,341.05,393.23Z" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 20px;"/>
+                <path d="M2118.16,1580.57c0,166.43-113.88,304.76-254.36,308.98-140.49,4.21-254.37-127.29-254.37-293.72s113.88-304.77,254.37-308.98c140.48-4.22,254.36,127.28,254.36,293.72Z" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 20px;"/>
+              </g>
+            </g>
+            <g>
+              <g>
+                <path d="M1869.08,1384.32c95.04-2.85,172.08,86.12,172.08,198.71s-77.04,206.19-172.08,209.04-172.09-86.11-172.09-198.71,77.05-206.18,172.09-209.04Zm124.77,200.38c0-76.35-52.24-136.67-116.68-134.74-64.44,1.94-116.68,65.39-116.68,141.74s52.24,136.66,116.68,134.73,116.68-65.39,116.68-141.73Z" style="fill: #758182;"/>
+                <path d="M1877.17,1449.96c64.44-1.93,116.68,58.39,116.68,134.74s-52.24,139.8-116.68,141.73-116.68-58.39-116.68-134.73,52.24-139.8,116.68-141.74Z" style="fill: #4b5556;"/>
+              </g>
+              <g>
+                <path d="M2041.16,1583.03c0,112.6-77.04,206.19-172.08,209.04s-172.09-86.11-172.09-198.71,77.05-206.18,172.09-209.04c95.04-2.85,172.08,86.12,172.08,198.71Z" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 20px;"/>
+                <path d="M1993.85,1584.7c0,76.34-52.24,139.8-116.68,141.73s-116.68-58.39-116.68-134.73,52.24-139.8,116.68-141.74c64.44-1.93,116.68,58.39,116.68,134.74Z" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 20px;"/>
+              </g>
+            </g>
+          </g>
+          <path d="M1562.72,1379.76l220.23,132.14s-71.15,118.59,47.44,203.29c20.33,6.78,88.09,33.88,142.31-50.82l98.26,240.56s-265.41,245.08-483.39,40.66c-224.13-210.19-24.85-565.83-24.85-565.83Z" style="opacity: .3;"/>
+        </g>
+        <g id="dial-wrapper">
+            <g id="dial">
+              <g>
+                <circle class="dial-dot" cx="1933.53" cy="1343.76" r="24" />
+                <circle class="dial-dot" cx="1933.53" cy="1935.01" r="24" />
+              </g>
+              <g>
+                <circle class="dial-dot" cx="1785.72" cy="1383.37" r="24" />
+                <circle class="dial-dot" cx="2081.34" cy="1895.4" r="24" />
+              </g>
+              <g>
+                <circle class="dial-dot" cx="1677.51" cy="1491.57" r="24" />
+                <circle class="dial-dot" cx="2189.55" cy="1787.19" r="24" />
+              </g>
+              <g>
+                <circle class="dial-dot" cx="1637.91" cy="1639.38" r="24" />
+                <circle class="dial-dot" cx="2229.15" cy="1639.38" r="24" />
+              </g>
+              <g>
+                <circle class="dial-dot" cx="1677.51" cy="1787.19" r="24" />
+                <circle class="dial-dot" cx="2189.55" cy="1491.57" r="24" />
+              </g>
+              <g>
+                <circle class="dial-dot" cx="1785.72" cy="1895.4" r="24" />
+                <circle class="dial-dot" cx="2081.34" cy="1383.37" r="24" />
+              </g>
+            </g>
+        </g>
+      </g>
+  </g>
+</svg>
