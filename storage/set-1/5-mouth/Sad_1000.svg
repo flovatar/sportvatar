@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="MOUTH" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3000 3000">
+  <g id="Sad-Mouth" class="mouth">
+    <path d="M1630.49,1370.72s45.21-60.29,169.41-63.25c94.87-2.26,101.65,38.4,101.65,38.4" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 13px;"/>
+    <path d="M1719.43,1370.44s33.02-22.57,71.44-24.56c48.85-2.54,74.54,15.81,45.18,33.88s-142.02,15.25-116.61-9.32Z" style="opacity: .2;"/>
+  </g>
+</svg>

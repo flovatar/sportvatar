@@ -1,0 +1,19 @@
+<svg id="ACCESSORY" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3000 3000">
+  <g id="Smartphone-Armband" class="accessory">
+    <path d="M882.19,1773.92l.13-.27c-28.21-20.69,24.91-87.67-3.08-102.25l-75.38-26.1c-8.45-2.92-20,1-25.77,8.77l-190.35,256c-5.78,7.77-3.61,16.44,4.84,19.37L668,1955.51c8.45,2.93,17.69-2.53,17.69-2.53,26.34-6.5,98.83-93.5,143.69-71.78,46.08,30.42,82.82,67.5,115.64,109.28,15.5,1,93-55,94.67-68.16C995.88,1860.6,953.72,1808.19,882.19,1773.92Z" style="fill: #333;stroke: #000;stroke-linecap: round;stroke-linejoin: round;stroke-width: 13px"/>
+    <polyline points="825.01 1852.73 855.76 1846.58 855.76 1876.1" style="fill: none;stroke: #fcee21;stroke-linecap: round;stroke-linejoin: round;stroke-width: 13px"/>
+    <polyline points="843.87 1831.22 874.62 1825.07 874.62 1854.6" style="fill: none;stroke: #fcee21;stroke-linecap: round;stroke-linejoin: round;stroke-width: 13px"/>
+    <polyline points="862.23 1809.22 892.99 1803.07 892.99 1832.6" style="fill: none;stroke: #fcee21;stroke-linecap: round;stroke-linejoin: round;stroke-width: 13px"/>
+    <path d="M965,1834c-49.5,4.07-82.21,27.57-85,85.67" style="fill: none;stroke: #000;stroke-linecap: round;stroke-linejoin: round;stroke-width: 13px"/>
+    <path d="M969,1859c-36.69,3-60.93,20.43-63,63.5" style="fill: none;stroke: #000;stroke-linecap: round;stroke-linejoin: round;stroke-width: 13px"/>
+    <line x1="849.98" y1="1774.15" x2="788.98" y2="1856.65" style="fill: none;stroke: #000;stroke-linecap: round;stroke-linejoin: round;stroke-width: 13px"/>
+    <path d="M882.19,1773.92l.13-.27c-28.21-20.69,24.91-87.67-3.08-102.25l-75.38-26.1c-8.45-2.92-20,1-25.77,8.77l-190.35,256c-5.78,7.77-3.61,16.44,4.84,19.37L668,1955.51c8.45,2.93,17.69-2.53,17.69-2.53,26.34-6.5,98.83-93.5,143.69-71.78,46.08,30.42,82.82,67.5,115.64,109.28,15.5,1,93-55,94.67-68.16C995.88,1860.6,953.72,1808.19,882.19,1773.92Z" style="fill: none"/>
+    <path d="M668,1955.51l-75.38-26.09c-8.45-2.93-10.62-11.6-4.84-19.37l190.35-256c5.78-7.77,17.32-11.69,25.77-8.77l75.38,26.1c8.45,2.92,10.62,11.59,4.84,19.36l-190.35,256C688,1954.51,676.41,1958.44,668,1955.51Z" style="fill: none;stroke: #000;stroke-linecap: round;stroke-linejoin: round;stroke-width: 13px"/>
+    <path d="M670.56,1929.64l-60.42-19.2c-6.77-2.16-8.24-9.31-3.28-16L770.3,1674.67c5-6.67,14.47-10.33,21.24-8.18L852,1685.7c6.77,2.15,8.24,9.31,3.28,16L691.81,1921.46C686.85,1928.13,677.34,1931.8,670.56,1929.64Z" style="fill: #999"/>
+    <polygon points="695.99 1770.48 715.49 1877.48 689.49 1917.98 665.99 1804.98 695.99 1770.48" style="opacity: 0.15"/>
+    <polygon points="730.99 1732.48 750.49 1839.48 724.49 1879.98 700.99 1766.98 730.99 1732.48" style="fill: #fff;opacity: 0.15"/>
+    <polygon points="781.99 1666.48 801.49 1773.48 775.49 1813.98 751.99 1700.98 781.99 1666.48" style="fill: #fff;opacity: 0.15"/>
+    <path d="M670.56,1929.64l-60.42-19.2c-6.77-2.16-8.24-9.31-3.28-16L770.3,1674.67c5-6.67,14.47-10.33,21.24-8.18L852,1685.7c6.77,2.15,8.24,9.31,3.28,16L691.81,1921.46C686.85,1928.13,677.34,1931.8,670.56,1929.64Z" style="fill: none;stroke: #000;stroke-linecap: round;stroke-linejoin: round;stroke-width: 13px"/>
+    <path d="M909.93,1945.59l90.35-75.67,31.62,44s13.55,9-2.26,23.72-63.24,45.17-70,48.56-13.55,1.13-22.59-6.77S909.93,1945.59,909.93,1945.59Z" style="opacity: 0.2"/>
+  </g>
+</svg>

@@ -1,0 +1,252 @@
+// ---------------------------------------------------------===
+// newsletter styles
+// ---------------------------------------------------------===
+
+.newsletter-section {
+	background: color(gray, 4);
+
+	h3 {
+
+	}
+
+	.newsletter {
+	    padding: 60px 0 137px;
+	    text-align: center;
+	    position: relative;
+	    z-index: 1;
+
+	    .bg {
+	        position: absolute;
+	        top: -30px;
+	        right: 0;
+	        bottom: 0;
+	        left: 0;
+	        pointer-events: none;
+	        z-index: -1;
+	    }
+
+	    @include media('<tablet') {
+	        padding: 50px 0;
+	    }
+
+	    .container {
+	        max-width: 715px;
+	    }
+
+	    .heading {
+	        max-width: 700px;
+	        margin: 0 auto 38px;
+	        text-align: center;
+
+	        h3 {
+	            font: 700 32px/1.25 $korolev-compressed;
+	            color: color(white,1);
+	            margin-bottom: 16px;
+	        }
+
+	        h2 {
+	            color: color(green, 1);
+	            font-family: $korolev-compressed;
+	            font-weight: 700;
+	            line-height: 0.92;
+	            text-transform: uppercase;
+
+	            @include media('>=tablet') {
+	                font-size: 56px;
+	            }
+
+	            &:last-child {
+	                margin-bottom: 0;
+	            }
+	        }
+	    }
+
+	    .form-row {
+	        display: flex;
+	        flex-wrap: wrap;
+	        max-width: 500px;
+	        margin: 10px auto;
+
+	        @include media('<tablet') {
+	            max-width: none;
+	        }
+
+	        .btn {
+
+			    &:before,
+			    &:after {
+			       display: none;
+			    }
+
+			    .inner {
+			       background: transparent;
+			       border: 2px solid color(green, 1);
+			       color: color(green, 1);
+			    }
+	        }
+
+	        .btn-o {
+	        	box-sizing: border-box;
+	        	height: 52px;
+	        	cursor: pointer;
+	
+	        	@include media('<tablet') {
+	            	margin: 0 auto;
+	        	}
+
+				&.disabled,
+				&.btn-green.disabled:hover,
+				&.btn-green.disabled.active {
+					opacity: 0.5;
+					cursor: default;
+					background-color: transparent;
+					color: color(green, 1);
+				}
+	        }
+
+	        .input-hold {
+	            flex: 1;
+	            padding-right: 8px;
+
+	            @include media('<tablet') {
+	                flex: initial;
+	                width: 100%;
+	                margin-bottom: 20px;
+	                padding-right: 0;
+	            }
+
+	            input[type="email"] {
+	            
+	                height: 52px;
+	                border-color: color(gray, 4);
+	                background-color: color(black, 2);
+	                font-size: 18px;
+	                line-height: 1.3;
+	                font-weight: 500;
+	                color: color(white,3);
+	                border: 2px solid color(gray, 6);
+
+	                @include media('<tablet') {
+	                    margin: 0;
+	                    width: 100%;
+	                }
+
+	                @include placeholder {
+	                    color: color(gray,6);
+	                }
+	            }
+	        }
+
+	    }
+
+	    .form-col {
+	        padding: 20px 40px;
+
+	        @include media('<tablet') {
+	            padding: 20px;
+	            width: 100%;
+	        }
+
+	        .join-newsletter {
+	            font: 700 24px/1.333 $korolev-condensed;
+	            display: block;
+
+	            @include media('<tablet') {
+	                margin-top: 20px;
+	            }
+
+	            a {
+	                color: white;
+
+	                &:hover {
+	                    color: color(green,1);
+	                }
+	            }
+	        }
+	    }
+
+	    .form-wrap {
+	        display: flex;
+	        min-height: 101px;
+	        align-items: center;
+
+	        form {
+	            width: 100%;
+	        }
+	    }
+
+	    .form-content {
+	        display: flex;
+	        flex-wrap: wrap;
+	        justify-content: space-around;
+
+	        .form-content-holder {
+	            display: flex;
+	            flex-wrap: wrap;
+	            align-items: center;
+	            margin: -20px -40px;
+
+	            @include media('<tablet') {
+	                margin: -20px;
+	            }
+	        }
+
+	        .join-discord {
+	            padding: 20px 40px;
+
+	            @include media('<tablet') {
+	                width: 100%;
+	                padding: 20px;
+	            }
+	        }
+	    }
+	}
+
+	.join-discord {
+	    font: 700 24px/1.333 $korolev-condensed;
+	    text-align: center;
+
+	    .ico-wrap {
+	        margin-bottom: 2px;
+	        width: 100%;
+	    }
+
+	    a {
+	        color: white;
+
+	        &:hover {
+	            color: color(green, 1);
+	        }
+	    }
+
+	    .icon-discord {
+	        font-size: 101px;
+	        color: color(green, 1);
+	        display: inline-block;
+	        vertical-align: middle;
+	        margin: 0 10px;
+	    }
+
+	    .txt {
+	        display: block;
+	    }
+	}
+
+	.icon-twitter {
+        font-size: 82px;
+        color: color(green, 1);
+        display: inline-block;
+        vertical-align: middle;
+        margin: 0 10px;
+    }
+
+	.social-wrapper {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin: 0 0 30px 0;
+	}
+
+}
+
+

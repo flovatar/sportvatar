@@ -1,0 +1,164 @@
+// ---------------------------------------------------------===
+// Footer styles
+// ---------------------------------------------------------===
+
+#footer {
+  display: table-footer-group;
+  height: 1%;
+  position: relative;
+  font-size: 18px;
+
+  .container {
+    
+  }
+  
+  .footer-bottom {
+    padding: 24px 0 46px;
+    border-top: 1px solid #fff;
+  }
+
+  .footer-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+
+    & + .footer-row {
+      margin-top: 20px;
+
+      @include media('<tablet') {
+        margin-top: 10px;
+      }
+    }
+  }
+
+  .f-text {
+    display: block;
+    font-size: 0.9em;
+    font-weight: 700;
+
+    @include media('<tablet') {
+      font-family: $korolev-compressed;
+    }
+
+    @include media('<480px') {
+      font-size: 14px;
+    }
+    
+    a {
+      color: white;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .hidden-xs {
+    @include media('<tablet') {
+      display: none;
+    }
+  }
+}
+
+.social {
+  display: flex;
+  flex-wrap: wrap;
+  @extend %listreset;
+  margin: 0 -17px 11px;
+  
+  @include media('<desktop') {
+    margin: 0 -10px 11px;
+  }
+
+  @include media('<tablet') {
+    margin: 0 -5px 10px;
+  }
+
+  li {
+    padding: 0 17px;
+    
+    @include media('<desktop') {
+      padding: 0 10px;
+    }
+
+    @include media('<tablet') {
+      padding: 0 5px;
+    }
+
+    a {
+      font-size: 30px;
+      color: white;
+
+      @include media('<tablet') {
+        font-size: 25px;
+      }
+
+      @include media('<480px') {
+        font-size: 19px;
+      }
+
+      &:hover {
+        color: color(green, 1);
+      }
+    }
+  }
+}
+
+.footer-links-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -30px;
+  padding-top: 64px;
+  padding-bottom: 53px;
+  font: 22px/1.5 $korolev-compressed;
+
+  @include media('<desktop') {
+    font-size: 18px;
+    margin: 0 -15px;
+    padding-bottom: 5px;
+  }
+
+  .footer-links {
+    width: 25%;
+    padding: 0 30px;
+    margin-bottom: 40px;
+
+    @include media('<desktop') {
+      padding: 0 15px;
+    }
+    
+    @include media('<tablet') {
+      margin-bottom: 30px;
+      width: 50%;
+    }
+
+    .title {
+      font-size: 30px;
+      line-height: 1.5;
+      font-family: $korolev-compressed;
+      font-weight: 700;
+      display: block;
+      text-transform: uppercase;
+      margin-bottom: 30px;
+
+      @include media('<tablet') {
+        font-size: 18px;
+        margin-bottom: 15px;
+      }
+    }
+
+    li {
+      margin-bottom: 20px;
+    }
+
+    a {
+      color: #fff;
+      transition: color 0.25s linear;
+
+      &:hover {
+        color: rgba(#fff, .5);
+      }
+    }
+  }
+}

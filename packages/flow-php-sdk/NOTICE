@@ -1,0 +1,5 @@
+Vendored copy of mayvenstudios/flow-php-sdk 0.3.3 (Apache License 2.0, see LICENSE).
+Modifications for flovatar-web:
+ - composer constraints widened for Laravel 11/12 and symfony/process 7
+ - removed src/FlowSDK/test.php
+ - Flow::run(): optional process timeout (config flow.timeout, env FLOW_TIMEOUT)

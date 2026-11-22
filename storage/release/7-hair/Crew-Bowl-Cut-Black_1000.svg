@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- Generator: Adobe Illustrator 27.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 3000 3000" style="enable-background:new 0 0 3000 3000;" xml:space="preserve">
+<g id="Bowl_short">
+	<g id="Small_crest_black_3_">
+		
+			<linearGradient id="Black_00000004531532908195192820000000543357538701723556_" gradientUnits="userSpaceOnUse" x1="1283.556" y1="-7246.8999" x2="1283.556" y2="-7803.9043" gradientTransform="matrix(1 0 0 1 0 8368)">
+			<stop  offset="0" style="stop-color:#000000;stop-opacity:0"/>
+			<stop  offset="0.511" style="stop-color:#000000"/>
+			<stop  offset="0.583" style="stop-color:#000000"/>
+			<stop  offset="1" style="stop-color:#000000"/>
+		</linearGradient>
+		
+			<path id="Black_3_" style="opacity:0.2;fill:url(#Black_00000004531532908195192820000000543357538701723556_);enable-background:new    ;" d="
+			M1011.397,720.58c-7.073,5.871,28.203,119.82,21.703,121.52c-155.1,41.5-140.9,273.1-140.9,273.1l-34.7,5.9
+			c0,0-31.5-114.3-102.3-114.3c-7-4.7-9.9-13.5-7.2-21.5c143.8-425,688.4-511.5,1071.7-335.1
+			C1838.7,658.9,1193.003,569.853,1011.397,720.58z"/>
+		<path style="fill:#282323;stroke:#000000;stroke-width:13;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" d="
+			M916.088,737.844c59.87,9.64,118.462-38.188,176.857-54.542c234.378-65.639,493.384,40.568,724.352-33.211
+			c-114.133-81.544-327.849-120.026-583.31-85.996C1092.402,582.956,963.43,668.17,916.088,737.844z"/>
+	</g>
+	<path style="opacity:0.2;" d="M906.654,738.342c54.29,10.289,106.807-19.807,158.478-39.385
+		c117.94-44.687,248.472-35.963,374.213-26.166c125.741,9.798,256.024,19.463,377.204-26.128
+		c-39.789-14.011-83.311-9.494-125.457-7.701c-164.81,7.012-331.87-30.295-493.752,1.42
+		C1104.675,658.537,1017.975,698.608,906.654,738.342z"/>
+</g>
+</svg>

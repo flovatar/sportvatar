@@ -1,0 +1,30 @@
+{
+    "name": "flovatar/flow-php-sdk",
+    "description": "Flow CLI wrapper used by flovatar-web (vendored fork of mayvenstudios/flow-php-sdk 0.3.3, Apache-2.0) with Laravel 11/12 support",
+    "type": "library",
+    "license": "Apache-2.0",
+    "version": "0.4.0",
+    "require": {
+        "php": "^8.2",
+        "illuminate/support": "^10.0|^11.0|^12.0",
+        "symfony/process": "^6.2|^7.0"
+    },
+    "replace": {
+        "mayvenstudios/flow-php-sdk": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "FlowSDK\\": "src/FlowSDK/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "FlowSDK\\FlowServiceProvider"
+            ],
+            "aliases": {
+                "Flow": "FlowSDK\\Facade\\Flow"
+            }
+        }
+    }
+}

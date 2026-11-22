@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="MOUTH" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3000 3000">
+  <g id="Tongue-Out" class="mouth">
+
+    <defs>
+      <style>
+        .under-mouth {
+          clip-path: url(#static-mouth-mask);
+        }
+        
+        .tongue-wrapper {
+          clip-path: url(#tongue-mask);
+        }
+
+        @keyframes tongue-pop {
+          0% { transform: translate(-25px, -330px) scaleY(1);}
+          15% { transform: translate(-25px, -330px) scaleY(1);}
+          20% { transform: translate(-10px, -25px) scaleY(1); }
+          25% { transform: translate(-10px, -25px) scaleY(1.01); }
+          30% { transform: translate(-10px, -25px) scaleY(1); }
+          35% { transform: translate(-10px, -25px) scaleY(1.01); }
+          40% { transform: translate(-10px, -25px) scaleY(1); }
+          45% { transform: translate(-10px, -25px) scaleY(1.01); }
+          50% { transform: translate(-10px, -25px) scaleY(1); }
+          55% { transform: translate(-10px, -25px) scaleY(1.01); }
+          60% { transform: translate(-10px, -25px) scaleY(1); }
+          65% { transform: translate(-10px, -25px) scaleY(1.01); }
+          70% { transform: translate(-10px, -25px) scaleY(1); }
+          75% { transform: translate(-10px, -25px) scaleY(1.01); }
+          80% { transform: translate(-10px, -25px) scaleY(1); }
+          90% { transform: translate(-25px, -330px) scaleY(1); }
+          100% { transform: translate(-25px, -330px) scaleY(1); }
+        }
+
+        .tongue {
+          scaleY(1);
+        }
+
+        .temp-cover-mask {
+          transform: translate(0, 20px);
+        }
+
+        .tongue,
+        .tongue-anim-mask {
+          animation-duration: 6s;
+          animation-name: tongue-pop;
+          animation-fill-mode: forwards;
+          animation-iteration-count: infinite;
+          transform-origin: center top;
+          transform-box: fill-box;
+        }
+
+        #tongue-facial-hair-mask {
+          transform: translate(16px, -2px);
+        }
+
+        .facial-hair-inner {
+          clip-path: url(#tongue-facial-hair-mask);
+        }
+
+      </style>
+
+      <clipPath id="tongue-mask">
+        <path d="M1844.12,1325.94l-97.38,11.42c-23.75-.17-51.32-.86-80.12-2.78-67.76-4.52-96.19,23.46-96.19,23.46l-1.13,451.76,372.71-20.33-5.2-436.78c-19.52-10.61-51.65-24.03-92.7-26.75Z" style="fill: #4bff2c;"/>
+      </clipPath>
+
+      <clipPath id="tongue-facial-hair-mask">
+        <path class="tongue-anim-mask" d="M0,0V3000H3000V0H0ZM1894.12,1547.82c-4.72,19.15-32.02,37.89-47.87,47.36-23.51,14.04-48.9,23.89-63.19,24.52-.92,.04-1.92,.06-2.98,.06-24.4,0-84.82-10.72-109.05-34.63-7.62-7.52-11.34-15.83-11.07-24.72,1.26-35.69,.5-87.5-10.27-131.77-6.43-26.42-13.48-37.74-13.55-37.86l-1.08-1.71,.06-2.05c.5-12.87,5.67-22.9,15.39-29.81,13.89-9.89,36.69-12.84,67.76-8.77,17.92,2.35,33.25,6.35,39.08,7.99,10.97-5.14,56.75-24.24,98.99-7.47,22,8.73,35.62,41.54,40.5,97.52,3.75,42.99,.78,87.21-2.71,101.34Z" style="fill: #2cff4a;"/>
+        <path class="temp-cover-mask" d="M867.01,586.91v774.77l716.44-2.15c-.26-11,4.12-24.92,20.49-35.52,24.25-15.73,69.45-20.91,134.34-15.39,31.56,1.74,91.06-1.92,120.9-13.33,15.75-6.02,31.08-1.21,40.02,12.57,9.79,15.09,8.57,35.19-2.7,47.23,5.54,1.22,11.81,2.07,18.59,2.07h465.32V586.91H867.01Z" style="fill: #55ff69;"/>
+      </clipPath>
+
+      <clipPath id="static-mouth-mask">
+        <path d="M0,0V3000H3000V0H0ZM1895.79,1355.87c-1.92,1.86-47.05,44.03-196.18,44.07-13.06,1.03-24.9,1.56-35.58,1.56-44.87,0-69.32-9.24-77.8-28.79-4.48-10-6.53-32.98,17.72-48.69,24.25-15.73,69.45-20.91,134.34-15.39,31.56,1.74,91.06-1.92,120.9-13.33,15.75-6.02,31.08-1.21,40.02,12.57,10,15.41,8.52,36.04-3.42,48Z" style="fill: #ff22fa;"/>
+      </clipPath>
+      
+    </defs>
+
+    <g> 
+      <g>
+        <path d="M1877.51,1299.37s-5.33,30.7-79.87,34.08c-74.54,3.39-173.93-5.64-173.93-5.64l-.23-.34c18.67-12.11,56.27-20.67,130.35-14.36,49.47,2.75,102.94-5.81,123.68-13.74Z" style="fill: #fff;"/>
+        <path d="M1877.51,1299.37c31.94-12.22,48.92,30.66,29.68,49.9,0,0-43.43,42.17-191.84,42.17-80.34,6.39-100.67-8.29-107.18-23.36,0,0-10.71-23.75,15.31-40.61l.23,.34s99.39,9.03,173.93,5.64c74.54-3.38,79.87-34.08,79.87-34.08Z" style="fill: #38101e;"/>
+      </g>
+      <g>
+        <path d="M1877.51,1299.37c31.94-12.22,48.92,30.66,29.68,49.9,0,0-43.43,42.17-191.84,42.17-80.34,6.39-100.67-8.29-107.18-23.36,0,0-10.71-23.75,15.31-40.61,18.67-12.11,56.27-20.67,130.35-14.36,49.47,2.75,102.94-5.81,123.68-13.74Z" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 13px;"/>
+        <path d="M1623.71,1327.81s99.39,9.03,173.93,5.64c74.54-3.38,79.87-34.08,79.87-34.08" style="fill: none; stroke: #000; stroke-miterlimit: 10; stroke-width: 13px;"/>
+      </g>
+    </g>
+    <path d="M1720.84,1424.94s77.93,9.04,124.24-14.68" style="fill: #3f1924; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10; stroke-width: 13px;"/>
+    <path d="M1703.9,1440.75c2.16,3.45,64.38,49.69,107.29,20.33s53.08-42.92,40.66-41.79-84.71,15.81-116.33,12.42-37.27,0-31.62,9.04Z" style="opacity: .2;"/>
+    <path d="M1694.87,1286.02s28.24,4.52,71.15,5.65,75.67-5.65,85.84-10.16-70.02-22.59-156.99,4.52Z" style="opacity: .2;"/>
+
+    <g class="tongue-wrapper">
+      <g class="tongue-inner">
+        <g class="tongue">
+           <path d="M1659.85,1400.81s-6.78,151.81-3.39,173.33,116.33,43.03,172.8,7.17,4.52-204.41,4.52-204.41l-173.93,23.91Z" style="opacity: .2;"/>
+            <path d="M1657.59,1385.27s29.36,45.42,24.85,173.33c-1.13,37.06,89.22,53.79,116.33,52.6,27.11-1.2,98.26-39.45,105.04-66.94s11.29-173.33-33.88-191.26c-45.18-17.93-96,8.37-96,8.37,0,0-114.07-34.67-116.33,23.91Z" style="fill: #7f3d52; stroke: #000; stroke-miterlimit: 10; stroke-width: 13px;"/>
+            <ellipse cx="1691.75" cy="1373.74" rx="14.54" ry="5.62" transform="translate(-211.46 312.16) rotate(-9.93)" style="fill: #fff; opacity: .2;"/>
+            <ellipse cx="1736.17" cy="1373.59" rx="5.63" ry="14.52" transform="translate(306.26 3063.67) rotate(-88.12)" style="fill: #fff; opacity: .2;"/>
+            <ellipse cx="1718.58" cy="1394.84" rx="5.63" ry="14.52" transform="translate(268.01 3066.65) rotate(-88.12)" style="fill: #fff; opacity: .2;"/>
+            <ellipse cx="1815.71" cy="1367.34" rx="12" ry="4.66" style="fill: #fff; opacity: .2;"/>
+            <ellipse cx="1852.98" cy="1367.88" rx="14.03" ry="5.45" style="fill: #fff; opacity: .2;"/>
+            <ellipse cx="1839.43" cy="1390.59" rx="14.03" ry="5.45" style="fill: #fff; opacity: .2;"/>
+            <path d="M1786.35,1374.52s27.11,47.81,21.46,114.76c0,0,55.34-92.04-21.46-114.76Z" style="opacity: .2;"/>
+            <path d="M1685.83,1517.96s6.78,63.35,88.09,63.35,134.4-80.09,134.4-80.09c0,0,6.78,46.62-22.59,68.14-29.36,21.52-59.86,51.4-102.78,44.23s-77.93-17.93-85.84-26.3c-7.91-8.37-15.81-32.28-11.29-69.33Z" style="opacity: .2;"/>
+            <path d="M1773.92,1361.37s42.92,37.06,32.75,149.42" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10; stroke-width: 13px;"/>
+            <path class="tongue-filler" d="M0,0V3000H3000V0H0ZM1894.12,1547.82c-4.72,19.15-32.02,37.89-47.87,47.36-23.51,14.04-48.9,23.89-63.19,24.52-.92,.04-1.92,.06-2.98,.06-24.4,0-84.82-10.72-109.05-34.63-7.62-7.52-11.34-15.83-11.07-24.72,1.26-35.69,.5-87.5-10.27-131.77-6.43-26.42-13.48-37.74-13.55-37.86l-1.08-1.71,.06-2.05c.5-12.87,5.67-22.9,15.39-29.81,13.89-9.89,36.69-12.84,67.76-8.77,17.92,2.35,33.25,6.35,39.08,7.99,10.97-5.14,56.75-24.24,98.99-7.47,22,8.73,35.62,41.54,40.5,97.52,3.75,42.99,.78,87.21-2.71,101.34Z" style="fill: #2cff4a; opacity: 0;"/>
+        </g>
+      </g>
+    </g>
+
+    <path d="M1645.17,1387.67s68.89-38.4,132.14-16.94c0,0,67.76-21.46,102.78-11.29,0,0,55.34-5.65,29.36-49.69,0,0-3.39-19.2-57.6-3.39s-143.44,3.39-166.02,4.52-81.32,7.91-80.19,46.31,39.53,30.49,39.53,30.49Z" style="opacity: .2;"/>
+
+    
+ 
+  </g>
+</svg>

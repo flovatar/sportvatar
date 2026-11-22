@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="HAIR" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 3000 3000">
+  
+  <g id="Short-Spiked-Black" class="hair">
+    <defs>
+      <style>
+        .hair-color {
+          fill: #000;
+        }
+      </style>
+      <linearGradient id="hair-linear-gradient" x1="974.97" y1="1008.62" x2="894.4" y2="827.92" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#000" stop-opacity="0"/>
+        <stop offset="1" stop-color="#000"/>
+      </linearGradient>
+    </defs>
+    <path d="M1105.31,793.6s-191.43,169.41-198.21,245.65l-71.15-8.47s-27.46-32.14-91.66-32.16c0,0,40.84-145.72,135.71-227.04l225.32,22.02Z" style="fill: url(#hair-linear-gradient);"/>
+    <path class="hair-color" d="M1897.03,636.61c13.55-20.33,24.85-81.32,24.85-81.32-33.88,22.59-97.13,18.07-97.13,18.07,42.92-15.81,45.18-85.84,45.18-85.84,0,0-61.18,33.85-151.62,40.81,5.11-41.21-24.57-65.65-24.57-65.65,0,38.44-61,50.85-106.12,54.78-.77-.19-1.53-.37-2.3-.57-158.12-40.66-332.18-11.25-454.02,29.36-176.19,58.73-264.28,230.4-264.28,230.4l90.35,4.52,171.67-24.85,119.72-58.73s614.4-4.52,634.73-4.52c58.73,24.85,162.64,149.08,162.64,149.08-22.59-110.68-149.08-205.55-149.08-205.55Z" style="stroke: #000; stroke-miterlimit: 10; stroke-width: 13px;"/>
+    <path id="slide-hairline" d="M744.29,998.61s15.42-95.74,123.85-220.26" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 13px;"/>
+  </g>
+</svg>

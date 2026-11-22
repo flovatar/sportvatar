@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="NOSE" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3000 3000">
+  <g id="Snooty-Nose" class="nose">
+    <defs>
+      <style>
+        .facial-hair, .eyes-inner, .eyeglasses  {
+          clip-path: url(#nose-mask);
+        }
+      </style>
+      <clipPath id="nose-mask">
+         <path d="M-9.41-9.41V3012.89H3012.89V-9.41H-9.41ZM1925.69,1058.52c-3.65,28.12-16.81,57.29-36.1,80.03-21.14,24.91-47.14,39.06-73.25,39.89l-6.08,1.01-.72-.04c-40.01-2.26-67.21-13.49-80.87-33.38-14.06-20.49-8.28-42.58-7.35-45.73,.77-3.46,7.96-34.46,25.6-65.93,24.84-44.3,58.54-67.71,97.44-67.71,10.23,0,20.96,1.62,31.89,4.8,36.64,10.68,55.12,43.23,49.43,87.07Z" style="fill: #27ff27;"/>
+      </clipPath>
+    </defs>
+    <path d="M1727.62,1101.93s33.79-157.18,146.82-124.24c93,27.11,29.36,192-58.73,194.26" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 13px;"/>
+    <path d="M1779.57,1185.5s38.94-179.38,105.82-130.2c66.88,49.18-88.12,208.88-105.82,130.2Z" style="opacity: .2;"/>
+    
+  </g>
+</svg>

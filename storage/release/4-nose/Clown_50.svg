@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="NOSE" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3000 3000">
+  <g id="Clown-Nose" class="nose">
+    <defs>
+      <style>
+        .facial-hair, .eyes-inner, .eyeglasses {
+          clip-path: url(#nose-mask);
+        }
+      </style>
+      <clipPath id="nose-mask">
+        <path d="M-5.45-8.76V3004.55H3012.51V-8.76H-5.45ZM1815.15,1247.99c-93.25,0-169.12-75.87-169.12-169.12s75.87-169.12,169.12-169.12,169.12,75.87,169.12,169.12-75.87,169.12-169.12,169.12Z" style="fill: #4aff17;"/>
+      </clipPath>
+    </defs>
+    <circle cx="1815.15" cy="1078.87" r="163.61" style="fill: #e21a1a; stroke: #000; stroke-miterlimit: 10; stroke-width: 13px;"/>
+    <circle cx="1815.92" cy="1003.62" r="30.99" style="fill: #fff; opacity: .2;"/>
+    <path d="M1829.52,1182.21c-78.64,0-145.85-48.95-172.83-118.04-1.4-1.29-2.79-2.6-4.18-3.94,0,0-13.54,67.92-6.78,133.84s50.82,121.98,176.19,101.65c102.85-16.68,136.87-134.43,151.24-181.65-34.01,41.59-85.73,68.14-143.64,68.14Z" style="opacity: .2;"/>
+    
+  </g>
+</svg>

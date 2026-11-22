@@ -1,0 +1,14 @@
+<svg id="MOUTH" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3000 3000">
+  <g id="Pucker" class="mouth">
+    <g>
+      <path d="M1769.25,1361.12h35.07l2.79,0" style="fill: none;stroke: #000;stroke-linecap: round;stroke-linejoin: round;stroke-width: 13px"/>
+      <path d="M1807.11,1361.14c2.21,0,4.76.06,7.53,0" style="fill: none;stroke: #000;stroke-linecap: round;stroke-linejoin: round;stroke-width: 13px"/>
+      <path d="M1814.64,1361.14c17.6-.33,43.75-4,43.75-33.94,0-32.55-65.76-31.1-65.76-31.1l-74.53,1.41" style="fill: none;stroke: #000;stroke-linecap: round;stroke-linejoin: round;stroke-width: 13px"/>
+      <path d="M1807.11,1361.14c2.21,0,4.76-.05,7.53,0" style="fill: none;stroke: #000;stroke-linecap: round;stroke-linejoin: round;stroke-width: 13px"/>
+      <path d="M1814.64,1361.14c17.6.34,43.75,4,43.75,33.95,0,32.54-65.76,31.1-65.76,31.1l-74.53-1.41" style="fill: none;stroke: #000;stroke-linecap: round;stroke-linejoin: round;stroke-width: 13px"/>
+      <path d="M1807.11,1361.14l-2.79,0h-35.07" style="fill: none;stroke: #000;stroke-linecap: round;stroke-linejoin: round;stroke-width: 13px"/>
+    </g>
+    <path d="M1706.94,1426.63c-1.92-49.44,136.68-44.67,143.22-12.87,2.45,11.93-30.14,14.6-43.85,31.25C1792,1462.39,1712.26,1563.4,1706.94,1426.63Z" style="opacity: 0.2"/>
+    <path d="M1736,1349.22c13-24.52,110.76-26.42,118.54-9.74S1841,1360,1824.16,1359,1721.88,1375.83,1736,1349.22Z" style="opacity: 0.2"/>
+  </g>
+</svg>

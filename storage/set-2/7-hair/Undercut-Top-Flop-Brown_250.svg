@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="HAIR" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 3000 3000">
+  <g id="Top-Flop-Brown" class="hair">
+    <g class="hair-inner">
+      <defs>
+        <style>
+          .hair-color {
+            fill: #724425; 
+          }
+        </style>
+        <linearGradient id="hair-linear-gradient" x1="935.38" y1="796.69" x2="995.5" y2="997.24" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#724425"/>
+          <stop offset="1" stop-color="#724425" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+    
+      <path d="M751.53,994.76c-.27,.59-.53,1.2-.8,1.8,40.52,3.76,69.9,47.77,69.9,47.77h76.01s35.63-140.15,90.26-152.02,180.53-147.27,180.53-147.27l-255.76,4.49c-76.51,68.54-132.57,152.3-160.14,245.24Z" style="fill: url(#hair-linear-gradient);"/>
+      <path class="hair-color" d="M903.15,749.55s-182.96-142.31,216.85-293.65c327.12-123.82,679.9-110.68,926.12,144.56,40.66,83.58-42.92,192-42.92,192,0,0-74.54-90.35-171.67-133.27s-666.35,85.84-666.35,85.84l-262.02,4.52Z" style="stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 12.57px;"/>
+      <path d="M871.53,638.87s180.71,20.33,501.46-29.36,449.5-18.07,449.5-18.07c0,0-126.49,54.21-304.94,85.84s-268.8,65.51-431.43,65.51-182.96,2.26-182.96,2.26c0,0,5.43-3.7-20.33-22.59-33.88-24.85-11.29-83.58-11.29-83.58Z" style="opacity: .2;"/>
+      <path class="hair-color" d="M1937.69,726.96s49.69-101.65-20.33-112.94-169.41,176.19-454.02,182.96c-286.8,6.83-300.42-112.94-300.42-112.94,0,0,153.6,83.58,311.72,31.62,119.44-39.25,230.4-171.67,388.52-155.86" style="stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 12.57px;"/>
+      <path d="M1212.61,742.77s216.85,72.28,402.07-13.55,246.21-176.19,327.53-103.91c31.62,36.14-6.78,99.39-6.78,99.39l-101.65-65.51s-302.68,243.95-621.18,83.58Z" style="opacity: .2;"/>
+    </g>
+  </g>
+</svg>

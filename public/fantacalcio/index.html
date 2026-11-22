@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sportvatar Test</title>
+    <meta name="description" content="Sportvatar is a next generation PFP crypto project where people can become creator and choose any combination they like." />
+    <link rel="canonical" href="https://sportvatar.com/" />
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="./css/app.css">
+
+    <!-- Main App JS -->
+    <script src="./js/app.js" defer></script>
+</head>
+<body>
+    <div id="sportvatar-embed" x-data="sportvatarData">
+        <div x-show="!loggedIn() && !loading">
+            <button @click.prevent.stop="loginSportvatar()" class="btn-o btn-green">Connect Sportvatar</button>
+        </div>
+        <div x-show="loggedIn()">
+            <button @click.prevent.stop="logoutSportvatar()" class="btn-o btn-green">Logout</button>
+        </div>
+
+        <div class="sportvatar-card-list">
+            <template x-for="sportvatar in sportvatars" :key="sportvatar.id">
+                <div class="col">
+                    <div class="card" x-bind:class="sportvatar.rarity">
+                        <div class="img-hold">
+                            <div>
+                                <img x-bind:src="'https://images.sportvatar.com/sportvatar/svg/'+sportvatar.id+'.svg'">
+                            </div>
+                        </div>
+                        <div class="wrap">
+                            <dl>
+                                <dt>Mint</dt>
+                                <dd x-text="'#'+sportvatar.id"></dd>
+                                <dt>Rarity</dt>
+                                <dd x-text="sportvatar.rarity"></dd>
+                                <dt>Ability Score</dt>
+                                <dd x-text="getAbilityScore(sportvatar)"></dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </div>
+
+
+
+</body>
+</html>

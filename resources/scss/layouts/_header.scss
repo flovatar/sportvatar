@@ -1,0 +1,491 @@
+// ---------------------------------------------------------===
+// Header styles
+// ---------------------------------------------------------===
+
+#main-nav {
+  position: relative;
+  padding: 36px 0;
+  z-index: 9;
+
+  @include media('<widescreen') {
+    padding: 25px 0;
+  }
+
+  @include media('<desktop') {
+    z-index: 9;
+    padding: 22px 0;
+  }
+
+  .header-transparent & {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    background: none;
+  }
+
+  .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    width: 277px;
+
+    @include media('<widescreen') {
+      width: 190px;
+    }
+    @include media('<desktop') {
+      width: 170px;
+    }
+    @include media('<tablet') {
+      width: 140px;
+    }
+  }
+
+  .nav-opener {
+    color: color(green, 1);
+    font-size: 18px;
+    line-height: 1;
+    min-width: 30px;
+
+    @include media('>=desktop') {
+      display: none;
+    }
+
+    .nav-active & {
+      .icon-menu:before {
+        content: "\e90e";
+      }
+    }
+  }
+
+  .nav {
+    @extend %listreset;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: 0 -21px;
+    position: relative;
+
+    @include media('<desktop') {
+      position: absolute;
+      right: 0;
+      top: 120%;
+      display: block;
+      background: color(black, 2);
+      padding: 0 0 20px 0;
+      min-width: 180px;
+      
+      opacity: 0;
+      pointer-events: none;
+      @include animate(opacity margin-top);
+
+      .nav-active & {
+        opacity: 1;
+        pointer-events: auto;
+        margin-top: 0;
+      }
+    }
+
+    @include media('<tablet') {
+      padding: 0;
+    }
+
+    > li {
+      padding: 0 21px;
+
+      @include media('<widescreen') {
+          padding: 0 14px;
+      }
+
+      @include media('<1150px') {
+          padding: 0 7px;
+      }
+
+      @include media('<desktop') {
+        padding: 0;
+        margin: 0;
+      }
+
+      &.active {
+        > a:not(.btn-o) {
+          color: color(green, 1);
+          
+          @include media('<desktop') {
+            background: color(green, 1);
+            color: color(black, 2);
+          }
+        }
+      }
+
+      > a:not(.btn-o){
+        font-family: $korolev-compressed;
+        font-size: 24px;
+        line-height: 1.25;
+        color: white;
+        text-transform: uppercase;
+
+        @include media('<widescreen') {
+          font-size: 22px;
+        }
+        
+        @include media('<desktop') {
+          padding: 9px 20px;
+          display: block;
+          font-size: 24px;
+        }
+
+        &:hover {
+          color: color(green, 1);
+
+          @include media('<desktop') {
+            background: color(green, 1);
+            color: color(black, 2);
+          }
+        }
+      }
+    }
+
+    .btn-o {
+      height: 56px;
+      font-size: 24px;
+
+      @include media('<desktop') {
+        margin-left: 20px;
+        margin-top: 10px;
+        font-size: 18px;
+      }
+
+      .inner {
+        color: #250069;
+        padding: 0 19px;
+      }
+    }
+
+  }
+
+  .nav-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    position: relative;
+
+      &.nav-wrap-login {
+          width: 100%;
+      }
+  }
+
+    .nav-login {
+        @extend %listreset;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+
+        .btn {
+            height: 44px;
+
+            .inner {
+                color: #EB3CF2;
+                padding: 0 19px;
+            }
+        }
+    }
+
+
+}
+
+.user-menu {
+  margin-left: 40px;
+  position: relative;
+
+  @include media('<widescreen') {
+    margin-left: 40px;
+  }
+
+  @include media('<desktop') {
+    margin-left: 20px;
+  }
+
+  @include media('<tablet') {
+    margin-left: 20px;
+  }
+
+  &:hover {
+    .menu-drop {
+      opacity: 1;
+      pointer-events: auto;
+      margin-top: 20px;
+    }
+  }
+
+  .menu-opener {
+    color: color(green, 1);
+    display: block;
+    line-height: 1em;
+
+    > i {
+      font-size: 38px;
+      line-height: 1em;
+
+      @include media('<desktop') {
+        font-size: 31px;
+      }
+    }
+
+  }
+
+  .menu-drop {
+    background: #fff;
+    position: absolute;
+    width: 273px;
+    right: 0;
+    top: 100%;
+    margin-top: 10px;
+    opacity: 0;
+    pointer-events: none;
+    @include animate(opacity margin-top);
+
+    &:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: -1;
+      background: rgba(0, 0, 0, 0.2);
+      transform: translate(-12px, 12px);
+      pointer-events: none;
+    }
+
+    &:before {
+      content: '';
+      position: absolute;
+      height: 30px;
+      top: -30px;
+      left: 0;
+      right: 0;
+    }
+
+    .user-info a {
+      color: color(green, 2);
+    }
+    
+    dl {
+      padding: 15px 20px;
+      background: #F2F2F2;
+      color: color(black, 2);
+      margin: 0;
+      display: flex;
+      flex-wrap: wrap;
+      font-size: 14px;
+      line-height: 1.428;
+
+      dt {
+        width: 65px;
+      }
+
+      dd {
+        width: calc(100% - 65px);
+        @extend .ellipsis;
+        margin: 0;
+      }
+    }
+  }
+
+  .sub-nav {
+    @extend %listreset;
+    font-family: $korolev-compressed;
+    text-transform: uppercase;
+    font-size: 24px;
+    line-height: 1.25;
+    color: color(yellow, 1);
+    background: #fff;
+
+    li {
+      a {
+        padding: 9px 20px;
+        display: block;
+        color: color(black, 2);
+
+        &:hover {
+          background: color(green, 1);
+        }
+      }
+
+      .link-logout {
+        background: color(green, 3);
+        color: color(green, 1);
+        position: relative;
+
+        &:hover {
+          color: color(black, 2);
+          background: color(green, 1);
+        }
+
+        .icon-arrow-circle {
+          font-size: 29px;
+          right: 14px;
+          @include box-align(vc);
+        }
+      }
+    }
+  }
+}
+
+#nav{
+  // display: none;
+}
+
+.language-selector {
+    position: relative;
+    white-space: nowrap;
+    text-align: right;
+    font-family: $korolev-compressed;
+    margin-left: 25px;
+    display: inline-block;
+    font-size: 20px;
+    overflow: visible;
+
+    @include media('<desktop') {
+      margin-left: 15px;
+    }
+
+    @include media('<tablet') {
+      display: none;
+    }
+
+    &:hover {
+      .menu-drop {
+        opacity: 1;
+        pointer-events: auto;
+        margin-top: 25px;
+      }
+    }
+
+    .menu-opener {
+      color: color(green, 1);
+      display: block;
+      line-height: 1em;
+      text-transform: uppercase;
+      min-width: 25px;
+  }
+
+  .menu-drop {
+    background: #fff;
+    position: absolute;
+    width: 100px;
+    right: 0;
+    top: 100%;
+    margin-top: 10px;
+    opacity: 0;
+    pointer-events: none;
+    @include animate(opacity margin-top);
+
+    &:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: -1;
+      background: rgba(0, 0, 0, 0.2);
+      transform: translate(-12px, 12px);
+      pointer-events: none;
+    }
+
+    &:before {
+      content: '';
+      position: absolute;
+      height: 30px;
+      top: -30px;
+      left: 0;
+      right: 0;
+    }
+  }
+
+  .sub-nav {
+    @extend %listreset;
+    font-family: $korolev-compressed;
+    font-size: 24px;
+    line-height: 1.25;
+    color: color(yellow, 1);
+    background: #fff;
+
+    li {
+      a {
+        padding: 9px 20px;
+        display: block;
+        color: color(black, 2);
+        text-align: center;
+        width: 100px;
+        text-transform: capitalize;
+
+        &:hover {
+          background: color(green, 1);
+        }
+      }
+    }
+  }
+
+}
+
+.mobile-lang {
+    display: flex;
+    flex-direction: row;
+    font-family: $korolev-compressed;
+    color: white;
+
+    a {
+      padding: 9px 20px;
+      font-size: 24px;
+
+    }
+
+    a:last-child {
+      border: none;
+    }
+}
+
+.mobile-subnav {
+    background: lighten(color(black, 2), 7%);
+    display: none;
+    width: 100%;
+    margin-top: 20px !important;
+
+    @include media('<tablet') {
+      display: inline-block;
+    }
+}
+
+.mobile-subnav-header {
+    color: color(gray, 10);
+    text-transform: uppercase;
+    font-family: $korolev-compressed;
+    font-size: 14px;
+    padding: 9px 20px 0 20px;
+}
+
+.mobile-login {
+    padding: 9px 20px;
+}
+
+.mobile-build {
+    display: none;
+
+    @include media('<desktop') {
+      display: inline-block;
+    }
+}
+
+.btn-slimline.btn-o {
+    padding: 0 10px;
+    height: 35px;
+    margin-right: 20px;
+}

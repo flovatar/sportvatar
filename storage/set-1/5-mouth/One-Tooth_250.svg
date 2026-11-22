@@ -1,0 +1,22 @@
+<svg id="MOUTH" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3000 3000">
+  <g id="One_Tooth" data-name="One Tooth">
+    <defs>
+      <style>
+        .under-mouth {
+          clip-path: url(#facial-hair-mask);
+        }
+      </style>
+      <clipPath id="facial-hair-mask">
+        <path d="M-4.9-13.93V3003.85H3003.85V-13.93H-4.9ZM1927.11,1334.57c-2.66,31.93-45.24,63.86-143.69,53.22-98.45-10.64-228.84,71.85-255.45,0,0,0-27.94-95.79,122.4-79.83,103.33,10.97,126,48.67,196.12,30.29,48.91-12.82,83.28-35.62,80.62-3.68Z" style="fill: #ffb92e;"/>
+      </clipPath>
+    </defs>
+    <g id="Mouth-2" data-name="Mouth">
+      <path d="M1528,1387.79S1500,1292,1650.37,1308c103.33,11,126,48.67,196.12,30.29,48.9-12.82,83.28-35.61,80.62-3.68s-45.24,63.86-143.69,53.22S1554.58,1459.63,1528,1387.79Z" style="fill: #6b0c50;stroke: #000;stroke-miterlimit: 10;stroke-width: 13px"/>
+      <path d="M1534.79,1338.49c48.28,3.39,151.36,6.81,226.62,3.22-27.93-12.49-60.1-28.34-111-33.75C1579.1,1300.39,1547.9,1317.94,1534.79,1338.49Z" style="fill: #cc6478;stroke: #000;stroke-miterlimit: 10;stroke-width: 13px"/>
+      <path d="M1599.3,1379.5c1.83-5.5-11-55,25.68-53.21s31.19,53.21,31.19,53.21Z" style="fill: #fff;stroke: #000;stroke-linecap: round;stroke-linejoin: round;stroke-width: 13px"/>
+      <path d="M1480.07,1385.13s34.59,121.07,165,67.85c85.56-34.92,134.38-33.26,149-30.6s-98.45,39.91-138.37,57.21S1485.39,1526.16,1480.07,1385.13Z" style="opacity: 0.2"/>
+      <path d="M1529.05,1352.52l75.24-15s27.59,15,41.39,2.51c0,0,27.59-27.59,61.45-21.32S1570.43,1271,1529.05,1352.52Z" style="opacity: 0.2"/>
+      <path d="M1937.75,1294.66s39.92,22.61,6.66,65.19" style="fill: none;stroke: #000;stroke-linecap: round;stroke-linejoin: round;stroke-width: 13px"/>
+    </g>
+  </g>
+</svg>

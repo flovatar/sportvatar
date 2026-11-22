@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3000 3000">
+  <g id="number-33" class="number-mod">
+
+    <defs>
+      <style>
+      
+        .football-goalkeeper .number1,
+        .football-goalkeeper .number2,
+        #Football-Goalkeeper-Green .number1,
+        #Football-Goalkeeper-Green .number2,
+        #Football-Goalkeeper-Yellow .number1,
+        #Football-Goalkeeper-Yellow .number2 {
+                 transform: translate(40px, 0) !important;
+        }
+        
+        .alpine-skiing .bib-number,
+        #Alpine-Skiing-Black-and-Yellow .bib-number,
+         #Alpine-Skiing-Red-and-Blue-Stripes .bib-number,
+        #Alpine-Skiing-Gruyere .bib-number {
+                 transform: translate(0, 0) !important;
+        }
+        
+        .numbers-shorts .number1,
+        .numbers-shorts .number2 {
+                 transform: translate(15px, 0) !important;
+        }
+        
+        #Football-Stripes-White-and-Red .number1,
+        #Football-Stripes-White-and-Red .number2 {
+                 fill: white !important;
+        }
+
+        .number {
+          opacity: 0 !important;
+        }
+
+        .number1 .number._3,
+        .number2 .number._3 {
+          opacity: 1 !important;
+          transform: translate(0, 0) !important;
+        }
+
+
+        .af-jersey .number1  .number._3,
+        .af-jersey .number2  .number._3,
+        .volleyball .numbers-shorts .number1 .number._3,
+        .volleyball .numbers-shorts .number2 .number._3,
+        .numbers-arm .number._3,
+        .numbers-arm .number._3,
+        .football-shirt .number._3,
+        .football-shirt .number._3,
+        .basketball-shirt .number._3,
+        .basketball-shirt .number._3,
+        .baseball-shirt .number._3,
+        .baseball-shirt .number._3 {
+          transform: translate(0, 0) !important;
+        }
+
+      </style>
+    </defs>
+
+
+  </g>
+</svg>

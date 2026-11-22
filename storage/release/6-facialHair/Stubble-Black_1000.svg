@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="FACIAL_HAIR" data-name="FACIAL HAIR" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3000 3000">
+  <g id="Stubble-Black" class="facial-hair" style="opacity: .15;">
+    
+    <g class="under-mouth">
+      <g class="facial-hair-inner">
+      <defs>
+        <style>
+          .facial-hair-color {
+            fill: #000;
+          }
+        </style>
+      </defs>
+      <g>
+        <path class="facial-hair-color" d="M801.5,1332.33s171.67,151.34,505.98,70.02c0,0,189.23-186.88,434.82-204.42,252.99-18.07,288,143.44,288,143.44,0,0,31.62,24.85,60.99-13.55,0,0-85.84,313.98-528.56,327.53-442.73,13.55-695.72-225.88-761.22-323.01Z"/>
+      </g>
+    </g>
+  </g>
+</g>
+</svg>

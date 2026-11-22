@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="FACIAL_HAIR" data-name="FACIAL HAIR" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 3000 3000">
+  
+  <g id="Light-Beard-Blonde" class="facial-hair">
+    <g class="facial-hair-inner">
+    <g class="under-mouth">
+      <defs>
+        <style>
+          .facial-hair-color {
+            fill: #F4E8A8;
+          }
+        </style>
+        <linearGradient id="beard-linear-gradient" x1="1703.34" y1="1259.43" x2="1715.2" y2="1454.51" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#F4E8A8"/>
+          <stop offset="1" stop-color="#F4E8A8" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="beard-linear-gradient-2" x1="1434.82" y1="1663.99" x2="1434.82" y2="1418.32" xlink:href="#beard-linear-gradient"/>
+        <linearGradient id="beard-linear-gradient-3" x1="908.14" y1="1162.93" x2="917.25" y2="1312.83" xlink:href="#beard-linear-gradient"/>
+      </defs>
+
+      <path d="M1788.04,1203.57s-360.85-33.88-372.71,198.21c-5.92,115.86,51.06,166.7,109.62,188.57-5.67-109.7,1.37-277.32,93.67-302.08,138.92-37.27,246.78-15.25,273.88,0,27.11,15.25,68.33,69.46,19.2,206.68-8.01,22.38-17.25,44.9-27.09,66.91,29.51-14.65,55.8-34.16,74.52-60.14,83.01-115.2,79.62-310.02-171.11-298.16Z" style="fill: url(#beard-linear-gradient); opacity: .4;"/>
+      <path d="M1998.11,1413.64l-66.07,5.08s-13.55,164.33-145.69,83.01l-74.54,1.69s-138.92,123.67-188.05-25.41l-101.65,6.78-8.47,23.72s-49.42,36.85-133.89,50.59c-51.65-27.12-173.49-95.94-223.56-165.79-64.38-89.79-242.26-33.88-242.26-33.88,0,0,60.15,60.68,138.35,122.26-7.1-4.4-14.25-9-21.45-13.84,0,0,23.38,20.27,66.52,47.79,50.6,36.31,101.02,63.23,149.76,78.71l12.9,3.96c141.63,55.87,340.7,95.95,573.83,35.57,223.62-50.82,321.88-233.79,321.88-233.79,0,0-32.19,52.52-57.6,13.55Z" style="fill: url(#beard-linear-gradient-2); opacity: .4;"/>
+      <path d="M871.53,1122.25s-22.59,171.67-88.09,194.26c0,0,63.25,81.32,83.58,94.87l189.18-18.07s-119.15-108.42-121.41-275.58l-63.25,4.52Z" style="fill: url(#beard-linear-gradient-3); opacity: .4;"/>
+    </g>
+  </g>
+</g>
+</svg>

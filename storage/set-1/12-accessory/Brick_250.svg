@@ -1,0 +1,36 @@
+<svg id="ACCESSORY" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 3000 3000">
+  <g id="Brick" class="accessory">
+    <defs>
+      <clipPath id="clip-path">
+        <path d="M2425.59,1061.27c-365.93,0-383.72,319.44-383.72,536.8s-27.38,393.57,393.57,393.57c217.36,0,393.57-176.21,393.57-393.57S2643,1061.27,2425.59,1061.27Zm190.56,548.64a76,76,0,0,1-28.09,25.86c8.07,11.84,19.19,33.09,14.34,55.21-3.74,17.12-16,31-36.51,41.49,4.35,11.88,9.55,33.62-1,52.32-10.16,18-31.74,28.08-64.16,29.9-4.68.26-9.32.4-13.78.4-25.25,0-55.61-2.23-80-23.66-15.43-13.55-19.62-20.88-20.33-28.24l-2.82-13.55.56-3.39c.56-16.37,4.49-21.14,13-30.49,3.88-4.27,14.64-10.82,20.33-13-23.92-21.57-28.34-47.33-20.9-67.76,5.05-13.88,25.21-28.86,35.58-33.32-4.77-8.56-10.12-18.06-7.91-28.8,7.84-38.07,32.19-52.52,80.65-55.19,10.08-.55,27.3,3.64,32.29,4.37,7.5-2.28,16.19-2.26,21.09-16.57l3.76-12.8h-.37c5.52,1.34,4.54,2.27,9,3.77,15.82,5.27,30.64,9.35,40.81,24.09a88.92,88.92,0,0,1,15.67,47.23A74,74,0,0,1,2616.15,1609.91Z" style="fill: none"/>
+      </clipPath>
+    </defs>
+  
+    <g style="clip-path: url(#clip-path)">
+      <g>
+        <g>
+          <polygon points="2564.51 1282.93 2520.46 1877.83 2374.77 1877.83 2425.59 1271.55 2564.51 1282.93" style="fill: #b5632c"/>
+          <path d="M2425.59,1271.55l-50.82,606.28-257.51-64.42,54.21-576Zm-101.65,524.18L2364.6,1336,2211,1314.5l-.82,9.54-37.58,437.59Z" style="fill: #d37231"/>
+          <polygon points="2364.6 1335.97 2323.94 1795.73 2276.51 1748.99 2312.65 1348.61 2364.6 1335.97" style="fill: #e28647"/>
+          <polygon points="2364.6 1335.97 2312.65 1348.61 2215.52 1324.61 2210.18 1324.04 2211 1314.5 2364.6 1335.97" style="fill: #9b4b15"/>
+          <polygon points="2323.94 1795.73 2172.6 1761.63 2276.51 1748.99 2323.94 1795.73" style="fill: #ba6125"/>
+          <polygon points="2312.65 1348.61 2276.51 1748.99 2172.6 1761.63 2210.18 1324.04 2215.52 1324.61 2312.65 1348.61" style="fill: #a04f18"/>
+        </g>
+        <g>
+          <line x1="2425.59" y1="1271.55" x2="2374.77" y2="1877.83" style="fill: none;stroke: #000;stroke-linecap: round;stroke-linejoin: round;stroke-width: 13.747726321220398px"/>
+          <polyline points="2425.59 1271.55 2171.47 1237.45 2117.26 1813.41 2374.77 1877.83" style="fill: none;stroke: #000;stroke-linecap: round;stroke-linejoin: round;stroke-width: 13.747726321220398px"/>
+          <polyline points="2425.59 1271.55 2564.51 1282.93 2520.46 1877.83 2374.77 1877.83" style="fill: none;stroke: #000;stroke-linecap: round;stroke-linejoin: round;stroke-width: 13.747726321220398px"/>
+          <line x1="2172.6" y1="1761.63" x2="2323.94" y2="1795.73" style="fill: none;stroke: #000;stroke-linecap: round;stroke-linejoin: round;stroke-width: 13.747726321220398px"/>
+          <polyline points="2172.6 1761.63 2210.18 1324.04 2211 1314.5 2364.6 1335.97" style="fill: none;stroke: #000;stroke-linecap: round;stroke-linejoin: round;stroke-width: 13.747726321220398px"/>
+          <line x1="2323.94" y1="1795.73" x2="2364.6" y2="1335.97" style="fill: none;stroke: #000;stroke-linecap: round;stroke-linejoin: round;stroke-width: 13.747726321220398px"/>
+          <line x1="2276.51" y1="1749" x2="2312.65" y2="1348.61" style="fill: none;stroke: #000;stroke-linecap: round;stroke-linejoin: round;stroke-width: 13.747726321220398px"/>
+          <line x1="2172.6" y1="1761.63" x2="2276.51" y2="1749" style="fill: none;stroke: #000;stroke-linecap: round;stroke-linejoin: round;stroke-width: 13.747726321220398px"/>
+          <line x1="2215.52" y1="1324.61" x2="2312.65" y2="1348.61" style="fill: none;stroke: #000;stroke-linecap: round;stroke-linejoin: round;stroke-width: 13.747726321220398px"/>
+          <line x1="2364.6" y1="1335.97" x2="2312.65" y2="1348.61" style="fill: none;stroke: #000;stroke-linecap: round;stroke-linejoin: round;stroke-width: 13.747726321220398px"/>
+          <line x1="2323.94" y1="1795.73" x2="2276.51" y2="1749" style="fill: none;stroke: #000;stroke-linecap: round;stroke-linejoin: round;stroke-width: 13.747726321220398px"/>
+        </g>
+      </g>
+    </g>
+    <path d="M2414.86,1793.12s8.47,47.44,105.89,55.06c2.54-1.69,5.93-38.11,5.93-38.11S2448.75,1816.84,2414.86,1793.12Z" style="opacity: 0.2"/>
+  </g>
+</svg>

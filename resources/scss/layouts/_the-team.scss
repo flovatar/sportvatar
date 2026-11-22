@@ -1,0 +1,123 @@
+// ---------------------------------------------------------===
+// The Team styles
+// ---------------------------------------------------------===
+
+.the-team {
+    background: color(blue,8);
+    padding: 82px 0;
+    color: color(white,1);
+
+    @include media('<tablet') {
+        padding: 50px 0;
+    }
+
+    > .container {
+        max-width: 1342px;
+    }
+
+    h3 {
+        font: 700 32px/1.25 $korolev-compressed;
+        text-transform: none;
+        color: color(white,1);
+        text-align: center;
+        margin-bottom: 73px;
+
+        @include media('<desktop') {
+            margin-bottom: 40px;
+        }
+
+        @include media('<tablet') {
+            margin-bottom: 25px;
+        }
+    }   
+
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        margin: -72px -17px;
+
+        @include media('<desktop') {
+            margin: -50px -10px;
+        }
+
+        @include media('<tablet') {
+            margin: -20px;
+        }
+
+        .col {
+            width: 33.33%;
+            padding: 72px 17px;
+
+            @include media('<widescreen') {
+                width: 50%;
+            }
+
+            @include media('<desktop') {
+                padding: 50px 10px;
+            }
+
+            @include media('<tablet') {
+                width: 100%;
+                padding: 20px;
+            }
+        }
+    }
+
+    .team-item {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .avatar-wrap {
+        width: 157px;
+        height: 157px;
+        border-radius: 50%;
+        overflow: hidden;
+        background: #d9d9d9;
+
+        @include media('<desktop') {
+            width: 120px;
+            height: 120px;
+        }
+
+        @include media('<tablet') {
+            width: 100px;
+            height: 100px;
+        }
+    }
+
+    .desc {
+        flex: 1;
+        padding: 8px 0 0 22px;
+        font-size: 16px;
+        line-height: 1.25;
+
+        p {
+            margin: 0;
+
+            + p {
+                margin-top: 1rem;
+            }
+        }
+    }
+
+    .name {
+        display: block;
+        font: 700 32px/1 $korolev-compressed;
+        margin-bottom: 2px;
+    }
+
+    .post {
+        display: block;
+        font: 700 24px/1 $korolev-compressed;
+        margin-bottom: 8px;
+    }
+
+    .link {
+        font: 700 18px/1 $korolev-compressed;
+        color: color(blue,7);
+        display: inline-block;
+        vertical-align: top;
+        margin-bottom: 5px;
+    }
+}

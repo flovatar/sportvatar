@@ -1,0 +1,214 @@
+{
+	"contracts": {
+		"DapperUtilityCoin": {
+			"source": "./contracts/core/DapperUtilityCoin.cdc",
+			"aliases": {
+				"emulator": "f8d6e0586b0a20c7",
+				"testing": "0000000000000007",
+				"previewnet": "a0225e7000ac82a9",
+				"mainnet": "ead892083b3e2c6c",
+				"testnet": "82ec283f88a62e65"
+			}
+		},
+		"FungibleToken": {
+			"source": "./contracts/core/FungibleToken.cdc",
+			"aliases": {
+				"emulator": "ee82856bf20e2aa6",
+				"testing": "0000000000000007",
+				"previewnet": "a0225e7000ac82a9",
+				"testnet": "9a0766d93b6608b7",
+				"mainnet": "f233dcee88fe0abe"
+			}
+		},
+		"FungibleTokenMetadataViews": {
+			"source": "./contracts/core/FungibleTokenMetadataViews.cdc",
+			"aliases": {
+				"emulator": "f8d6e0586b0a20c7",
+				"testing": "0000000000000007",
+				"previewnet": "a0225e7000ac82a9",
+				"mainnet": "f233dcee88fe0abe",
+				"testnet": "9a0766d93b6608b7"
+			}
+		},
+		"FungibleTokenSwitchboard": {
+			"source": "./contracts/core/FungibleTokenSwitchboard.cdc",
+			"aliases": {
+				"emulator": "f8d6e0586b0a20c7",
+				"testing": "0000000000000007",
+				"previewnet": "a0225e7000ac82a9",
+				"mainnet": "f233dcee88fe0abe",
+				"testnet": "9a0766d93b6608b7"
+			}
+		},
+		"FlowToken": {
+			"source": "./contracts/core/FlowToken.cdc",
+			"aliases": {
+				"emulator": "0ae53cb6e3f42a79",
+				"mainnet": "1654653399040a61",
+				"testnet": "7e60df042a9c0868"
+			}
+		},
+		"FlowUtilityToken": {
+			"source": "./contracts/core/FlowUtilityToken.cdc",
+			"aliases": {
+				"emulator": "f8d6e0586b0a20c7",
+				"mainnet": "ead892083b3e2c6c",
+				"testnet": "82ec283f88a62e65"
+			}
+		},
+		"Burner": {
+			"source": "./contracts/core/Burner.cdc",
+			"aliases": {
+				"emulator": "f8d6e0586b0a20c7",
+				"testing": "0000000000000007",
+				"previewnet": "a0225e7000ac82a9",
+				"testnet": "9a0766d93b6608b7"
+			}
+		},
+		"MetadataViews": {
+			"source": "./contracts/core/MetadataViews.cdc",
+			"aliases": {
+				"emulator": "f8d6e0586b0a20c7",
+				"testing": "0000000000000007",
+				"mainnet": "1d7e57aa55817448",
+				"testnet": "631e88ae7f1d7c20"
+			}
+		},
+		"ViewResolver": {
+			"source": "./contracts/core/ViewResolver.cdc",
+			"aliases": {
+				"emulator": "f8d6e0586b0a20c7",
+				"mainnet": "1d7e57aa55817448",
+				"testnet": "631e88ae7f1d7c20",
+				"testing": "0000000000000007"
+			}
+		},
+		"NFTCatalog": {
+			"source": "./contracts/core/NFTCatalog.cdc",
+			"aliases": {
+				"emulator": "f8d6e0586b0a20c7",
+				"mainnet": "49a7cda3a1eecc29",
+				"testnet": "324c34e1c517e4db"
+			}
+		},
+		"NFTStorefrontV2": {
+			"source": "./contracts/core/NFTStorefrontV2.cdc",
+			"aliases": {
+				"emulator": "f8d6e0586b0a20c7",
+				"testing": "0000000000000007",
+				"testnet": "2d55b98eb200daef",
+				"mainnet": "4eb8a10cb9f87357"
+			}
+		},
+		"NonFungibleToken": {
+			"source": "./contracts/core/NonFungibleToken.cdc",
+			"aliases": {
+				"emulator": "f8d6e0586b0a20c7",
+				"testing": "0000000000000007",
+				"testnet": "631e88ae7f1d7c20",
+				"mainnet": "1d7e57aa55817448"
+			}
+		},
+		"TokenForwarding": {
+			"source": "./contracts/core/TokenForwarding.cdc",
+			"aliases": {
+				"emulator": "f8d6e0586b0a20c7",
+				"mainnet": "e544175ee0461c4b",
+				"testnet": "51ea0e37c27a1f1a",
+				"testing": "0000000000000007"
+			}
+		},
+		"Toucans": {
+			"source": "./contracts/toucans/Toucans.cdc",
+			"aliases": {
+				"emulator": "f8d6e0586b0a20c7",
+				"mainnet": "577a3c409c5dcb5e",
+				"testnet": "918c2008c16da416"
+			}
+		},
+		"NFTForwarding": {
+			"source": "./contracts/core/NFTForwarding.cdc",
+			"aliases": {
+				"testing": "0000000000000007"
+			}
+		},
+		"FlovatarComponent": {
+			"source": "./contracts/FlovatarComponent.cdc",
+			"aliases": {
+				"mainnet": "921ea449dffec68a",
+				"testnet": "9392a4a7c3f49a0b"
+			}
+		},
+		"FlovatarComponentTemplate": {
+			"source": "./contracts/FlovatarComponentTemplate.cdc",
+			"aliases": {
+				"mainnet": "921ea449dffec68a",
+				"testnet": "9392a4a7c3f49a0b"
+			}
+		},
+		"Sportbit": "./contracts/Sportbit.cdc",
+		"SportvatarPack": "./contracts/SportvatarPack.cdc",
+		"SportvatarTemplate": "./contracts/SportvatarTemplate.cdc",
+		"Sportvatar": "./contracts/Sportvatar.cdc"
+	},
+	"networks": {
+		"emulator": "127.0.0.1:3569",
+		"testing": "127.0.0.1:3569",
+		"previewnet": "access.previewnet.nodes.onflow.org:9000",
+		"mainnet": "access.mainnet.nodes.onflow.org:9000",
+		"testnet": "access.devnet.nodes.onflow.org:9000"
+	},
+	"accounts": {
+		"emulator-account": {
+			"address": "f8d6e0586b0a20c7",
+			"key": "6aeadb5ccba5cb1c20e8228306115852e29a1d19a4b0013eee291147da493175"
+		},
+		"mainnet-account": {
+			"address": "ca5c31c0c03e11be",
+			"key": {
+				"type": "file",
+				"location": "mainnet.pkey"
+			}
+		},
+		"testnet-account": {
+			"address": "acb1ef5cc68a95b8",
+			"key": {
+				"type": "file",
+				"location": "testnet.pkey"
+			}
+		}
+	},
+	"deployments": {
+		"emulator": {
+			"emulator-account": [
+				"FungibleTokenMetadataViews",
+				"NFTStorefrontV2",
+				"TokenForwarding",
+				"NFTForwarding",
+				"DapperUtilityCoin",
+				"FlovatarComponentTemplate",
+				"FlovatarComponent",
+				"SportvatarTemplate",
+				"Sportbit",
+				"SportvatarPack",
+				"Sportvatar"
+			]
+		},
+		"mainnet": {
+			"mainnet-account": [
+				"SportvatarTemplate",
+				"Sportbit",
+				"SportvatarPack",
+				"Sportvatar"
+			]
+		},
+		"testnet": {
+			"testnet-account": [
+				"SportvatarTemplate",
+				"Sportbit",
+				"SportvatarPack",
+				"Sportvatar"
+			]
+		}
+	}
+}

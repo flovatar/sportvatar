@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="MOUTH" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3000 3000">
+  <g id="Smirk" class="mouth">
+    <defs>
+      <style>
+        
+      </style>
+    </defs>
+    <g>
+      <path id="mouth-line" d="M1616.94,1337.41s144,66.07,286.31-11.86" style="fill: none; stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 14px;"/>
+      <path id="dimple" d="M1619.47,1300.8s-52,.43-35.55,56.12" style="fill: none; stroke: #000; stroke-linecap: round; stroke-miterlimit: 10; stroke-width: 14px;"/>
+      <path d="M1692.94,1406.44s76.29,30.52,141.34-2c0,0-5.62,58.48-72.55,57.98-57.7-.43-68.8-55.98-68.8-55.98Z" style="opacity: .1;"/>
+    </g>
+  </g>
+</svg>

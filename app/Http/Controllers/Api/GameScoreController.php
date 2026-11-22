@@ -1,0 +1,46 @@
+<?php
+
+namespace App\Http\Controllers\Api;
+
+use Illuminate\Http\Request;
+use App\Models\GameScore;
+use App\Http\Controllers\Controller;
+
+class GameScoreController extends Controller
+{
+    public function byGame($gameId){
+        $scores = GameScore::whereGame($gameId)->orderBy('score', 'desc')->take(100)->get();
+        return $scores;
+    }
+
+    public function byAddress($address){
+        $scores = GameScore::whereFlowAddress($address)->orderBy('score', 'desc')->take(100)->get();
+        return $scores;
+    }
+
+    public function store(Request $request){
+        $request->validate([
+            'name' => 'nullable|string|max:50',
+            'flow_address' => 'required|string|regex:/^0x[0-9a-f]{16}$/',
+            'score' => 'required|integer|min:0|max:1000000000',
+            'game' => 'required|integer|min:0',
+        ]);
+
+        // Scores can only be submitted for the authenticated user's own wallet.
+        $user = $request->user();
+        if(!$user || strtolower($user->email) !== $request->get('flow_address')){
+            return abort(403);
+        }
+
+        if($request->has('score') && $request->has('flow_address') && $request->has('game')){
+            $gamescore = GameScore::create([
+                'name' => $request->get('name'),
+                'flow_address' => $request->get('flow_address'),
+                'score' => $request->get('score'),
+                'game' => $request->get('game')
+            ]);
+            return $gamescore;
+        }
+        return abort(403);
+    }
+}

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="FACIAL_HAIR" data-name="FACIAL HAIR" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3000 3000">
+  <g id="Sideburn-Small-Black" class="facial-hair">
+    <g class="facial-hair-inner">
+    <defs>
+      <style>
+        .facial-hair-color {
+          fill: #000;
+        }
+      </style>
+    </defs>
+    <path class="facial-hair-color" d="M880,1119.71c16.94,0,29.65,.85,49.98-2.54,8.3,159.6,166.43,237.53,314.33,273.33,15.7,4.2,30.2,13.4,32.8,30.4,25.6,104.9-99.8,169.8-188,120.5-154.6-86.3-209.3-252.09-209.1-421.69Z" style="stroke: #000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 13px;"/>
+    <path d="M1227.65,1537.82c21.75-37.3-.63-48.13-157.07-105.55-119.7-43.93-156.6-225.22-167.55-312.55-7.58,.18-14.81-.01-23.04-.01-.2,169.6,54.5,335.39,209.1,421.69,44.81,25.05,99.22,20.6,138.55-3.58Z" style="opacity: .2;"/>
+  </g>
+</g>
+</svg>
