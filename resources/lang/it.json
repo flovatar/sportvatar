@@ -312,5 +312,16 @@
     "Packs are paused": "Pacchetti in pausa",
     "Back to the homepage": "Torna alla homepage",
     "Pack sales and free-pack claims are paused while Sportvatar moves to its new server and the contracts are upgraded. Packs and Sportvatars you already own are safe on the blockchain.": "La vendita dei pacchetti e il riscatto dei pacchetti gratuiti sono sospesi mentre Sportvatar passa al nuovo server e i contratti vengono aggiornati. I pacchetti e gli Sportvatar che possiedi già sono al sicuro sulla blockchain.",
-    "This wallet or item is linked to the 2026-11-16 security incident. It is hidden from the marketplace while the team reviews it.": "Questo wallet o oggetto è collegato all'incidente di sicurezza del 16-11-2026. È nascosto dal marketplace mentre il team lo verifica."
+    "This wallet or item is linked to the 2026-11-16 security incident. It is hidden from the marketplace while the team reviews it.": "Questo wallet o oggetto è collegato all'incidente di sicurezza del 16-11-2026. È nascosto dal marketplace mentre il team lo verifica.",
+    "Dapper Wallet claims open soon (we are waiting for Dapper's approval). Your free pack is reserved for you.": "I riscatti con Dapper Wallet apriranno a breve (attendiamo l'approvazione di Dapper). Il tuo pacchetto gratuito è riservato per te.",
+    "Dapper Wallet claims open soon (waiting for Dapper's approval)": "I riscatti con Dapper Wallet apriranno a breve (in attesa dell'approvazione di Dapper)",
+    "Free-pack claims are not open yet. Your free pack is reserved for you.": "Il riscatto dei pacchetti gratuiti non è ancora aperto. Il tuo pacchetto gratuito è riservato per te.",
+    "You have 1 free pack reserved for you": "Hai 1 pacchetto gratuito riservato per te",
+    "You have :count free packs reserved for you": "Hai :count pacchetti gratuiti riservati per te",
+    "You have 1 free pack waiting": "Hai 1 pacchetto gratuito in attesa",
+    "You have :count free packs waiting": "Hai :count pacchetti gratuiti in attesa",
+    "Claim now": "Riscatta ora",
+    "It is linked to the connected wallet: no code needed. Claim it, or claim and open it in one step.": "È collegato al wallet connesso: non serve alcun codice. Riscattalo, oppure riscattalo e aprilo in un solo passaggio.",
+    "Claim pack": "Riscatta il pacchetto",
+    "Claim & open": "Riscatta e apri"
 }

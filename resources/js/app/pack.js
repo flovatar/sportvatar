@@ -8,6 +8,9 @@ Alpine.data('packData', () => ({
     packAvailable: true,
     // free packs waiting for the connected wallet (window.checkPendingPacks -> 'free-packs-pending')
     fpCount: (window.pendingFreePacks && window.pendingFreePacks.count) || 0,
+    // claim offered to this wallet (claims open + wallet type allowed, or admin preview) / "claims open soon" (e.g. Dapper)
+    fpCanClaim: !!(window.pendingFreePacks && window.pendingFreePacks.canClaim),
+    fpSoon: !!(window.pendingFreePacks && window.pendingFreePacks.claimsSoon),
     init(){
         let self = this;
         //window.preReservePack('terrakit');

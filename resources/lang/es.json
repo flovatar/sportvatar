@@ -311,5 +311,16 @@
     "Packs are paused": "Paquetes en pausa",
     "Back to the homepage": "Volver a la página de inicio",
     "Pack sales and free-pack claims are paused while Sportvatar moves to its new server and the contracts are upgraded. Packs and Sportvatars you already own are safe on the blockchain.": "La venta de paquetes y el canje de paquetes gratuitos están en pausa mientras Sportvatar se traslada a su nuevo servidor y se actualizan los contratos. Los paquetes y Sportvatars que ya tienes están seguros en la blockchain.",
-    "This wallet or item is linked to the 2026-11-16 security incident. It is hidden from the marketplace while the team reviews it.": "Esta billetera o artículo está vinculado al incidente de seguridad del 16-11-2026. Está oculto del marketplace mientras el equipo lo revisa."
+    "This wallet or item is linked to the 2026-11-16 security incident. It is hidden from the marketplace while the team reviews it.": "Esta billetera o artículo está vinculado al incidente de seguridad del 16-11-2026. Está oculto del marketplace mientras el equipo lo revisa.",
+    "Dapper Wallet claims open soon (we are waiting for Dapper's approval). Your free pack is reserved for you.": "Los canjes con Dapper Wallet abrirán pronto (esperamos la aprobación de Dapper). Tu pack gratuito está reservado para ti.",
+    "Dapper Wallet claims open soon (waiting for Dapper's approval)": "Los canjes con Dapper Wallet abrirán pronto (esperando la aprobación de Dapper)",
+    "Free-pack claims are not open yet. Your free pack is reserved for you.": "El canje de packs gratuitos aún no está abierto. Tu pack gratuito está reservado para ti.",
+    "You have 1 free pack reserved for you": "Tienes 1 pack gratuito reservado para ti",
+    "You have :count free packs reserved for you": "Tienes :count packs gratuitos reservados para ti",
+    "You have 1 free pack waiting": "Tienes 1 pack gratuito esperándote",
+    "You have :count free packs waiting": "Tienes :count packs gratuitos esperándote",
+    "Claim now": "Canjear ahora",
+    "It is linked to the connected wallet: no code needed. Claim it, or claim and open it in one step.": "Está vinculado al wallet conectado: no necesitas código. Canjéalo, o canjéalo y ábrelo en un solo paso.",
+    "Claim pack": "Canjear pack",
+    "Claim & open": "Canjear y abrir"
 }

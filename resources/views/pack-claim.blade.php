@@ -1,10 +1,13 @@
 <x-guest-layout>
     <script>
         window.packClaimCode = '{{ isset($packcode) ? $packcode : '' }}';
+        // Wallet types the claim is offered to (SPORTVATAR_PACK_CLAIMS_WALLETS) + the message for the others
+        window.packClaimWallets = @json(config('sportvatar.packClaimWallets'));
+        window.packClaimsSoonMessage = @json(__('Dapper Wallet claims open soon (we are waiting for Dapper\'s approval). Your free pack is reserved for you.'));
     </script>
     <div    x-data="packData()"
-            @free-packs-pending.window="fpCount = $event.detail.count"
-            @logged-out.window="fpCount = 0"
+            @free-packs-pending.window="fpCount = $event.detail.count; fpCanClaim = $event.detail.canClaim; fpSoon = $event.detail.claimsSoon"
+            @logged-out.window="fpCount = 0; fpCanClaim = false; fpSoon = false"
             @pack-pre-reserved.window="packData = $event.detail"
             @pack-checked.window="packAvailable = $event.detail; if(!packAvailable){ packRedeemCode = '';}">
 
@@ -36,11 +39,17 @@
                             <h1 x-show="!loggedIn()">{{ __('Please Login or Signup to claim your free Pack')  }}</h1>
                             <h1 x-show="loggedIn() && sealingPack && packPurchased">{{ __('Congratulations! You just claimed your Sportvatar Pack.') }}</h1>
                             {{-- Free packs linked to the connected wallet (address-bound vouchers): no code needed --}}
-                            <div id="free-packs-waiting" x-show="loggedIn() && !sealingPack && fpCount > 0"
+                            <div id="free-packs-waiting" x-show="loggedIn() && !sealingPack && (fpCount > 0 || fpSoon)"
                                  style="display:none;text-align:center;margin:24px auto 0;max-width:640px;padding:20px 24px;border:2px solid #12b76a;border-radius:16px;">
-                                <strong class="block-title" style="display:block;margin-bottom:6px;" x-text="fpCount == 1 ? {{ \Illuminate\Support\Js::from(__('You have 1 free pack waiting')) }} : {{ \Illuminate\Support\Js::from(__('You have :count free packs waiting')) }}.replace(':count', fpCount)"></strong>
-                                <span class="note" style="display:block;margin-bottom:16px;">{{ __('It is linked to the connected wallet: no code needed. Claim it, or claim and open it in one step.') }}</span>
-                                <div class="btn-hold" style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+                                <strong class="block-title" x-show="fpCount > 0" style="display:block;margin-bottom:6px;" x-text="fpCount == 1 ? {{ \Illuminate\Support\Js::from(__('You have 1 free pack waiting')) }} : {{ \Illuminate\Support\Js::from(__('You have :count free packs waiting')) }}.replace(':count', fpCount)"></strong>
+                                <span class="note" x-show="fpCanClaim" style="display:block;margin-bottom:16px;">{{ __('It is linked to the connected wallet: no code needed. Claim it, or claim and open it in one step.') }}</span>
+                                <div id="free-packs-soon" x-show="fpSoon" style="display:none;margin-bottom:4px;padding:12px 16px;border-radius:12px;background:#fff7e6;color:#8a4b00;font-weight:600;">
+                                    {{ __('Dapper Wallet claims open soon (we are waiting for Dapper\'s approval). Your free pack is reserved for you.') }}
+                                </div>
+                                <div id="free-packs-paused" x-show="!fpSoon && !fpCanClaim" style="display:none;margin-bottom:4px;" class="note">
+                                    {{ __('Free-pack claims are not open yet. Your free pack is reserved for you.') }}
+                                </div>
+                                <div class="btn-hold" x-show="fpCanClaim" style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
                                     <button id="claim-waiting-pack" @click.prevent.stop="window.dispatch('loading-started'); window.claimWithVoucher('', false)" class="btn-green btn-o btn-home-cta flash">
                                         <span class="inner">{{ __('Claim pack') }}</span>
                                     </button>
@@ -57,7 +66,7 @@
 
         <section class="pre-sale-registration free-pack-form">
             <div class="container" x-show="!sealingPack">
-                <div class="form-content" x-show="loggedIn() && {{ isset($packcode) && $packcode ? 'false' : 'true' }}">
+                <div class="form-content" x-show="loggedIn() && !fpSoon && {{ isset($packcode) && $packcode ? 'false' : 'true' }}">
                     <div class="form-content-holder">
                         <div class="form-col">
                             <div class="form-wrap">
@@ -72,7 +81,7 @@
                     </div>
                 </div>
                 <div class="btn-hold">
-                    <button x-show="packAvailable && loggedIn()" @click.prevent.stop="claimFreePack()" class="btn-green btn-o btn-home-cta jshidden flash">
+                    <button x-show="packAvailable && loggedIn() && !fpSoon" @click.prevent.stop="claimFreePack()" class="btn-green btn-o btn-home-cta jshidden flash">
                         <span class="inner">{{ __('Get Pack') }}</span>
                     </button>
                     <button x-show="packAvailable && !loggedIn()" @click.prevent.stop="connectWallet()" class="btn-green btn-o btn-home-cta jshidden flash">

@@ -39,6 +39,8 @@ class Kernel extends ConsoleKernel
         }
         //$schedule->command('sportvatar:sync-queueit')->everyFiveMinutes();
         $schedule->command('sportvatar:clean-packs')->hourly();
+        // free-pack vouchers reserved by authorize-claim but never claimed on chain go back to 'issued'
+        $schedule->command('sportvatar:release-voucher-reservations')->everyFifteenMinutes()->withoutOverlapping(10)->runInBackground();
         //$schedule->command('sportvatar:process-graffle')->everyThirtyMinutes();
         //php artisan sportvatar:process-graffle
         //$schedule->command('telescope:prune')->daily();

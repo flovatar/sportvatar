@@ -1258,26 +1258,43 @@ window.checkPackAvailable = async function(id){
 
 
 // Free packs waiting for the connected wallet: address-bound vouchers (e.g. Flovatar holders), claimable without a code.
-// GET /api/packs/pending/{address} returns only {count, claimsOpen}. While claims are paused (claimsOpen = false) only
+// GET /api/packs/pending/{address} returns only {count, claimsOpen, claimWallets}. Claims are offered when they are open
+// AND the connected wallet type is in claimWallets (SPORTVATAR_PACK_CLAIMS_WALLETS; e.g. ['flow'] while Dapper's approval
+// of the pack transactions is pending: Dapper users then see "claims open soon, your pack is reserved"). Otherwise only
 // admin wallets with a verified session of this same wallet get the preview link; everybody else sees nothing.
-// Dispatches 'free-packs-pending' {count, claimsOpen, canClaim, claimUrl} for the banner and the claim page.
-window.pendingFreePacks = {count: 0, claimsOpen: false, canClaim: false, claimUrl: '/pack/claim'};
+// Dispatches 'free-packs-pending' {count, claimsOpen, claimWallets, walletAllowed, claimsSoon, canClaim, claimUrl}.
+window.packClaimWallets = window.packClaimWallets || null;
+window.packClaimWalletAllowed = function(wallet){
+    wallet = wallet || window.currentWallet || 'flow';
+    const wallets = Array.isArray(window.packClaimWallets) ? window.packClaimWallets : ['dapper', 'flow'];
+    return wallets.indexOf(wallet) >= 0;
+}
+window.pendingFreePacks = {count: 0, claimsOpen: false, claimWallets: [], walletAllowed: false, claimsSoon: false, canClaim: false, claimUrl: '/pack/claim'};
 window.checkPendingPacks = async function(){
     const addr = window.user && window.user.addr ? window.user.addr.toLowerCase() : null;
-    let detail = {count: 0, claimsOpen: false, canClaim: false, claimUrl: '/pack/claim'};
+    let detail = {count: 0, claimsOpen: false, claimWallets: [], walletAllowed: false, claimsSoon: false, canClaim: false, claimUrl: '/pack/claim'};
     if(addr){
         try {
             const response = await axios.get('/api/packs/pending/' + addr);
             const data = response.data || {};
             detail.count = parseInt(data.count, 10) || 0;
             detail.claimsOpen = !!data.claimsOpen;
-            detail.canClaim = detail.claimsOpen;
-            if(detail.count > 0 && !detail.claimsOpen){
+            if(Array.isArray(data.claimWallets)){
+                window.packClaimWallets = data.claimWallets;
+            }
+            detail.claimWallets = window.packClaimWallets || ['dapper', 'flow'];
+            detail.walletAllowed = window.packClaimWalletAllowed();
+            detail.canClaim = detail.claimsOpen && detail.walletAllowed;
+            detail.claimsSoon = detail.claimsOpen && !detail.walletAllowed;
+            if(detail.count > 0 && !detail.canClaim){
                 if(window.loginNoncePromise){
                     await window.loginNoncePromise;
                 }
-                detail.canClaim = !!window.loginIsAdmin && (window.loginAddress || '').toLowerCase() === addr;
-                detail.claimUrl = '/pack/claim?preview=1';
+                if(!!window.loginIsAdmin && (window.loginAddress || '').toLowerCase() === addr){
+                    detail.canClaim = true;
+                    detail.claimsSoon = false;
+                    detail.claimUrl = '/pack/claim?preview=1';
+                }
             }
         } catch(error){
             console.log('pending packs check failed');
@@ -1308,6 +1325,13 @@ window.claimWithVoucher = async function(code, open, retried){
     const sessionAddress = window.loginAddress ? window.loginAddress.toLowerCase() : null;
     if(!connected){
         fcl.authenticate();
+        return;
+    }
+    // Claims not offered to this wallet type yet (e.g. Dapper until its approval of the pack transactions): admins only
+    if(!window.packClaimWalletAllowed() && !(window.loginIsAdmin && sessionAddress === connected)){
+        window.dispatch('loading-completed');
+        window.dispatch('transaction-error', {message: window.packClaimsSoonMessage
+            || 'Dapper Wallet claims open soon (we are waiting for Dapper\'s approval). Your pack is reserved for you.'});
         return;
     }
     if(sessionAddress !== connected && !retried){

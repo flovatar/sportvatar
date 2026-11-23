@@ -46,6 +46,11 @@ return [
     */
     'packSalesEnabled' => env('SPORTVATAR_PACK_SALES_ENABLED', false),
     'packClaimsEnabled' => env('SPORTVATAR_PACK_CLAIMS_ENABLED', false),
+    // Wallets whose users the site offers free-pack claims to once claims are open ('dapper', 'flow'). Front-end gate only:
+    // the server can't tell which wallet signed a login, so the claim endpoint stays open to any verified wallet; the
+    // site shows Dapper users "claims open soon" until Dapper has approved the pack transactions (then: dapper,flow).
+    'packClaimWallets' => array_values(array_filter(array_map(fn ($w) => strtolower(trim($w)),
+        explode(',', (string) env('SPORTVATAR_PACK_CLAIMS_WALLETS', 'dapper,flow'))))),
 
     // Series (flow id) offered by the Builder; its templates are the only ones listed there. Mainnet: 1.
     // Testnet: 2 (series 1 there is the rehearsal fixture with placeholder art and an SVG prefix without viewBox).
