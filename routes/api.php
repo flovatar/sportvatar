@@ -31,6 +31,12 @@ Route::get('templates', TemplatesController::class)->name('api.templates');
 
 Route::get('components/{id}', ComponentsController::class)->whereNumber('id')->name('api.components');
 
+// Free packs waiting for a wallet (address-bound vouchers): count only, no codes (pack codes v2)
+Route::get('packs/pending/{address}', \App\Http\Controllers\Api\PendingPackClaimsController::class)
+    ->where('address', '0x[a-fA-F0-9]{16}')
+    ->middleware('throttle:30,1')
+    ->name('api.packs.pending');
+
 
 Route::get('sportvatars/', [CollectionApiController::class,'latest'])
     ->name('api.sportvatars');

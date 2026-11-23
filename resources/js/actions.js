@@ -161,6 +161,7 @@ async function updateUser(user){
             window.logout();
         } else {
             window.dispatch('user-loaded', {user: user, wallet: window.currentWallet});
+            window.checkPendingPacks();
             if(window.currentWallet != 'dapper'){
                 // Flow Wallet: offer the account setup (collections + storefront) when it's missing.
                 // Dapper keeps its previous behaviour (no init popup; its approved transactions create what they need).
@@ -355,7 +356,7 @@ window.handleLoginResponse = function(response){
         if(typeof window.afterWalletLogin === 'function'){
             const next = window.afterWalletLogin;
             window.afterWalletLogin = null;
-            window.loadLoginNonce();
+            window.loadLoginNonce().then(function(){ window.checkPendingPacks(); });
             next();
         } else {
             window.location.reload(true);
@@ -1224,6 +1225,48 @@ window.checkPackAvailable = async function(id){
     });
 }
 
+
+// Free packs waiting for the connected wallet: address-bound vouchers (e.g. Flovatar holders), claimable without a code.
+// GET /api/packs/pending/{address} returns only {count, claimsOpen}. While claims are paused (claimsOpen = false) only
+// admin wallets with a verified session of this same wallet get the preview link; everybody else sees nothing.
+// Dispatches 'free-packs-pending' {count, claimsOpen, canClaim, claimUrl} for the banner and the claim page.
+window.pendingFreePacks = {count: 0, claimsOpen: false, canClaim: false, claimUrl: '/pack/claim'};
+window.checkPendingPacks = async function(){
+    const addr = window.user && window.user.addr ? window.user.addr.toLowerCase() : null;
+    let detail = {count: 0, claimsOpen: false, canClaim: false, claimUrl: '/pack/claim'};
+    if(addr){
+        try {
+            const response = await axios.get('/api/packs/pending/' + addr);
+            const data = response.data || {};
+            detail.count = parseInt(data.count, 10) || 0;
+            detail.claimsOpen = !!data.claimsOpen;
+            detail.canClaim = detail.claimsOpen;
+            if(detail.count > 0 && !detail.claimsOpen){
+                if(window.loginNoncePromise){
+                    await window.loginNoncePromise;
+                }
+                detail.canClaim = !!window.loginIsAdmin && (window.loginAddress || '').toLowerCase() === addr;
+                detail.claimUrl = '/pack/claim?preview=1';
+            }
+        } catch(error){
+            console.log('pending packs check failed');
+            console.log(error);
+        }
+    }
+    window.pendingFreePacks = detail;
+    window.dispatch('free-packs-pending', detail);
+    return detail;
+}
+// A claimed voucher stays 'reserved' until the indexer sees the pack deposit (~1 min): count it down right away,
+// then ask the server again.
+window.addEventListener('pack-claimed', function(){
+    const p = window.pendingFreePacks || {};
+    if(p.count > 0){
+        window.pendingFreePacks = Object.assign({}, p, {count: p.count - 1});
+        window.dispatch('free-packs-pending', window.pendingFreePacks);
+    }
+    setTimeout(function(){ window.checkPendingPacks(); }, 90000);
+});
 
 // Pack codes v2: exchange a voucher code (or an address-bound free pack) for an on-chain authorisation
 // bound to the logged-in wallet. Requires a verified wallet login (server session).

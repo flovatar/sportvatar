@@ -101,6 +101,8 @@
         @include('partials/footer')
     @endif
 
+    @include('partials/free-pack-banner')
+
     @include('partials/modals')
 
 

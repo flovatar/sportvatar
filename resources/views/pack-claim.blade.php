@@ -41,6 +41,24 @@
 
         <section class="pre-sale-registration free-pack-form">
             <div class="container" x-show="!sealingPack">
+                {{-- Free packs linked to the connected wallet (address-bound vouchers): no code needed --}}
+                <div id="free-packs-waiting"
+                     x-data="{ fp: window.pendingFreePacks || { count: 0 } }"
+                     @free-packs-pending.window="fp = $event.detail"
+                     @logged-out.window="fp = { count: 0 }"
+                     x-show="loggedIn() && fp.count > 0"
+                     style="display:none;text-align:center;margin:0 auto 32px;max-width:640px;padding:20px 24px;border:2px solid #12b76a;border-radius:16px;">
+                    <strong class="block-title" style="display:block;margin-bottom:6px;" x-text="fp.count == 1 ? {{ \Illuminate\Support\Js::from(__('You have 1 free pack waiting')) }} : {{ \Illuminate\Support\Js::from(__('You have :count free packs waiting')) }}.replace(':count', fp.count)"></strong>
+                    <span class="note" style="display:block;margin-bottom:16px;">{{ __('It is linked to the connected wallet: no code needed. Claim it, or claim and open it in one step.') }}</span>
+                    <div class="btn-hold" style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+                        <button id="claim-waiting-pack" @click.prevent.stop="window.dispatch('loading-started'); window.claimWithVoucher('', false)" class="btn-green btn-o btn-home-cta flash">
+                            <span class="inner">{{ __('Claim pack') }}</span>
+                        </button>
+                        <button id="claim-open-waiting-pack" @click.prevent.stop="window.dispatch('loading-started'); window.claimWithVoucher('', true)" class="btn-green btn-o btn-home-cta">
+                            <span class="inner">{{ __('Claim & open') }}</span>
+                        </button>
+                    </div>
+                </div>
                 <div class="form-content" x-show="loggedIn() && {{ isset($packcode) && $packcode ? 'false' : 'true' }}">
                     <div class="form-content-holder">
                         <div class="form-col">
@@ -48,7 +66,7 @@
                                 <div x-show="showSubscription" class="form-row">
                                     <div class="input-hold">
                                         <input class="pack-redeem-input" x-model="packRedeemCode" name="packRedeemCode" type="text" placeholder="{{ __('Pack redeem code') }}">
-                                        <span class="note">{{ __('Flovatar holders: leave it empty, your free packs are linked to your wallet.') }}</span>
+                                        <span class="note">{{ __('Have a redeem code? Enter it here. No code: free packs linked to your wallet are shown above (or leave this empty and press Get Pack).') }}</span>
                                     </div>
                                 </div>
                             </div>

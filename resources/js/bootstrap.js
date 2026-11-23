@@ -41,18 +41,21 @@ import {send as grpcSend} from "@onflow/transport-grpc"
 window.accountProofNonce = null;
 window.loginMessage = null;
 window.loginAddress = null;
+window.loginIsAdmin = false;
 window.loadLoginNonce = function(){
-    return window.axios.get('/login/nonce').then(function(response){
+    window.loginNoncePromise = window.axios.get('/login/nonce').then(function(response){
         if(response.data && response.data.nonce){
             window.accountProofNonce = response.data.nonce;
             window.loginMessage = response.data.message;
             window.loginAddress = response.data.address || null;
+            window.loginIsAdmin = !!response.data.admin;
         }
         return response.data;
     }).catch(function(error){
         console.log(error);
         return null;
     });
+    return window.loginNoncePromise;
 };
 window.loadLoginNonce();
 

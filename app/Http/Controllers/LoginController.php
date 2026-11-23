@@ -29,6 +29,9 @@ class LoginController extends AuthController
                 'nonce' => $this->getAccountProofNonce(),
                 'message' => $this->getMessage(),
                 'address' => $this->authenticatedFlowAddress(),
+                // Lets the page show admin-only previews (e.g. the paused free-pack claim page). Only about the
+                // session's own user; every admin endpoint checks this again on the server.
+                'admin' => Auth::check() && method_exists(Auth::user(), 'isAdmin') && Auth::user()->isAdmin(),
             ])
             ->header('Cache-Control', 'no-store, private');
     }
