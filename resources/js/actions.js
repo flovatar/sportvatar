@@ -161,6 +161,9 @@ async function updateUser(user){
             window.logout();
         } else {
             window.dispatch('user-loaded', {user: user, wallet: window.currentWallet});
+            // Server login without an extra popup: if the wallet returned an account-proof for the current
+            // server nonce during authentication, send it right away (then re-check free packs).
+            await window.silentAccountProofLogin(user);
             window.checkPendingPacks();
             if(window.currentWallet != 'dapper'){
                 // Flow Wallet: offer the account setup (collections + storefront) when it's missing.
@@ -385,6 +388,34 @@ window.sendLogin = function(msg, compSigs) {
                 window.dispatch('login-failed');
             });
     }
+}
+
+// Silent server login right after wallet connect, using the account-proof the wallet already signed.
+// No popup, no error toast: if there is no fresh proof (e.g. page reload with a stored FCL user) nothing happens,
+// and actions that need a session still call walletLogin() as before.
+window.silentAccountProofLogin = async function(user){
+    try {
+        const proof = window.findAccountProof(user);
+        if(!proof || !user || !user.addr){ return false; }
+        if(window.loginNoncePromise){ await window.loginNoncePromise; }
+        if((window.loginAddress || '').toLowerCase() === user.addr.toLowerCase()){ return true; }
+        if(!window.accountProofNonce || proof.nonce !== window.accountProofNonce){ return false; }
+        const response = await axios.post('/login', {
+            proofType: 'account-proof',
+            address: proof.address,
+            nonce: proof.nonce,
+            signatures: proof.signatures.map(function(compSig){ return {keyId: compSig.keyId, signature: compSig.signature}; })
+        });
+        if(response.data && response.data.result === true){
+            await window.loadLoginNonce();
+            window.dispatch('logged-in');
+            return true;
+        }
+        await window.loadLoginNonce();
+    } catch(error){
+        console.log('silent login skipped');
+    }
+    return false;
 }
 
 window.sendAccountProofLogin = function(proof) {
