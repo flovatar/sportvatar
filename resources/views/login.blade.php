@@ -140,7 +140,7 @@
                                 <dd x-text="balance()+' Flow'"></dd>
                             </dl>
                             <ul class="sub-nav">
-                                <li><a href="#" @click.prevent.default="logout()" class="link-logout">Logout <i class="icon-arrow-circle"></i></a></li>
+                                <li><a href="#" @click.prevent="logout()" class="link-logout">Logout <i class="icon-arrow-circle"></i></a></li>
                             </ul>
                         </div>
 

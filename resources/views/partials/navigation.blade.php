@@ -40,7 +40,7 @@
                     <ul class="sub-nav">
                         <li class="{{request()->routeIs('collection') ? 'active ' : ''}}"><a x-bind:href="(name() && false) ? '/collection/'+name() : '/collection/'+address()">{{ __('My Collection') }}</a></li>
                         <li class="{{request()->routeIs('transactions') ? 'active ' : ''}}"><a x-bind:href="'/transactions/'+address()">{{ __('My Transactions') }}</a></li>
-                        <li><a href="#" @click.prevent.default="logout()" class="link-logout">{{ __('Logout') }} <i class="icon-arrow-circle"></i></a></li>
+                        <li><a href="#" @click.prevent="logout()" class="link-logout">{{ __('Logout') }} <i class="icon-arrow-circle"></i></a></li>
                     </ul>
                 </div>
             </div>
