@@ -52,4 +52,12 @@ class SvgFlattenerTest extends TestCase
         $this->assertSame('5', $xp->query('//*[@id="c"]')->item(0)->getAttribute('r'));
         $this->assertSame(0, $xp->query('//*[local-name()="animate"]')->length);
     }
+
+    public function test_duplicate_ids_resolve_to_the_first_like_browsers(): void
+    {
+        $xp = $this->flat('<clipPath id="cp"><rect width="100" height="100"/></clipPath><clipPath id="cp"><rect width="1" height="1"/></clipPath><g id="u" clip-path="url(#cp)"/>', '#cp{opacity:1}');
+        $this->assertSame(1, $xp->query('//*[@id="cp"]')->length);
+        $this->assertSame('100', $xp->query('//*[@id="cp"]/*')->item(0)->getAttribute('width'));
+        $this->assertSame(1, $xp->query('//*[@id="cp__dup1"]')->length);
+    }
 }

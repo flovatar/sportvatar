@@ -75,6 +75,7 @@ class SvgFlattener
         $this->applyAnimations();
         $this->writeStyles();
         $this->freezeSmil();
+        $this->dedupeIds();
 
         foreach (iterator_to_array($this->doc->getElementsByTagName('style')) as $style) {
             $style->parentNode->removeChild($style);
@@ -883,6 +884,24 @@ class SvgFlattener
         $s = rtrim(rtrim(sprintf('%.6F', $x), '0'), '.');
 
         return $s === '-0' ? '0' : $s;
+    }
+
+    /**
+     * Composed SVGs repeat ids across layers (e.g. two templates both define clipPath#clip-path).
+     * Browsers resolve url(#id) / href="#id" to the FIRST element in document order; resvg takes the
+     * last one. Rename every later duplicate (after the cascade, so CSS #id rules already applied to
+     * all of them) - references then resolve to the first one, exactly like in a browser.
+     */
+    private function dedupeIds(): void
+    {
+        $n = 0;
+        foreach ($this->byId as $id => $els) {
+            foreach (array_slice($els, 1) as $i => $el) {
+                $el->setAttribute('id', $id.'__dup'.($i + 1));
+                $n++;
+            }
+        }
+        $this->stats['duplicate_ids'] = $n;
     }
 
     // ---------------------------------------------------------------- SMIL

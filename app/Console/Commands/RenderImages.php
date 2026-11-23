@@ -25,6 +25,7 @@ class RenderImages extends Command
         {--ids= : comma list / ranges (e.g. 1,5,10-20)}
         {--missing : only items without a new render AND without a legacy PNG on the CDN bucket}
         {--all : every item; unchanged ones are skipped by content hash}
+        {--rendered : only items that already have a render (with --force: re-upload, e.g. after switching RENDER_DISK)}
         {--force : re-render even if the content hash is unchanged}
         {--dry-run : list/count candidates (with --render-local: render without uploading)}
         {--render-local= : with --dry-run, write the variants to this local directory}
@@ -105,7 +106,7 @@ class RenderImages extends Command
         $this->info(sprintf('%s done in %.1f s: %s', $type, microtime(true) - $t0, json_encode($stats)));
         if ($ms) {
             sort($ms);
-            $this->info(sprintf('  per item: avg %d ms, p95 %d ms, max %d ms; avg %s; CPU php %.2f s + resvg %.2f s (%.2f s/item); peak PHP mem %.0f MB, resvg max RSS %.0f MB',
+            $this->info(sprintf('  per item: avg %d ms, p95 %d ms, max %d ms; avg %s; CPU php %.2f s + resvg %.2f s (%.2f s/item); peak PHP mem %.0f MB, largest child process RSS %.0f MB',
                 $avg($ms), $ms[(int) floor(0.95 * (count($ms) - 1))], end($ms), json_encode(array_map($avg, $timings)),
                 $cpu($ru0, $ru, 'utime') + $cpu($ru0, $ru, 'stime'), $cpu($ruc0, $ruc, 'utime') + $cpu($ruc0, $ruc, 'stime'),
                 ($cpu($ru0, $ru, 'utime') + $cpu($ru0, $ru, 'stime') + $cpu($ruc0, $ruc, 'utime') + $cpu($ruc0, $ruc, 'stime')) / count($ms),
@@ -134,10 +135,13 @@ class RenderImages extends Command
             'template' => SportvatarTemplate::query(),
         };
         $all = $query->whereNotNull('flow_id')->whereNotNull('svg')->orderBy('flow_id')->pluck('flow_id')->map(fn ($v) => (int) $v)->all();
+        $done = RenderedImage::where('item_type', $type)->whereNotNull('rendered_at')->whereNull('error')->pluck('flow_id')->map(fn ($v) => (int) $v)->all();
+        if ($this->option('rendered')) {
+            return array_values(array_intersect($all, $done));
+        }
         if ($this->option('all') || $this->option('force')) {
             return $all;
         }
-        $done = RenderedImage::where('item_type', $type)->whereNotNull('rendered_at')->whereNull('error')->pluck('flow_id')->map(fn ($v) => (int) $v)->all();
         $ids = array_values(array_diff($all, $done));
         if ($this->option('missing') && $type !== 'template' && config('render.legacy_fallback')) {
             $legacy = $this->legacyIds($type);
