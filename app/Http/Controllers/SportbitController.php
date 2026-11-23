@@ -86,7 +86,7 @@ class SportbitController extends Controller
 
         $saleOffer = Cache::remember('sportvatar-component-sale-offer-'.$componentId.'-'.$address, now()->addMinutes(1), function() use ($componentId, $address) {
             $component = Sportbit::where('flow_id', $componentId)->first();
-            return $component ? $component->saleOffers()->notBlocked()->whereFlowAddress($address)->where('is_completed', false)->where('is_dapper', true)->orderBy('created_at', 'desc')->first() : null;
+            return $component ? $component->saleOffers()->notBlocked()->whereFlowAddress($address)->where('is_completed', false)->whereNotNull('listing_id')->whereIn('currency', ['DUC', 'FLOW'])->orderBy('created_at', 'desc')->first() : null;
         });
         $series = $this->getSeries();
 

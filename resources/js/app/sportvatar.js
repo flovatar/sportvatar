@@ -301,8 +301,19 @@ Alpine.data('sportvatarData', (address, sportvatarId, series, templates, sportva
             if(this.sportvatarSaleOffer && this.sportvatarSaleOffer.listing_id && this.sportvatarSaleOffer.price){
                 let saleId = this.sportvatarSaleOffer.listing_id;
                 let price = this.sportvatarSaleOffer.price;
-                window.buySportvatarSale(this.address, saleId, price);
+                window.buySportvatarSale(this.address, saleId, price, window.listingCurrency(this.sportvatarSaleOffer));
             }
+        }
+    },
+    offerCurrencyLabel(){
+        return window.currencyLabel(window.listingCurrency(this.sportvatarSaleOffer));
+    },
+    canBuyOffer(){
+        return this.canPayListing(this.sportvatarSaleOffer);
+    },
+    handleGiftSent(){
+        if(this.sportvatar && this.currentGiftAddress){
+            window.location = '/sportvatars/'+this.sportvatar.id+'/'+this.currentGiftAddress;
         }
     },
     setBackground(){
@@ -538,7 +549,11 @@ Alpine.data('sportvatarData', (address, sportvatarId, series, templates, sportva
     },
     handleSaleCreated(){
         console.log('sale created!');
-        this.sportvatarSaleOffer = {price: this.currentPrice};
+        this.sportvatarSaleOffer = {price: this.currentPrice, currency: window.walletCurrency()};
+    },
+    handleOfferCreated(){
+        // the page listens to sportvatar-sale-created with this name (handleSaleCreated was never called)
+        this.handleSaleCreated();
     }
 }));
 

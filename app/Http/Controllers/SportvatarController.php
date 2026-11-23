@@ -23,7 +23,7 @@ class SportvatarController extends Controller
         });
         $saleOffer = Cache::remember('sportvatar-sale-offers-'.$sportvatarId.'-'.$address, now()->addMinutes(1), function() use ($sportvatarId, $address) {
             $sportvatar = Sportvatar::where('flow_id', $sportvatarId)->first();
-            return $sportvatar ? $sportvatar->saleOffers()->notBlocked()->whereFlowAddress($address)->where('is_completed', false)->where('is_dapper', true)->orderBy('created_at', 'desc')->first() : null;
+            return $sportvatar ? $sportvatar->saleOffers()->notBlocked()->whereFlowAddress($address)->where('is_completed', false)->whereNotNull('listing_id')->whereIn('currency', ['DUC', 'FLOW'])->orderBy('created_at', 'desc')->first() : null;
         });
         return view('sportvatar')->with(['templates' => $templates, 'series' => $series, 'address' => $address, 'sportvatarId' => $sportvatarId, 'sportvatarSales' => $sales, 'sportvatarSaleOffer' => $saleOffer]);
     }

@@ -32,6 +32,16 @@ class Sale extends Model
         return $query;
     }
 
+    /**
+     * Sales paid in USD (DUC, Dapper Wallet). FLOW sales (Flow Wallet) are excluded from the USD stats.
+     */
+    public function scopeUsd($query)
+    {
+        return $query->where(function ($q) {
+            $q->whereNull('sales.currency')->orWhere('sales.currency', '!=', 'FLOW');
+        });
+    }
+
     public function item()
     {
         return $this->morphTo();

@@ -17,6 +17,7 @@ Alpine.data('salesData', (templates, address, stats) => ({
     searchRarity: 'all',
     searchCat2: 'all',
     searchTemplate: 'all',
+    searchCurrency: 'all',
     showFilterPanel: false,
     init(){
         let self = this;
@@ -34,6 +35,7 @@ Alpine.data('salesData', (templates, address, stats) => ({
             self.searchResults();
         });
         this.$watch('searchRarity', () => { self.searchResults(); });
+        this.$watch('searchCurrency', () => { self.searchResults(); });
         this.$watch('searchCat2', () => { self.searchTemplate = 'all'; self.searchResults(); });
         this.$watch('searchTemplate', () => {
             if(this.searchTemplate != 'all'){
@@ -54,6 +56,7 @@ Alpine.data('salesData', (templates, address, stats) => ({
         this.searchRarity = 'all';
         this.searchCat2 = 'all';
         this.searchTemplate = 'all';
+        this.searchCurrency = 'all';
     },
     loadSearchParams(){
         let self = this;
@@ -70,6 +73,8 @@ Alpine.data('salesData', (templates, address, stats) => ({
                         self.searchCat2 = paramArr[1];
                     } else if(paramArr[0] == 'templateid'){
                         self.searchTemplate = paramArr[1];
+                    } else if(paramArr[0] == 'currency'){
+                        self.searchCurrency = paramArr[1];
                     } else if(paramArr[0] == 'rarity'){
                         self.searchRarity = paramArr[1];
                     } else if(paramArr[0] == 'sortby'){
@@ -90,6 +95,7 @@ Alpine.data('salesData', (templates, address, stats) => ({
             templatecat: this.searchCat,
             flobitcat: this.searchCat2,
             templateid: this.searchTemplate,
+            currency: this.searchCurrency,
             rarity: this.searchRarity,
             sortby: this.sortBy,
             pricemin: this.minPrice,
@@ -110,6 +116,9 @@ Alpine.data('salesData', (templates, address, stats) => ({
         }
         if(params.flobitcat != 'all'){
             hashParams.flobitcat = params.flobitcat;
+        }
+        if(params.currency && params.currency != 'all'){
+            hashParams.currency = params.currency;
         }
         if(params.templateid != 'all'){
             hashParams.templateid = params.templateid;
@@ -262,7 +271,7 @@ Alpine.data('salesData', (templates, address, stats) => ({
             return '';
         }
 
-        return output + ' USD';
+        return output + (this.searchCurrency == 'FLOW' ? ' FLOW' : (this.searchCurrency == 'DUC' ? ' USD' : ''));
     },
     getSearchCatName(cat){
         if(cat == 10){

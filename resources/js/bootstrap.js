@@ -63,13 +63,33 @@ const accountProofResolver = async () => {
     return window.accountProofNonce ? {appIdentifier: window.location.origin, nonce: window.accountProofNonce} : null;
 };
 
+/**
+ * Wallet discovery (env-driven, like flovatar-web):
+ *  - MIX_WALLET_DISCOVERY = Dapper's direct authn URL (accounts.meetdapper.com/...): Dapper only, opened as a popup
+ *    (POP/RPC). This is production today and stays byte-for-byte the same behaviour.
+ *  - MIX_WALLET_DISCOVERY = FCL Discovery (fcl-discovery.onflow.org/[testnet/]authn): FCL's wallet picker. Flow Wallet
+ *    (extension, EXT/RPC; mobile via WalletConnect when MIX_WALLETCONNECT_PROJECT_ID is set) is listed by default,
+ *    opt-in wallets come from MIX_WALLET_DISCOVERY_INCLUDE (Dapper: mainnet 0xead892083b3e2c6c, testnet
+ *    0x82ec283f88a62e65), Blocto (shut down) is excluded. Forcing POP/RPC here would open Discovery itself in a popup
+ *    and break the Flow Wallet extension handshake, so the method is left to FCL (IFRAME/RPC).
+ */
+const walletDiscovery = process.env.MIX_WALLET_DISCOVERY || '';
+const isDapperDirectAuthn = walletDiscovery.indexOf('meetdapper.com') >= 0;
+window.walletDiscoveryMode = isDapperDirectAuthn ? 'dapper' : 'discovery';
+
 config()
     .put("app.detail.icon", "https://sportvatar.com/images/logo-rounded.png") // Configure FCL's Access Node
     .put("app.detail.title", "Sportvatar") // Configure FCL's Access Node
     //.put("sdk.transport", grpcSend)
     .put("accessNode.api", process.env.MIX_ACCESS_NODE) // Configure FCL's Access Node
     .put("discovery.wallet", process.env.MIX_WALLET_DISCOVERY) // Configure FCL's Wallet Discovery mechanism
-    .put("discovery.wallet.method", 'POP/RPC')
+
+if (isDapperDirectAuthn) {
+    // Dapper's direct authn endpoint must be opened as a popup
+    config().put("discovery.wallet.method", 'POP/RPC');
+}
+
+config()
     .put("fcl.limit", 9999) // Configure gas limit
     .put("fcl.accountProof.resolver", accountProofResolver) // Server-issued nonce for wallet login (account-proof)
     .put("0xProfile", process.env.MIX_CONTRACT_PROFILE) // Will let us use `0xProfile` in our Cadence
@@ -91,12 +111,28 @@ config()
 
 // Network-aware extras (unset on production = unchanged behaviour). Testnet build:
 // MIX_FLOW_NETWORK=testnet, MIX_WALLET_DISCOVERY=https://fcl-discovery.onflow.org/testnet/authn,
-// MIX_WALLET_DISCOVERY_INCLUDE=0x82ec283f88a62e65 (Dapper testnet).
+// MIX_WALLET_DISCOVERY_INCLUDE=0x33f75ff0b830dcec,0x82ec283f88a62e65 (Flow Wallet, Dapper testnet).
 if (process.env.MIX_FLOW_NETWORK) {
     config().put("flow.network", process.env.MIX_FLOW_NETWORK);
 }
-if (process.env.MIX_WALLET_DISCOVERY_INCLUDE) {
+if (!isDapperDirectAuthn) {
+    const splitList = (v) => (v || '').split(',').map(a => a.trim()).filter(a => a);
+    const include = splitList(process.env.MIX_WALLET_DISCOVERY_INCLUDE);
+    // Blocto is shut down but still listed by FCL Discovery
+    const exclude = process.env.MIX_WALLET_DISCOVERY_EXCLUDE !== undefined ? splitList(process.env.MIX_WALLET_DISCOVERY_EXCLUDE) : ["0x55ad22f01ef568a1"];
+    if (include.length > 0) {
+        config().put("discovery.authn.include", include);
+    }
+    if (exclude.length > 0) {
+        config().put("discovery.authn.exclude", exclude);
+    }
+    if (process.env.MIX_WALLET_DISCOVERY_AUTHN_ENDPOINT) {
+        config().put("discovery.authn.endpoint", process.env.MIX_WALLET_DISCOVERY_AUTHN_ENDPOINT);
+    }
+    // WalletConnect (Flow Wallet mobile app). Free project id from cloud.reown.com.
+    if (process.env.MIX_WALLETCONNECT_PROJECT_ID) {
+        config().put("walletconnect.projectId", process.env.MIX_WALLETCONNECT_PROJECT_ID);
+    }
+} else if (process.env.MIX_WALLET_DISCOVERY_INCLUDE) {
     config().put("discovery.authn.include", process.env.MIX_WALLET_DISCOVERY_INCLUDE.split(',').map(a => a.trim()).filter(a => a));
 }
-
-

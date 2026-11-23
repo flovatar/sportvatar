@@ -29,7 +29,7 @@
                             <tr>
                                 <th class="desc alt">Description</th>
                                 <th class="bought">Purchase Date</th>
-                                <th class="value">Price<span class="sm"> USD</span> </th>
+                                <th class="value">Price</th>
                                 <th class="flowscan">Flowscan</th>
                             </tr>
                             <template x-if="sales">
@@ -50,7 +50,7 @@
                                             <strong x-text="sale.flow_buyer_address"></strong>
                                             <span x-text="parseDateTimeString(sale.created_at)"></span>
                                         </td>
-                                        <td class="value" x-text="formatPrice(sale.price) + ' $'"></td>
+                                        <td class="value" x-text="formatPrice(sale.price) + (sale.currency == 'FLOW' ? ' FLOW' : ' $')"></td>
                                         <td class="flowscan"><a x-bind:href="(sale.transaction_id) ? 'https://flowscan.org/transaction/'+sale.transaction_id : '#'" class="icon-link"></a></td>
                                     </tr>
                                 </template>

@@ -24,6 +24,7 @@
          @fcomponent-sale-cancelled.window="handleOfferDeleted()"
          @price-changed.window="changePriceOpen = false; currentPrice = currentPriceChange;"
          @fcomponent-sale-purchased.window="handlePurchaseCompleted()"
+         @fcomponent-gift-sent.window="handleGiftSent()"
     >
 
 
@@ -68,7 +69,7 @@
                         <dl x-show="isSale()" class="details-input-form">
                             <dt>Sale price</dt>
                             <dd class="price-input-detail">
-                                <span x-text="formatPrice(currentPrice)+ ' USD'"></span>
+                                <span x-text="formatPrice(currentPrice)+ ' ' + offerCurrencyLabel()"></span>
                             </dd>
                         </dl>
                         <dl x-show="!isSale() && isOwned() && showSale" class="details-input-form">
@@ -79,23 +80,41 @@
                                         <div class="input-wrap">
                                             <input x-model.number="currentPrice" type="number" name="price" min="0.1" step="0.1">
                                         </div>
-                                        <span class="label">USD</span>
+                                        <span class="label" x-text="walletCurrencyLabel()">USD</span>
                                     </div>
                                     <button @click.prevent.stop="createSale" x-bind:disabled="!loggedIn()" type="submit" class="btn btn-icon btn-green"><span class="inner"><i class="icon-check"></i></span></button>
                                 </div>
                             </dd>
                         </dl>
 
+                        <dl x-show="!isSale() && isOwned() && showGift" class="details-input-form">
+                            <dt>{{ __('Send as a gift to') }}</dt>
+                            <dd>
+                                <div class="input-panel">
+                                    <div class="input-box">
+                                        <div class="input-wrap">
+                                            <input x-model.trim="currentGiftAddress" type="text" name="gift_address" placeholder="0x..." maxlength="18">
+                                        </div>
+                                    </div>
+                                    <button @click.prevent.stop="sendGift" x-bind:disabled="!loggedIn() || !/^0x[0-9a-fA-F]{16}$/.test(currentGiftAddress)" type="submit" class="btn btn-icon btn-green"><span class="inner"><i class="icon-check"></i></span></button>
+                                </div>
+                                <span class="note">{{ __('The receiving wallet must be set up for Sportvatar.') }}</span>
+                            </dd>
+                        </dl>
+                        <p x-show="isSale() && !isOwned() && user && !canBuyOffer()" class="note" x-text="'{{ __('Listed in') }} '+offerCurrencyLabel()+': {{ __('connect a') }} '+requiredWalletName(componentSaleOffer)+' {{ __('to buy it.') }}'"></p>
                         <div class="btns-row">
                             <div class="btn-wrp">
                                 <a x-show="false" x-bind:href="'/marketplace#templatecat=flobits&templateid='+templateId()" class="btn btn-sm btn-lilac"><span class="inner">View in Marketplace</span></a>
                             </div>
                             <div class="btns-right">
+                                <div x-show="!isSale() && isOwned() && !showSale && !showGift" class="btn-wrp">
+                                    <button @click.prevent.stop="showGift = true" x-bind:disabled="!loggedIn()" class="btn btn-sm btn-green"><span class="inner">{{ __('Gift') }}</span></button>
+                                </div>
                                 <div x-show="!isSale() && isOwned() && !showSale" class="btn-wrp">
-                                    <button @click.prevent.stop="showSale = true" x-bind:disabled="!loggedIn()" class="btn btn-sm btn-green"><span class="inner">Sell</span></button>
+                                    <button @click.prevent.stop="showSale = true; showGift = false" x-bind:disabled="!loggedIn()" class="btn btn-sm btn-green"><span class="inner">Sell</span></button>
                                 </div>
                                 <div x-show="isSale() && !isOwned() && !showSale" class="btn-wrp">
-                                    <button @click.prevent.stop="loggedIn() ? buySale() : connectWallet()" class="btn btn-sm btn-green"><span class="inner">Buy Now</span></button>
+                                    <button @click.prevent.stop="loggedIn() ? buySale() : connectWallet()" x-bind:disabled="!canBuyOffer()" class="btn btn-sm btn-green"><span class="inner">Buy Now</span></button>
                                 </div>
                                 <div x-show="isSale() && isOwned() && !showSale" class="btn-wrp">
                                     <button @click.prevent.stop="cancelSale" x-bind:disabled="!loggedIn()" class="btn btn-sm btn-red"><span class="inner">Cancel Sale</span></button>

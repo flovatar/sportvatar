@@ -74,6 +74,11 @@ class FilteredController extends Controller
 
 
 
+        // Listing currency: DUC (Dapper Wallet, shown as USD) or FLOW (Flow Wallet)
+        if(in_array($req->get('currency'), ['DUC', 'FLOW'], true)){
+            $salesQuery->where('currency', $req->get('currency'));
+        }
+
         if($req->get('pricemin')){
             $salesQuery->where('price', '>=', intval($req->get('pricemin')));
         }

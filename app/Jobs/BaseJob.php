@@ -572,6 +572,31 @@ class BaseJob implements ShouldQueue
     protected function getSportvatarNFTAddress(){
         return 'A.'.str_replace('0x', '', config('services.flow.address')).'.Sportvatar.NFT';
     }
+
+    /**
+     * Currency of an NFTStorefrontV2 listing event from its salePaymentVaultType:
+     * 'DUC' (DapperUtilityCoin, Dapper Wallet, shown as USD), 'FLOW' (FlowToken, Flow Wallet) or null (anything else).
+     * Matches the exact contract address, so a look-alike "FlowToken" deployed elsewhere is not treated as FLOW.
+     */
+    protected function getStorefrontCurrency($metadata){
+        $typeId = null;
+        if(isset($metadata['salePaymentVaultType'])){
+            $vaultType = $metadata['salePaymentVaultType'];
+            $typeId = is_array($vaultType) ? ($vaultType['typeID'] ?? null) : (is_string($vaultType) ? $vaultType : null);
+        }
+        if(!$typeId){
+            return null;
+        }
+        $duc = 'A.'.strtolower(str_replace('0x', '', (string) config('services.flow.ducaddress'))).'.DapperUtilityCoin.Vault';
+        $flow = 'A.'.strtolower(str_replace('0x', '', (string) config('services.flow.flowtokenaddress'))).'.FlowToken.Vault';
+        if($typeId === $duc){
+            return 'DUC';
+        }
+        if($typeId === $flow){
+            return 'FLOW';
+        }
+        return null;
+    }
     protected function getComponentNFTAddress(){
         return 'A.'.str_replace('0x', '', config('services.flow.address')).'.Sportbit.NFT';
     }

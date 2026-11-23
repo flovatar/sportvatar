@@ -48,4 +48,20 @@
 </div>
 
 
-
+<div id="account-init-modal" x-show="showInitPopup" class="modal-wrapper jshidden">
+    <div class="modal-content">
+        <div class="modal-inner">
+            <div class="msg-box">
+                <h2>{{ __('Set up your wallet for Sportvatar') }}</h2>
+                <p>
+                    {{ __('Your Flow Wallet does not have the Sportvatar collections yet.') }}<br>
+                    {{ __('Sign one transaction to add the Sportvatar, Sportbit and Pack collections and a marketplace storefront, so that you can receive gifts and trade in FLOW.') }}
+                </p>
+                <div class="btn-hold">
+                    <button @click.prevent.stop="startAccountInit()" class="btn btn-message-cta"><span class="inner">{{ __('Set up') }}</span></button>
+                    <button @click.prevent.stop="cancelAccountInit()" class="btn-o btn-message-cta"><span class="inner">{{ __('Later') }}</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

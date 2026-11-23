@@ -17,7 +17,9 @@
                 <dt x-text="isSportvatar(sale) ? 'Ability Score' : 'Name'"></dt>
                 <dd x-text="isSportvatar(sale) ? getRarityScoreNumber(sale) : getCategory(sale)"></dd>
                 <dt>Sale Price</dt>
-                <dd x-text="formatPrice(sale.price)+' USD'"></dd>
+                <dd x-text="formatPrice(sale.price)+' '+listingCurrencyLabel(sale)"></dd>
+                <dt x-show="!canPayListing(sale)">Wallet</dt>
+                <dd x-show="!canPayListing(sale)" x-text="requiredWalletName(sale)+' only'"></dd>
             </dl>
         </div>
     </a>

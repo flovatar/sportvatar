@@ -213,13 +213,19 @@ class ProcessGraffleEvents extends BaseJob
                 $nftAddress = $event->flow_metadata['address'];
                 $price = $event->flow_metadata['price'];
             }
+            // DUC (Dapper Wallet, USD) or FLOW (Flow Wallet) listing; events without the field are legacy DUC
+            $currency = isset($event->flow_metadata['salePaymentVaultType']) ? $this->getStorefrontCurrency($event->flow_metadata) : 'DUC';
+            $isDapper = ($currency === 'DUC');
 
 
             $sportvatar = Sportvatar::whereFlowId($nftId)->first();
             if(!$sportvatar){
                 $sportvatar = $this->syncSportvatarFromFlowAddress($nftId, $nftAddress);
             }
-            if($sportvatar) {
+            if($sportvatar && $currency === null) {
+                info('Sportvatar listing '.$listingId.' skipped: unsupported payment vault');
+                $check = true;
+            } else if($sportvatar) {
                 if($price <= 999999) {
                     SaleOffer::updateOrCreate(
                         [
@@ -231,6 +237,7 @@ class ProcessGraffleEvents extends BaseJob
                             'flow_metadata' => $sportvatar->flow_metadata,
                             'flow_address' => $nftAddress,
                             'price' => $price,
+                            'currency' => $currency,
                             'is_completed' => false,
                             'is_dapper' => $isDapper,
                             'listing_id' => $listingId
@@ -265,10 +272,20 @@ class ProcessGraffleEvents extends BaseJob
                 $price = $event->flow_metadata['price'];
             }
 
+            $currency = isset($event->flow_metadata['salePaymentVaultType']) ? $this->getStorefrontCurrency($event->flow_metadata) : 'DUC';
+
             //Disabling it because redundant with SaleRemoved
             //SaleOffer::isSportvatar()->whereFlowId($event->flow_metadata['id'])->whereFlowAddress($event->flow_metadata['from'])->delete();
             $sportvatar = Sportvatar::whereFlowId($nftId)->first();
-            $saleOffer = SaleOffer::isSportvatar()->whereFlowId($nftId)->first();
+            // Only the offer of THIS listing (a newer listing of the same NFT must survive an old listing's completion)
+            $offerQuery = function() use ($nftId, $listingId) {
+                $q = SaleOffer::isSportvatar()->whereFlowId($nftId);
+                if($listingId){
+                    $q->where(function($w) use ($listingId){ $w->whereNull('listing_id')->orWhere('listing_id', $listingId); });
+                }
+                return $q;
+            };
+            $saleOffer = $offerQuery()->first();
 
             // NFTStorefrontV2 events carry no from/to; the seller is the listing owner.
             $nftAddress = $saleOffer ? $saleOffer->flow_address : null;
@@ -282,19 +299,20 @@ class ProcessGraffleEvents extends BaseJob
             }
 
             if($isDapper){
-                SaleOffer::isSportvatar()->whereFlowId($nftId)->delete();
+                $offerQuery()->delete();
             }
 
-            if($sportvatar && $isPurchased){
+            if($sportvatar && $isPurchased && $currency !== null){
                 Sale::firstOrCreate(
                     [
                         'item_id' => $sportvatar->id,
                         'item_type' => 'App\Models\Sportvatar',
                         'price' => $price,
-                        'flow_buyer_address' => ($isDapper) ? null : $event->flow_metadata['to'],
+                        'flow_buyer_address' => ($isDapper) ? null : ($event->flow_metadata['to'] ?? null),
                         'flow_seller_address' => $nftAddress,
                         'transaction_id' => $event->transaction_id,
-                        'is_dapper' => $isDapper
+                        'is_dapper' => ($currency === 'DUC'),
+                        'currency' => $currency
                     ],
                     [
                         'completed_at' => $event->event_date ?? Carbon::now()
@@ -302,8 +320,8 @@ class ProcessGraffleEvents extends BaseJob
                 );
                 $check = true;
 
-            } else if(!$isPurchased) {
-                // listing cancelled/expired: the offer row is gone, nothing else to do
+            } else if(!$isPurchased || $currency === null) {
+                // listing cancelled/expired (or an unsupported currency): the offer row is gone, nothing else to do
                 $check = true;
             } else {
                 info('Sale Completed event skipped because Sportvatar was not found!!!!');
@@ -316,6 +334,7 @@ class ProcessGraffleEvents extends BaseJob
             $nftAddress = null;
             $price = null;
             $listingId = null;
+            $mint = null;
             if($event->type == $this->getStorefrontEventAddress('StorefrontSaleCreated')){
                 //DAPPER
                 info('DAPPER COMPONENT ON SALE!');
@@ -330,6 +349,9 @@ class ProcessGraffleEvents extends BaseJob
                 $price = $event->flow_metadata['price'];
                 $mint = isset($event->flow_metadata['mint']) ? $event->flow_metadata['mint'] : null;
             }
+            // DUC (Dapper Wallet, USD) or FLOW (Flow Wallet) listing; events without the field are legacy DUC
+            $currency = isset($event->flow_metadata['salePaymentVaultType']) ? $this->getStorefrontCurrency($event->flow_metadata) : 'DUC';
+            $isDapper = ($currency === 'DUC');
 
 
             $component = Sportbit::whereFlowId($nftId)->first();
@@ -337,7 +359,10 @@ class ProcessGraffleEvents extends BaseJob
                 $component = $this->syncSportbitFromFlowAddress($nftId, $nftAddress);
             }
 
-            if($component) {
+            if($component && $currency === null) {
+                info('Sportbit listing '.$listingId.' skipped: unsupported payment vault');
+                $check = true;
+            } else if($component) {
 
                 if($price <= 999999) {
                     SaleOffer::updateOrCreate(
@@ -350,6 +375,7 @@ class ProcessGraffleEvents extends BaseJob
                             'flow_metadata' => $component->flow_metadata,
                             'flow_address' => $nftAddress,
                             'price' => $price,
+                            'currency' => $currency,
                             'is_completed' => false,
                             'is_dapper' => $isDapper,
                             'listing_id' => $listingId
@@ -389,9 +415,18 @@ class ProcessGraffleEvents extends BaseJob
             $price = $event->flow_metadata['salePrice'];
             $listingId = $event->flow_metadata['listingResourceID'];
             $isPurchased = $event->flow_metadata['purchased'];
+            $currency = isset($event->flow_metadata['salePaymentVaultType']) ? $this->getStorefrontCurrency($event->flow_metadata) : 'DUC';
 
             $component = Sportbit::whereFlowId($nftId)->first();
-            $saleOffer = SaleOffer::isComponent()->whereFlowId($nftId)->first();
+            // Only the offer of THIS listing (a newer listing of the same NFT must survive an old listing's completion)
+            $offerQuery = function() use ($nftId, $listingId) {
+                $q = SaleOffer::isComponent()->whereFlowId($nftId);
+                if($listingId){
+                    $q->where(function($w) use ($listingId){ $w->whereNull('listing_id')->orWhere('listing_id', $listingId); });
+                }
+                return $q;
+            };
+            $saleOffer = $offerQuery()->first();
 
             $nftAddress = ($saleOffer) ? $saleOffer->flow_address : '';
             if(!$component && $nftAddress){
@@ -403,10 +438,10 @@ class ProcessGraffleEvents extends BaseJob
                 $component = $saleOffer->item;
             }
 
-            SaleOffer::isComponent()->whereFlowId($nftId)->delete();
+            $offerQuery()->delete();
 
 
-            if($component && $isPurchased){
+            if($component && $isPurchased && $currency !== null){
                 info('DAPPER COMPONENT SOLD - create sale!');
                 Sale::firstOrCreate(
                     [
@@ -416,7 +451,8 @@ class ProcessGraffleEvents extends BaseJob
                         'flow_buyer_address' => null,
                         'flow_seller_address' => $nftAddress,
                         'transaction_id' => $event->transaction_id,
-                        'is_dapper' => true
+                        'is_dapper' => ($currency === 'DUC'),
+                        'currency' => $currency
                     ],
                     [
                         'completed_at' => $event->event_date ?? Carbon::now()
@@ -424,7 +460,7 @@ class ProcessGraffleEvents extends BaseJob
                 );
                 $check = true;
 
-            } else if(!$isPurchased) {
+            } else if(!$isPurchased || $currency === null) {
                 $check = true;
             } else {
                 info('Sale Completed event skipped because Component was not found!!!!');

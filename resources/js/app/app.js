@@ -115,8 +115,37 @@ Alpine.data('appData', () => ({
         window.logout();
     },
     cancelAccountInit(){
+        // Flow Wallet setup is optional (transactions create what they need); just close the popup
         this.showInitPopup = false;
-        window.logout();
+    },
+    // Wallet / listing currency helpers (see actions.js): Dapper Wallet trades in DUC (shown as USD), Flow Wallet in FLOW
+    isDapperWallet(){
+        return this.currentWallet == 'dapper';
+    },
+    walletCurrency(){
+        return this.user && this.user.addr ? window.walletCurrency(this.currentWallet) : null;
+    },
+    walletCurrencyLabel(){
+        return window.currencyLabel(this.walletCurrency());
+    },
+    walletName(){
+        return window.walletName(this.currentWallet);
+    },
+    listingCurrency(offer){
+        return window.listingCurrency(offer);
+    },
+    listingCurrencyLabel(offer){
+        return window.currencyLabel(window.listingCurrency(offer));
+    },
+    // true when the connected wallet can pay this listing (no wallet connected = true, the button asks to connect)
+    canPayListing(offer){
+        if(!this.user || !this.user.addr){
+            return true;
+        }
+        return window.canPayListing(offer, this.currentWallet);
+    },
+    requiredWalletName(offer){
+        return window.listingCurrency(offer) === 'FLOW' ? 'Flow Wallet' : 'Dapper Wallet';
     },
     categories: ['body', 'clothing', 'nose', 'mouth', 'facialHair', 'hair', 'eyes', 'accessory', 'eyeglasses', 'hat', 'background'],
     basicCategories: ['body', 'clothing', 'nose', 'mouth', 'facialHair', 'hair', 'eyes'],

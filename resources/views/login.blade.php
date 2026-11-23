@@ -104,7 +104,7 @@
      x-data="appData"
      x-init="initApp($dispatch); jsLoaded = true;"
      @user-check-finish.window="userCheckLoading = false;"
-     @user-loaded.window="user = $event.detail.user; handleLoginClick();"
+     @user-loaded.window="user = $event.detail.user; if($event.detail.wallet){ currentWallet = $event.detail.wallet; } handleLoginClick();"
      @profile-loaded.window="profile = $event.detail.profile; userCheckLoading = false;"
      @logged-out.window="user = null; profile = null;"
      @loading-start.window="loading = true; waitingSeal = false;"

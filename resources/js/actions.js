@@ -30,6 +30,15 @@ import {packRedeemTx} from './flow/pack-redeem.tx';
 import {packRedeemAndOpenTx} from './flow/pack-redeem-and-open.tx';
 import {getPacksScript} from './flow/get-packs.script';
 import {checkPacksScript} from './flow/check-packs.script';
+// Flow Wallet (non-Dapper) variants. The Dapper transactions above are left byte-identical (Dapper-approved code).
+import {isInitializedScript} from './flow/is-initialized.script';
+import {initAccountFlowTx} from './flow/init-account-flow.tx';
+import {sportvatarSaleCreateFlowTx} from './flow/sportvatar-sale-create-flow.tx';
+import {sportvatarSaleBuyFlowTx} from './flow/sportvatar-sale-buy-flow.tx';
+import {componentSaleCreateFlowTx} from './flow/component-sale-create-flow.tx';
+import {componentSaleBuyFlowTx} from './flow/component-sale-buy-flow.tx';
+import {sportvatarSendGiftTx} from './flow/sportvatar-send-gift.tx';
+import {componentSendGiftTx} from './flow/component-send-gift.tx';
 
 
 import './classes/Helpers';
@@ -57,6 +66,53 @@ window.dispatch = null;
 window.currentWallet = null;
 window.txId = null;
 window.txFirstRun = false;
+
+/**
+ * Which wallet is connected: 'dapper' or 'flow' (Flow Wallet or any other non-Dapper wallet).
+ * Looks at every FCL service (FCL >= 1.10 no longer guarantees that services[0] is the authn service),
+ * the authn endpoint and the provider address (Dapper mainnet 0xead892083b3e2c6c, testnet 0x82ec283f88a62e65).
+ */
+window.detectWallet = function(user){
+    const services = (user && user.services) ? user.services : [];
+    const isDapper = services.some(function(s){
+        const uid = (s.uid || '').toLowerCase();
+        const endpoint = (s.endpoint || '').toLowerCase();
+        const provider = (s.provider && s.provider.address) ? s.provider.address.toLowerCase() : '';
+        return uid.indexOf('dapper') >= 0 || endpoint.indexOf('meetdapper.com') >= 0
+            || provider === '0xead892083b3e2c6c' || provider === '0x82ec283f88a62e65';
+    });
+    return isDapper ? 'dapper' : 'flow';
+}
+
+/**
+ * Listing currency a wallet trades in: Dapper Wallet = 'DUC' (shown as USD), Flow Wallet = 'FLOW'.
+ * A Flow Wallet must never create DUC listings (its DUC receiver forwards to Dapper) and can't pay DUC;
+ * Dapper Wallet only signs the Dapper-approved DUC transactions.
+ */
+window.walletCurrency = function(wallet){
+    wallet = wallet || window.currentWallet;
+    if(wallet === 'dapper'){
+        return 'DUC';
+    }
+    if(wallet === 'flow'){
+        return 'FLOW';
+    }
+    return null;
+}
+window.currencyLabel = function(currency){
+    return currency === 'FLOW' ? 'FLOW' : 'USD';
+}
+window.walletName = function(wallet){
+    return wallet === 'dapper' ? 'Dapper Wallet' : 'Flow Wallet';
+}
+// Listings without a currency are legacy DUC listings
+window.listingCurrency = function(offer){
+    return (offer && offer.currency) ? offer.currency : 'DUC';
+}
+window.canPayListing = function(offer, wallet){
+    const currency = window.walletCurrency(wallet);
+    return currency !== null && currency === window.listingCurrency(offer);
+}
 
 window.blacklistedAddresses = [
     '0x2b3733faa486deb3',
@@ -89,6 +145,8 @@ async function updateUser(user){
     window.user = user;
 
     if(user.addr) {
+        // Decide the wallet here, before choosing which init check / transactions to use
+        window.currentWallet = window.detectWallet(user);
 
         let isBlacklisted = _.find(window.blacklistedAddresses, (item) => {
             return item == user.addr;
@@ -98,7 +156,20 @@ async function updateUser(user){
             window.dispatch('user-blacklisted', {});
             window.logout();
         } else {
-            window.dispatch('user-loaded', {user: user});
+            window.dispatch('user-loaded', {user: user, wallet: window.currentWallet});
+            if(window.currentWallet != 'dapper'){
+                // Flow Wallet: offer the account setup (collections + storefront) when it's missing.
+                // Dapper keeps its previous behaviour (no init popup; its approved transactions create what they need).
+                try {
+                    const initialized = await isInitializedScript(user.addr);
+                    if(!initialized){
+                        window.dispatch('user-not-initialized');
+                    }
+                } catch(error){
+                    console.log('is-initialized check failed');
+                    console.log(error);
+                }
+            }
             await refreshProfile();
         }
     } else {
@@ -106,6 +177,33 @@ async function updateUser(user){
     }
 }
 
+
+window.loadInitUser = async function(){
+    if(window.currentWallet == 'dapper'){
+        // Dapper accounts are set up by Dapper's approved transactions
+        return;
+    }
+    try {
+        window.dispatch('loading-start');
+        const txId = await initAccountFlowTx();
+        window.dispatch('waiting-seal');
+        const unsub = await fcl.tx(txId).subscribe(transaction => {
+            window.readTransaction(transaction);
+            if (fcl.tx.isSealed(transaction)) {
+                if(!window.transError(transaction)){
+                    window.dispatch('loading-completed');
+                    window.dispatch('account-initialized', {account: window.user});
+                    refreshProfile();
+                } else {
+                    window.dispatch('transaction-error', {message: window.transError(transaction)});
+                }
+                unsub();
+            }
+        });
+    } catch(error){
+        window.dispatch('transaction-error', {message: error});
+    }
+}
 
 window.readTransaction = function(transaction){
     console.log(transaction);
@@ -684,12 +782,29 @@ window.checkSportvatarAvailability = async function(series, layers){
 
 
 
-window.buyComponentSale = async function(saleAddress, tokenId, amount){
+// Refuses a listing the connected wallet can't pay: DUC listings need Dapper Wallet, FLOW listings a Flow Wallet.
+window.checkListingWallet = function(currency){
+    currency = currency || 'DUC';
+    if(window.walletCurrency() === currency){
+        return true;
+    }
+    window.dispatch('transaction-error', {message: 'This item is listed in ' + window.currencyLabel(currency) + ': connect a ' + (currency === 'FLOW' ? 'Flow Wallet' : 'Dapper Wallet') + ' to buy it.'});
+    return false;
+}
+
+window.buyComponentSale = async function(saleAddress, tokenId, amount, currency){
     console.log('component purchase start');
+    if(!window.checkListingWallet(currency)){
+        return;
+    }
     window.dispatch('loading-start');
 
     try{
-        window.txId = await componentSaleBuyTx(saleAddress, tokenId, amount, process.env.MIX_DAPPER_MERCHANT);
+        if(currency === 'FLOW'){
+            window.txId = await componentSaleBuyFlowTx(saleAddress, tokenId, amount);
+        } else {
+            window.txId = await componentSaleBuyTx(saleAddress, tokenId, amount, process.env.MIX_DAPPER_MERCHANT);
+        }
 
         console.log('component purchase finish');
         window.dispatch('waiting-seal');
@@ -768,7 +883,14 @@ window.createComponentSale = async function(componentId, price){
     window.dispatch('loading-start');
     try{
         let expiry = Math.floor(Date.now()) + (60 * 60 * 24 * 365); //expires in one year
-        window.txId = await componentSaleCreateTx(componentId, price, 'Sportbit', expiry);
+        if(window.currentWallet == 'dapper'){
+            window.txId = await componentSaleCreateTx(componentId, price, 'Sportbit', expiry);
+        } else if(window.currentWallet == 'flow'){
+            // Flow Wallet: FLOW listing only (never DUC)
+            window.txId = await componentSaleCreateFlowTx(componentId, price, 'Sportbit', expiry);
+        } else {
+            throw new Error('Connect a wallet first');
+        }
         console.log('component sale create finish');
         window.dispatch('waiting-seal');
         setTimeout(function(){
@@ -883,11 +1005,18 @@ window.sportvatarRemoveSportbitInternalTx = async function(txId, sportvatarId){
     }
 }
 
-window.buySportvatarSale = async function(saleAddress, tokenId, amount){
+window.buySportvatarSale = async function(saleAddress, tokenId, amount, currency){
     console.log('sportvatar purchase start');
+    if(!window.checkListingWallet(currency)){
+        return;
+    }
     window.dispatch('loading-start');
     try{
-        window.txId = await sportvatarSaleBuyTx(saleAddress, tokenId, amount, process.env.MIX_DAPPER_MERCHANT);
+        if(currency === 'FLOW'){
+            window.txId = await sportvatarSaleBuyFlowTx(saleAddress, tokenId, amount);
+        } else {
+            window.txId = await sportvatarSaleBuyTx(saleAddress, tokenId, amount, process.env.MIX_DAPPER_MERCHANT);
+        }
         console.log('sportvatar purchase finish');
         window.dispatch('waiting-seal');
         setTimeout(function(){
@@ -964,7 +1093,14 @@ window.createSportvatarSale = async function(sportvatarId, price){
     window.dispatch('loading-start');
     try{
         let expiry = Math.floor(Date.now()) + (60 * 60 * 24 * 365); //expires in one year
-        window.txId = await sportvatarSaleCreateTx(sportvatarId, price, 'Sportvatar', expiry);
+        if(window.currentWallet == 'dapper'){
+            window.txId = await sportvatarSaleCreateTx(sportvatarId, price, 'Sportvatar', expiry);
+        } else if(window.currentWallet == 'flow'){
+            // Flow Wallet: FLOW listing only (never DUC)
+            window.txId = await sportvatarSaleCreateFlowTx(sportvatarId, price, 'Sportvatar', expiry);
+        } else {
+            throw new Error('Connect a wallet first');
+        }
         console.log('sportvatar sale create finish');
         window.dispatch('waiting-seal');
         setTimeout(function(){
@@ -1000,6 +1136,34 @@ window.createSportvatarSaleTx = async function(txId){
 }
 
 
+
+// Gifts (same transaction for both wallets; for Dapper Wallet it must be approved in the Dapper dashboard)
+window.sendGiftTx = async function(txFn, id, address, eventName){
+    window.dispatch('loading-start');
+    try{
+        window.txId = await txFn(id, address);
+        window.dispatch('waiting-seal');
+        const unsub = await fcl.tx(window.txId).subscribe(transaction => {
+            if (fcl.tx.isSealed(transaction)) {
+                if(!window.transError(transaction)){
+                    window.dispatch(eventName, {id: id, address: address});
+                    window.dispatch('loading-completed');
+                } else {
+                    window.dispatch('transaction-error', {message: window.transError(transaction)});
+                }
+                unsub();
+            }
+        });
+    } catch(error){
+        window.dispatch('transaction-error', {message: error});
+    }
+}
+window.sportvatarSendGift = async function(sportvatarId, address){
+    await window.sendGiftTx(sportvatarSendGiftTx, sportvatarId, address, 'sportvatar-gift-sent');
+}
+window.componentSendGift = async function(componentId, address){
+    await window.sendGiftTx(componentSendGiftTx, componentId, address, 'fcomponent-gift-sent');
+}
 
 window.getSportvatar = async function(address, sportvatarId){
     await getSportvatarScript(address, sportvatarId).then(function(data){

@@ -81,6 +81,14 @@
                 <option value="sportbits">Sportbit</option>
             </select>
         </div>
+        <div class="select-wrap md">
+            <span class="label">Currency</span>
+            <select x-model="searchCurrency">
+                <option value="all">All</option>
+                <option value="DUC">USD (Dapper Wallet)</option>
+                <option value="FLOW">FLOW (Flow Wallet)</option>
+            </select>
+        </div>
         <div x-show="searchCat == 'sportbits'" class="select-wrap md">
             <span class="label">Sportbit</span>
             <select x-model="searchCat2">

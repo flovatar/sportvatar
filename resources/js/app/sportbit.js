@@ -125,7 +125,23 @@ Alpine.data('componentData', (address, templates, componentSaleOffer) => ({
         if(this.isSale() && !this.isOwned()) {
             console.log('buy sale');
             if(this.componentSaleOffer && this.componentSaleOffer.listing_id && this.componentSaleOffer.price)
-            window.buyComponentSale(this.address, this.componentSaleOffer.listing_id, this.componentSaleOffer.price);
+            window.buyComponentSale(this.address, this.componentSaleOffer.listing_id, this.componentSaleOffer.price, window.listingCurrency(this.componentSaleOffer));
+        }
+    },
+    offerCurrencyLabel(){
+        return window.currencyLabel(window.listingCurrency(this.componentSaleOffer));
+    },
+    canBuyOffer(){
+        return this.canPayListing(this.componentSaleOffer);
+    },
+    sendGift(){
+        if(this.component && this.isOwned() && this.currentGiftAddress) {
+            window.componentSendGift(this.component.id, this.currentGiftAddress);
+        }
+    },
+    handleGiftSent(){
+        if(this.component && this.currentGiftAddress){
+            window.location = '/components/'+this.component.id+'/'+this.currentGiftAddress;
         }
     },
     handlePurchaseCompleted(){
@@ -134,7 +150,7 @@ Alpine.data('componentData', (address, templates, componentSaleOffer) => ({
     },
     handleOfferCreated(){
         console.log('sale created!');
-        this.componentSaleOffer = {price: this.currentPrice};
+        this.componentSaleOffer = {price: this.currentPrice, currency: window.walletCurrency()};
     },
     handleOfferDeleted(){
         console.log('sale deleted!');

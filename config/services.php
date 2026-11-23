@@ -32,6 +32,9 @@ return [
     'flow' => [
         'address' => env('FLOW_MARKET_ADDRESS'),
         'storefrontaddress' => env('MIX_CONTRACT_STOREFRONT2', '0x2d55b98eb200daef'),
+        // Payment vault contracts of storefront listings: DUC (Dapper Wallet, shown as USD) or FLOW (Flow Wallet)
+        'ducaddress' => env('MIX_CONTRACT_DUC', '0xead892083b3e2c6c'),
+        'flowtokenaddress' => env('MIX_CONTRACT_FLOW_TOKEN', '0x1654653399040a61'),
         'path' => env('FLOW_PATH', '~/.local/bin'),
         'network' => env('FLOW_NETWORK', 'emulator'),
         'minBlockHeight' => env('FLOW_MIN_BLOCK_HEIGHT', 0),
