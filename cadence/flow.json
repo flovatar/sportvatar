@@ -136,14 +136,14 @@
 			"source": "./contracts/FlovatarComponent.cdc",
 			"aliases": {
 				"mainnet": "921ea449dffec68a",
-				"testnet": "9392a4a7c3f49a0b"
+				"testnet": "2c6a4c4342aeca55"
 			}
 		},
 		"FlovatarComponentTemplate": {
 			"source": "./contracts/FlovatarComponentTemplate.cdc",
 			"aliases": {
 				"mainnet": "921ea449dffec68a",
-				"testnet": "9392a4a7c3f49a0b"
+				"testnet": "2c6a4c4342aeca55"
 			}
 		},
 		"Sportbit": "./contracts/Sportbit.cdc",
@@ -171,7 +171,7 @@
 			}
 		},
 		"testnet-account": {
-			"address": "acb1ef5cc68a95b8",
+			"address": "c80df59e5354ca8a",
 			"key": {
 				"type": "file",
 				"location": "testnet.pkey"

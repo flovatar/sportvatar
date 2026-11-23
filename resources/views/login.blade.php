@@ -98,6 +98,7 @@
     </script>
 </head>
 <body class="{{request()->routeIs('home', 'builder') ? 'header-transparent ' : ''}}">
+@include('partials.env-banner')
 <div id="wrapper"
      x-bind:class="jsLoaded ? 'jsloaded' : ''"
      x-data="appData"

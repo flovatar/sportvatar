@@ -15,6 +15,9 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
+    // Optional banner shown on every page (staging/testnet only, e.g. "TESTNET"). Leave empty on production.
+    'banner' => env('APP_BANNER'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment

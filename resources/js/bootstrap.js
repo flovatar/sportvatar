@@ -89,4 +89,14 @@ config()
     .put("0xDuc", process.env.MIX_CONTRACT_DUC) // Will let us use `0xDuc` in our Cadence
     .put("0xFut", process.env.MIX_CONTRACT_DUC) // Will let us use `0xFut` in our Cadence
 
+// Network-aware extras (unset on production = unchanged behaviour). Testnet build:
+// MIX_FLOW_NETWORK=testnet, MIX_WALLET_DISCOVERY=https://fcl-discovery.onflow.org/testnet/authn,
+// MIX_WALLET_DISCOVERY_INCLUDE=0x82ec283f88a62e65 (Dapper testnet).
+if (process.env.MIX_FLOW_NETWORK) {
+    config().put("flow.network", process.env.MIX_FLOW_NETWORK);
+}
+if (process.env.MIX_WALLET_DISCOVERY_INCLUDE) {
+    config().put("discovery.authn.include", process.env.MIX_WALLET_DISCOVERY_INCLUDE.split(',').map(a => a.trim()).filter(a => a));
+}
+
 
