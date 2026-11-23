@@ -20,6 +20,13 @@ class EnsurePackSalesEnabled
             return $next($request);
         }
 
+        // Admin wallets (ADMIN_ADDRESSES) can use the pages while they are off, to test before opening to everyone.
+        // Safe: claims/purchases still need the on-chain switch (owner-kit S5) and a valid voucher.
+        $user = $request->user();
+        if ($user && method_exists($user, 'isAdmin') && $user->isAdmin()) {
+            return $next($request);
+        }
+
         $notice = __((string) config('sportvatar.packSalesNotice'));
 
         if ($request->expectsJson() || ! $request->isMethod('GET')) {
