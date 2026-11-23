@@ -14,8 +14,14 @@ class BuilderController extends Controller
     public function __invoke()
     {
 
-        $templates = $this->getTemplates();
         $series = $this->getSeries();
+        $templates = $this->getTemplates();
+        // Only the templates of the Builder's series (a Sport Flame and its traits must belong to the same series).
+        // Mainnet has a single series, so nothing changes there.
+        $seriesRow = $series->first();
+        if ($seriesRow) {
+            $templates = $templates->where('sportvatar_series_id', $seriesRow->id)->values();
+        }
         $flameSales = $this->getFlameSales();
 
         return view('builder')->with(['templates' => $templates, 'series' => $series, 'flameSales' => $flameSales]);

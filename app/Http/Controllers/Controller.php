@@ -44,7 +44,9 @@ class Controller extends BaseController
         });
     }
 
-    protected function getSeries($series = 1){
+    // The Series used by the Builder and the Sportvatar/Sportbit pages: SPORTVATAR_SERIES (flow id), default 1 (mainnet).
+    protected function getSeries($series = null){
+        $series = (int) ($series ?? config('sportvatar.series', 1));
         return Cache::remember('db-sportvatar-series-'.$series, now()->addMinutes(60), function() use ($series) {
             return SportvatarSeries::whereFlowId($series)->orderBy('id', 'asc')->get();
         });

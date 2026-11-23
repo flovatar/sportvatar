@@ -46,6 +46,10 @@ return [
     */
     'packSalesEnabled' => env('SPORTVATAR_PACK_SALES_ENABLED', false),
     'packClaimsEnabled' => env('SPORTVATAR_PACK_CLAIMS_ENABLED', false),
+
+    // Series (flow id) offered by the Builder; its templates are the only ones listed there. Mainnet: 1.
+    // Testnet: 2 (series 1 there is the rehearsal fixture with placeholder art and an SVG prefix without viewBox).
+    'series' => (int) env('SPORTVATAR_SERIES', 1),
     'packSalesNotice' => env('SPORTVATAR_PACK_SALES_NOTICE') ?: ('Pack sales and free-pack claims are paused while Sportvatar moves to its new server and the contracts are upgraded. Packs and Sportvatars you already own are safe on the blockchain.'),
 
     // Exported images (gif/png/mp4/svg) live on the CDN bucket behind images.sportvatar.com.
