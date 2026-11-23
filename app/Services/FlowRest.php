@@ -10,7 +10,8 @@ class FlowRest
 {
     public static function baseUrl(): string
     {
-        return env('FLOW_NETWORK', 'mainnet') === 'mainnet' ? 'https://rest-mainnet.onflow.org' : 'https://rest-testnet.onflow.org';
+        // config(), not env(): env() returns null once `config:cache` ran, which silently sent testnet calls to mainnet
+        return rtrim((string) (config('services.flow.rest') ?: 'https://rest-mainnet.onflow.org'), '/');
     }
 
     /** Runs a Cadence script and returns the decoded value. */
