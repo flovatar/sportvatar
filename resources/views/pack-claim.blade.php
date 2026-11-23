@@ -3,6 +3,8 @@
         window.packClaimCode = '{{ isset($packcode) ? $packcode : '' }}';
     </script>
     <div    x-data="packData()"
+            @free-packs-pending.window="fpCount = $event.detail.count"
+            @logged-out.window="fpCount = 0"
             @pack-pre-reserved.window="packData = $event.detail"
             @pack-checked.window="packAvailable = $event.detail; if(!packAvailable){ packRedeemCode = '';}">
 
@@ -24,7 +26,7 @@
                 <div class="features sales-features">
                     <div class="intro">
                         @if(!isset($packcode) || !$packcode)
-                            <strong class="block-title" x-show="loggedIn() && !sealingPack">{{ __('Enter the Pack redeem code that you received') }}</strong>
+                            <strong class="block-title" x-show="loggedIn() && !sealingPack && fpCount == 0">{{ __('Enter the Pack redeem code that you received') }}</strong>
                         @else
                             <strong class="block-title" x-show="loggedIn() && !sealingPack">{{ __('You\'re one step away from your free pack!') }}</strong>
                         @endif
@@ -33,6 +35,20 @@
                             <h1 x-show="loggedIn() && !sealingPack">{{ __('Claim your pack and let the fun begin') }}</h1>
                             <h1 x-show="!loggedIn()">{{ __('Please Login or Signup to claim your free Pack')  }}</h1>
                             <h1 x-show="loggedIn() && sealingPack && packPurchased">{{ __('Congratulations! You just claimed your Sportvatar Pack.') }}</h1>
+                            {{-- Free packs linked to the connected wallet (address-bound vouchers): no code needed --}}
+                            <div id="free-packs-waiting" x-show="loggedIn() && !sealingPack && fpCount > 0"
+                                 style="display:none;text-align:center;margin:24px auto 0;max-width:640px;padding:20px 24px;border:2px solid #12b76a;border-radius:16px;">
+                                <strong class="block-title" style="display:block;margin-bottom:6px;" x-text="fpCount == 1 ? {{ \Illuminate\Support\Js::from(__('You have 1 free pack waiting')) }} : {{ \Illuminate\Support\Js::from(__('You have :count free packs waiting')) }}.replace(':count', fpCount)"></strong>
+                                <span class="note" style="display:block;margin-bottom:16px;">{{ __('It is linked to the connected wallet: no code needed. Claim it, or claim and open it in one step.') }}</span>
+                                <div class="btn-hold" style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+                                    <button id="claim-waiting-pack" @click.prevent.stop="window.dispatch('loading-started'); window.claimWithVoucher('', false)" class="btn-green btn-o btn-home-cta flash">
+                                        <span class="inner">{{ __('Claim pack') }}</span>
+                                    </button>
+                                    <button id="claim-open-waiting-pack" @click.prevent.stop="window.dispatch('loading-started'); window.claimWithVoucher('', true)" class="btn-green btn-o btn-home-cta">
+                                        <span class="inner">{{ __('Claim & open') }}</span>
+                                    </button>
+                                </div>
+                            </div>
                     </div>
                 </div>
             </div>
@@ -41,24 +57,6 @@
 
         <section class="pre-sale-registration free-pack-form">
             <div class="container" x-show="!sealingPack">
-                {{-- Free packs linked to the connected wallet (address-bound vouchers): no code needed --}}
-                <div id="free-packs-waiting"
-                     x-data="{ fp: window.pendingFreePacks || { count: 0 } }"
-                     @free-packs-pending.window="fp = $event.detail"
-                     @logged-out.window="fp = { count: 0 }"
-                     x-show="loggedIn() && fp.count > 0"
-                     style="display:none;text-align:center;margin:0 auto 32px;max-width:640px;padding:20px 24px;border:2px solid #12b76a;border-radius:16px;">
-                    <strong class="block-title" style="display:block;margin-bottom:6px;" x-text="fp.count == 1 ? {{ \Illuminate\Support\Js::from(__('You have 1 free pack waiting')) }} : {{ \Illuminate\Support\Js::from(__('You have :count free packs waiting')) }}.replace(':count', fp.count)"></strong>
-                    <span class="note" style="display:block;margin-bottom:16px;">{{ __('It is linked to the connected wallet: no code needed. Claim it, or claim and open it in one step.') }}</span>
-                    <div class="btn-hold" style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
-                        <button id="claim-waiting-pack" @click.prevent.stop="window.dispatch('loading-started'); window.claimWithVoucher('', false)" class="btn-green btn-o btn-home-cta flash">
-                            <span class="inner">{{ __('Claim pack') }}</span>
-                        </button>
-                        <button id="claim-open-waiting-pack" @click.prevent.stop="window.dispatch('loading-started'); window.claimWithVoucher('', true)" class="btn-green btn-o btn-home-cta">
-                            <span class="inner">{{ __('Claim & open') }}</span>
-                        </button>
-                    </div>
-                </div>
                 <div class="form-content" x-show="loggedIn() && {{ isset($packcode) && $packcode ? 'false' : 'true' }}">
                     <div class="form-content-holder">
                         <div class="form-col">

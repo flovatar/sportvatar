@@ -6,6 +6,8 @@ Alpine.data('packData', () => ({
     packId: null,
     packCode: null,
     packAvailable: true,
+    // free packs waiting for the connected wallet (window.checkPendingPacks -> 'free-packs-pending')
+    fpCount: (window.pendingFreePacks && window.pendingFreePacks.count) || 0,
     init(){
         let self = this;
         //window.preReservePack('terrakit');
