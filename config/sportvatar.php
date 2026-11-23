@@ -4,6 +4,9 @@ return [
 
     'isLive' => env('SPORTVATAR_LIVE', false),
     'isInternal' => env('SPORTVATAR_INTERNAL', false),
+    // 'daemon' (default): flow:stream + queue workers run under Supervisor.
+    // 'scheduled': no daemons; the scheduler polls the chain and drains the queues every minute (testnet / low-RAM).
+    'indexerMode' => env('FLOW_INDEXER_MODE', 'daemon'),
 
     'packLive' => env('SPORTVATAR_PACK_LIVE', false),
 

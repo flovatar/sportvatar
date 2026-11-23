@@ -27,8 +27,16 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
         // Built-in indexer (flow:stream daemon + REST catch-up) replaces Graffle and the Flow CLI
         // pull sync (sportvatar:sync-events / process-events, which only ingested Created events).
-        $schedule->command('flow:catchup')->everyFiveMinutes()->withoutOverlapping(30)->runInBackground();
-        $schedule->command('flow:process --queue')->everyMinute()->withoutOverlapping();
+        if (config('sportvatar.indexerMode') === 'scheduled') {
+            // No Supervisor daemons: poll the chain, process inline and drain the job queues every minute.
+            $schedule->command('flow:catchup')->everyMinute()->withoutOverlapping(10)->runInBackground();
+            $schedule->command('flow:process')->everyMinute()->withoutOverlapping(10)->runInBackground();
+            $schedule->command('queue:work redis --queue=flow-events,default,images --stop-when-empty --max-time=50 --tries=3 --memory=192')
+                ->everyMinute()->withoutOverlapping(10)->runInBackground();
+        } else {
+            $schedule->command('flow:catchup')->everyFiveMinutes()->withoutOverlapping(30)->runInBackground();
+            $schedule->command('flow:process --queue')->everyMinute()->withoutOverlapping();
+        }
         //$schedule->command('sportvatar:sync-queueit')->everyFiveMinutes();
         $schedule->command('sportvatar:clean-packs')->hourly();
         //$schedule->command('sportvatar:process-graffle')->everyThirtyMinutes();
