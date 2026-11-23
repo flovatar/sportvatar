@@ -42,9 +42,9 @@ class ReleaseVoucherReservations extends Command
 import SportvatarPack from $contract
 
 // For each pack id: who holds it among the contract account and the given wallets ("" = nobody of them / opened)
-access(all) fun main(contract: Address, wallets: [Address], ids: [UInt64]): {UInt64: Address} {
+access(all) fun main(packOwner: Address, wallets: [Address], ids: [UInt64]): {UInt64: Address} {
     let out: {UInt64: Address} = {}
-    var owners: [Address] = [contract]
+    var owners: [Address] = [packOwner]
     owners.appendAll(wallets)
     for owner in owners {
         if let col = getAccount(owner).capabilities.borrow<&{SportvatarPack.CollectionPublic}>(SportvatarPack.CollectionPublicPath) {
