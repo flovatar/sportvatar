@@ -1060,7 +1060,18 @@ window.checkPackAvailable = async function(id){
 // Pack codes v2: exchange a voucher code (or an address-bound free pack) for an on-chain authorisation
 // bound to the logged-in wallet. Requires a verified wallet login (server session).
 // open = true -> claim and open in one transaction.
-window.claimWithVoucher = async function(code, open){
+window.claimWithVoucher = async function(code, open, retried){
+    // The server session must belong to the connected wallet (verified login), otherwise log in first and retry once.
+    const connected = window.user && window.user.addr ? window.user.addr.toLowerCase() : null;
+    const sessionAddress = window.loginAddress ? window.loginAddress.toLowerCase() : null;
+    if(!connected){
+        fcl.authenticate();
+        return;
+    }
+    if(sessionAddress !== connected && !retried){
+        window.walletLogin(function(){ window.claimWithVoucher(code, open, true); });
+        return;
+    }
     window.dispatch('loading-start');
     try {
         const response = await axios.post('/pack/authorize-claim', {code: code});
@@ -1075,6 +1086,11 @@ window.claimWithVoucher = async function(code, open){
             await window.redeemPack(a.packId, a.expiry, a.signature);
         }
     } catch (error) {
+        if (error && error.response && error.response.status == 401 && !retried) {
+            window.dispatch('loading-completed');
+            window.walletLogin(function(){ window.claimWithVoucher(code, open, true); });
+            return;
+        }
         const msg = error && error.response && error.response.data && error.response.data.message ? error.response.data.message : error;
         window.dispatch('transaction-error', {message: msg});
     }

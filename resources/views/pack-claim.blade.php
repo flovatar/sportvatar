@@ -48,6 +48,7 @@
                                 <div x-show="showSubscription" class="form-row">
                                     <div class="input-hold">
                                         <input class="pack-redeem-input" x-model="packRedeemCode" name="packRedeemCode" type="text" placeholder="{{ __('Pack redeem code') }}">
+                                        <span class="note">{{ __('Flovatar holders: leave it empty, your free packs are linked to your wallet.') }}</span>
                                     </div>
                                 </div>
                             </div>

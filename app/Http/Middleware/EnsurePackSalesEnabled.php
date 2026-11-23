@@ -27,6 +27,12 @@ class EnsurePackSalesEnabled
             return $next($request);
         }
 
+        // Preview of the claim page while paused (?preview=1): lets an admin connect + verify the wallet on the page.
+        // Only the page renders; the authorisation endpoints (POST) stay admin-only until the switch is on.
+        if ($kind === 'claims' && $request->isMethod('GET') && $request->boolean('preview')) {
+            return $next($request);
+        }
+
         $notice = __((string) config('sportvatar.packSalesNotice'));
 
         if ($request->expectsJson() || ! $request->isMethod('GET')) {
