@@ -73,6 +73,10 @@ window.txFirstRun = false;
  * the authn endpoint and the provider address (Dapper mainnet 0xead892083b3e2c6c, testnet 0x82ec283f88a62e65).
  */
 window.detectWallet = function(user){
+    // Dapper-only build (MIX_WALLET_DISCOVERY = Dapper's direct authn URL, production today): every user is Dapper
+    if(window.walletDiscoveryMode === 'dapper'){
+        return 'dapper';
+    }
     const services = (user && user.services) ? user.services : [];
     const isDapper = services.some(function(s){
         const uid = (s.uid || '').toLowerCase();
