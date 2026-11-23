@@ -62,7 +62,10 @@ transaction(saleItemID: UInt64, saleItemPrice: UFix64, customID: String?, expiry
         self.saleCuts = []
 
         // Make sure the item is in the seller's collection
-        assert(Sportvatar.getSportvatar(address: account.address, sportvatarId: saleItemID) != nil, message: "Sportvatar not found in the seller's collection")
+        // Cheap ownership check (Sportvatar.getSportvatar builds the full SVG and exceeds the 9999 computation limit for big Sportvatars)
+        let collection = account.storage.borrow<&Sportvatar.Collection>(from: Sportvatar.CollectionStoragePath)
+            ?? panic("Missing Sportvatar collection")
+        assert(collection.getIDs().contains(saleItemID), message: "Sportvatar not found in the seller's collection")
 
         self.nftProvider = getOrIssueProvider(account: account)
         assert(self.nftProvider.check(), message: "Missing or mis-typed Sportvatar.Collection provider")
