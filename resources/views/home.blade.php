@@ -71,11 +71,13 @@
         </div>
        
     
+    @if(config('sportvatar.packSalesEnabled'))
     <div class="promo-bottom-right">
         <a href="{{ route('pack.comparison') }}" target="_blank" class="pack-sale-promo">
             <img src="/images/CTA-Homepage.svg" alt="">
         </a>
     </div>
+    @endif
 
     <section class="features">
         <div class="container">
