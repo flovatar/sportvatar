@@ -8,6 +8,7 @@ use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
 /**
@@ -54,6 +55,21 @@ class ProcessPendingFlowEvents implements ShouldQueue, ShouldBeUnique
      * @return array{processed:int, synced:int, failed:int, remaining:int}
      */
     public static function processBatch(int $limit, ?callable $progress = null): array
+    {
+        // One processor at a time: with FLOW_INDEXER_MODE=scheduled both the inline `flow:process` and the queue worker
+        // (jobs dispatched by flow:catchup) run every minute and used to apply the same events twice (duplicate sales).
+        $lock = Cache::lock('flow-events-processing', 1800);
+        if (! $lock->get()) {
+            return ['processed' => 0, 'synced' => 0, 'failed' => 0, 'remaining' => static::pendingQuery()->count()];
+        }
+        try {
+            return static::processBatchLocked($limit, $progress);
+        } finally {
+            $lock->release();
+        }
+    }
+
+    private static function processBatchLocked(int $limit, ?callable $progress = null): array
     {
         $processed = $synced = $failed = 0;
         $events = static::pendingQuery()->orderBy('block_id')->orderBy('index')->limit($limit)->get();

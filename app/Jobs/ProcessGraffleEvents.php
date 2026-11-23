@@ -303,18 +303,19 @@ class ProcessGraffleEvents extends BaseJob
             }
 
             if($sportvatar && $isPurchased && $currency !== null){
+                // keyed on (item, transaction): re-processing the same event must not add a second sale
                 Sale::firstOrCreate(
                     [
                         'item_id' => $sportvatar->id,
                         'item_type' => 'App\Models\Sportvatar',
+                        'transaction_id' => $event->transaction_id,
+                    ],
+                    [
                         'price' => $price,
                         'flow_buyer_address' => ($isDapper) ? null : ($event->flow_metadata['to'] ?? null),
                         'flow_seller_address' => $nftAddress,
-                        'transaction_id' => $event->transaction_id,
                         'is_dapper' => ($currency === 'DUC'),
-                        'currency' => $currency
-                    ],
-                    [
+                        'currency' => $currency,
                         'completed_at' => $event->event_date ?? Carbon::now()
                     ]
                 );
@@ -443,18 +444,19 @@ class ProcessGraffleEvents extends BaseJob
 
             if($component && $isPurchased && $currency !== null){
                 info('DAPPER COMPONENT SOLD - create sale!');
+                // keyed on (item, transaction): re-processing the same event must not add a second sale
                 Sale::firstOrCreate(
                     [
                         'item_id' => $component->id,
                         'item_type' => 'App\Models\Sportbit',
+                        'transaction_id' => $event->transaction_id,
+                    ],
+                    [
                         'price' => $price,
                         'flow_buyer_address' => null,
                         'flow_seller_address' => $nftAddress,
-                        'transaction_id' => $event->transaction_id,
                         'is_dapper' => ($currency === 'DUC'),
-                        'currency' => $currency
-                    ],
-                    [
+                        'currency' => $currency,
                         'completed_at' => $event->event_date ?? Carbon::now()
                     ]
                 );
