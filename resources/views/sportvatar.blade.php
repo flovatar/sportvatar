@@ -1,4 +1,8 @@
 <x-guest-layout>
+    @push('og')
+        @php($ogName = \App\Models\Sportvatar::where('flow_id', $sportvatarId)->value('name'))
+        @include('partials.og-item', ['ogType' => 'sportvatar', 'ogId' => $sportvatarId, 'ogTitle' => 'Sportvatar #'.$sportvatarId.($ogName ? ' - '.$ogName : ''), 'ogUrl' => url('sportvatars/'.$sportvatarId)])
+    @endpush
 
     <script>
         @if(isset($templates))
@@ -132,8 +136,12 @@
                                     <div class="input-panel">
                                         <button @click.prevent.stop="saveSvg()" class="btn btn-sm btn-green"><span class="inner">SVG</span></button>
                                         <button @click.prevent.stop="savePng()" class="btn btn-sm btn-green"><span class="inner">PNG</span></button>
-                                        <a target="_blank" x-bind:href="'https://images.sportvatar.com/sportvatar/mp4/'+mint()+'.mp4'" class="btn btn-sm btn-green"><span class="inner">MP4</span></a>
-                                        <a target="_blank" x-bind:href="'https://images.sportvatar.com/sportvatar/gif/'+mint()+'.gif'" class="btn btn-sm btn-green"><span class="inner">GIF</span></a>
+                                        <a target="_blank" x-bind:download="'Sportvatar-'+mint()+'.jpg'" x-bind:href="'/api/image/jpg/'+mint()" class="btn btn-sm btn-green"><span class="inner">JPG</span></a>
+                                        @if(config('render.legacy_fallback'))
+                                        {{-- legacy exports on the prod CDN (none for testnet items) --}}
+                                        <a target="_blank" x-bind:href="'/api/image/mp4/'+mint()" class="btn btn-sm btn-green"><span class="inner">MP4</span></a>
+                                        <a target="_blank" x-bind:href="'/api/image/gif/'+mint()" class="btn btn-sm btn-green"><span class="inner">GIF</span></a>
+                                        @endif
                                     </div>
                                 </dd>
                             </dl>

@@ -25,6 +25,10 @@ class Controller extends BaseController
      * $path is the legacy bucket key, e.g. /sportvatar/gif/12.gif.
      */
     protected function imageFromStorage(string $path){
+        // testnet: legacy exports on the prod CDN belong to other (mainnet) items with the same id
+        if(!config('render.legacy_fallback')){
+            abort(404);
+        }
         if(config('sportvatar.imageProxy') === 'download'){
             return \Illuminate\Support\Facades\Storage::disk('s3')->download($path);
         }

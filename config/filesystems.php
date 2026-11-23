@@ -62,6 +62,20 @@ return [
             'throw' => false,
         ],
 
+        // Item image renders (App\Services\Render). Scoped R2 token (buckets flovatar, sportvatar, flovatar-web,
+        // sportvatar-web; server IP only) - values live in the server .env only, never in git.
+        'r2' => [
+            'driver' => 's3',
+            'key' => env('R2_ACCESS_KEY_ID'),
+            'secret' => env('R2_SECRET_ACCESS_KEY'),
+            'region' => 'auto',
+            'bucket' => env('R2_IMAGES_BUCKET', 'sportvatar'),
+            'endpoint' => env('R2_ENDPOINT'),
+            'url' => env('RENDER_PUBLIC_URL', 'https://images.sportvatar.com'),
+            'use_path_style_endpoint' => true,
+            'throw' => true,
+        ],
+
     ],
 
     /*

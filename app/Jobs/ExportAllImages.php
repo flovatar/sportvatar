@@ -30,6 +30,9 @@ class ExportAllImages extends BaseJob
      */
     public function handle()
     {
+        // New static renderer (resvg -> R2): PNG/JPG/og.
+        RenderItemImages::queue('sportvatar', $this->sportvatarId);
+
         if(!config('sportvatar.imageExportEnabled')){
             info('Image export disabled (SPORTVATAR_IMAGE_EXPORT_ENABLED=false), skipping '.static::class);
             return true;

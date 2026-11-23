@@ -37,7 +37,10 @@ class SportvatarImageController extends Controller
         return $this->imageFromStorage('/sportvatar/gif/'.$sportvatarId.'-nobg.gif');
     }
     public function png($sportvatarId){
-        return $this->imageFromStorage('/sportvatar/png/'.$sportvatarId.'.png');
+        return RenderedImageController::respond('sportvatar', (int) $sportvatarId, 'full.png');
+    }
+    public function jpg($sportvatarId){
+        return RenderedImageController::respond('sportvatar', (int) $sportvatarId, 'full.jpg');
     }
     public function pngNoBg($sportvatarId){
         return $this->imageFromStorage('/sportvatar/png/'.$sportvatarId.'-nobg.png');

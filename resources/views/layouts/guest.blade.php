@@ -21,6 +21,11 @@
     <link rel="canonical" href="https://sportvatar.com/" />
     <meta property="og:locale" content="{{ app()->getLocale() }}" />
     <meta property="og:type" content="website" />
+    @php($ogItem = trim($__env->yieldPushContent('og')))
+    @if($ogItem !== '')
+    {{-- item page: per-item title/url/image (static render on R2, see App\Support\ItemImages) --}}
+    {!! $ogItem !!}
+    @else
     <meta property="og:title" content="Sportvatar" />
     <meta property="og:description" content="{{ __('Sportvatar is a next generation PFP crypto project where people can become creator and choose any combination they like.') }}" />
     <meta property="og:url" content="https://sportvatar.com/" />
@@ -30,6 +35,7 @@
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="https://sportvatar.com/images/share.png" />
+    @endif
     <meta name="twitter:site" content="@sportvatar" />
 
     <!-- Styles -->

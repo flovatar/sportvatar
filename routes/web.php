@@ -115,6 +115,25 @@ Route::get('api/image/nobg/{sportvatarId}', [SportvatarImageController::class,'s
 Route::get('api/image/template/{templateId}', TemplateImageController::class)
     ->whereNumber('templateId')
     ->name('templateimageapi');
+// PNG/JPG: static renders (resvg -> R2); legacy CDN export as fallback on prod only
+Route::get('api/image/png/{sportvatarId}', [SportvatarImageController::class,'png'])
+    ->whereNumber('sportvatarId')
+    ->name('sportvatarimageapipng');
+Route::get('api/image/jpg/{sportvatarId}', [SportvatarImageController::class,'jpg'])
+    ->whereNumber('sportvatarId')
+    ->name('sportvatarimageapijpg');
+Route::get('api/image/gif/{sportvatarId}', [SportvatarImageController::class,'gif'])
+    ->whereNumber('sportvatarId')
+    ->name('sportvatarimageapigif');
+Route::get('api/image/mp4/{sportvatarId}', [SportvatarImageController::class,'mp4'])
+    ->whereNumber('sportvatarId')
+    ->name('sportvatarimageapimp4');
+// full.png | full.jpg | thumb.jpg | og.jpg
+Route::get('api/image/r/{type}/{flowId}/{variant}', \App\Http\Controllers\RenderedImageController::class)
+    ->where('type', 'sportvatar|template')
+    ->whereNumber('flowId')
+    ->where('variant', 'full\\.png|full\\.jpg|thumb\\.jpg|og\\.jpg')
+    ->name('renderedimage');
 
 
 

@@ -1,4 +1,10 @@
 <x-guest-layout>
+    @push('og')
+        @php($ogTemplate = ($templates ?? null) ? $templates->first() : null)
+        @if($ogTemplate)
+        @include('partials.og-item', ['ogType' => 'template', 'ogId' => $ogTemplate->flow_id, 'ogTitle' => 'Sportbit #'.$componentId.' - '.$ogTemplate->name, 'ogUrl' => url('components/'.$componentId)])
+        @endif
+    @endpush
 
     <script>
         @if(isset($templates))
