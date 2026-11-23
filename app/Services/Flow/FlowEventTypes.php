@@ -28,7 +28,9 @@ class FlowEventTypes
         'SportvatarTemplate.IDsRestricted', 'SportvatarTemplate.IDsUnrestricted',
     ];
 
-    const STOREFRONT_EVENTS = ['NFTStorefrontV2.ListingAvailable', 'NFTStorefrontV2.ListingCompleted'];
+    // Cadence 1.0 NFTStorefrontV2 emits ListingCompleted only on purchase; a cancelled (removed) listing only emits the
+    // default destroy event Listing.ResourceDestroyed (nftType / salePaymentVaultType are Strings there, not Types).
+    const STOREFRONT_EVENTS = ['NFTStorefrontV2.ListingAvailable', 'NFTStorefrontV2.ListingCompleted', 'NFTStorefrontV2.Listing.ResourceDestroyed'];
 
     /** NFT types whose storefront listings we keep (marketplace items). */
     const NFT_CONTRACTS = ['Sportvatar.NFT', 'Sportbit.NFT', 'SportvatarPack.Pack'];
@@ -95,7 +97,8 @@ class FlowEventTypes
             return true;
         }
         $nft = is_array($payload) ? ($payload['nftType'] ?? null) : null;
+        $typeId = is_array($nft) ? ($nft['typeID'] ?? null) : (is_string($nft) ? $nft : null);
 
-        return is_array($nft) && in_array($nft['typeID'] ?? null, static::ourNftTypes(), true);
+        return in_array($typeId, static::ourNftTypes(), true);
     }
 }

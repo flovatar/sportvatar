@@ -466,6 +466,17 @@ class ProcessGraffleEvents extends BaseJob
                 info('Sale Completed event skipped because Component was not found!!!!');
             }
 
+        } else if($event->type == $this->getStorefrontEventAddress('StorefrontListingDestroyed')){
+            // A storefront listing was removed (cancelled by the seller, or cleaned up after a purchase/expiry).
+            // Listing resource ids are global uuids, so the offer row is matched by listing id only.
+            $listingId = $event->flow_metadata['listingResourceID'] ?? null;
+            if($listingId){
+                $deleted = SaleOffer::where('listing_id', $listingId)->delete();
+                if($deleted){
+                    info('Storefront listing '.$listingId.' removed: '.$deleted.' offer(s) deleted');
+                }
+            }
+            $check = true;
         } else if($event->type == $this->getEventAddress('SportvatarWithdraw')){
             //No need to do anything in this case
             $check = true;

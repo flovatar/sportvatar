@@ -47,6 +47,7 @@ class BaseJob implements ShouldQueue
             'SportvatarUpdated' => 'Sportvatar.Updated',
             'StorefrontSaleCreated' => 'NFTStorefrontV2.ListingAvailable',
             'StorefrontSaleCompleted' => 'NFTStorefrontV2.ListingCompleted',
+            'StorefrontListingDestroyed' => 'NFTStorefrontV2.Listing.ResourceDestroyed',
         ];
         $this->eventsBaseList = [
             'SportvatarSeriesCreated' => 'SportvatarTemplate.CreatedSeries',
