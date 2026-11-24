@@ -33,7 +33,7 @@ return [
     // public/ entries that are never uploaded as static assets.
     'asset_exclude' => ['index.php', 'storage', '.htaccess', 'web.config', 'hot', 'robots.txt', 'mix-manifest.json.bak'],
 
-    // Laravel host(s) the Worker proxies to (its ORIGIN, prod: origin.sportvatar.com). Direct hits there get
+    // Laravel host(s) the Worker proxies to (its ORIGIN, prod: api.sportvatar.com). Direct hits there get
     // X-Robots-Tag noindex (App\Http\Middleware\HeadlessProxyRequest). Comma separated; empty = none.
     'origin_hosts' => array_values(array_filter(array_map(fn ($h) => strtolower(trim($h)),
         explode(',', (string) env('HEADLESS_ORIGIN_HOSTS', ''))))),

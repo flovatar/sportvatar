@@ -23,11 +23,11 @@ bucket_name = "sportvatar-web"
 # routes = [ { pattern = "next-testnet.sportvatar.com", custom_domain = true } ]
 
 # Production (sportvatar.com cutover, steps: flovatar-kb notes/headless-prod-cutover.md "Sportvatar"):
-# origin.sportvatar.com = Forge alias of the prod site (Cloudflare Origin CA cert, proxied A record -> 2.29.186.126).
+# api.sportvatar.com = Forge alias of the prod site (Cloudflare Origin CA cert, proxied A record -> 2.29.186.126).
 # Attached with a ROUTE (the sportvatar.com A record stays -> rollback = delete the route), not a custom domain.
 [env.production]
 name = "sportvatar-headless-prod"
 workers_dev = false
-vars = { SITE_PREFIX = "site/", ORIGIN = "https://origin.sportvatar.com", NOINDEX = "false" }
+vars = { SITE_PREFIX = "site/", ORIGIN = "https://api.sportvatar.com", NOINDEX = "false" }
 r2_buckets = [ { binding = "SITE", bucket_name = "sportvatar-web" } ]
 # routes = [ { pattern = "sportvatar.com/*", zone_name = "sportvatar.com" } ]

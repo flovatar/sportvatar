@@ -115,7 +115,7 @@ canonical/og:url (the classic layout prints the site-wide `https://sportvatar.co
 (the contract's `ExternalURL`) → 301 `/sportvatars/{id}`.
 
 **Production** (`wrangler.toml` `[env.production]`, Worker `sportvatar-headless-prod`): `SITE_PREFIX=site/`,
-`ORIGIN=https://origin.sportvatar.com` (Forge alias of the prod site, Cloudflare Origin CA certificate, its own `robots.txt` =
+`ORIGIN=https://api.sportvatar.com` (Forge alias of the prod site, Cloudflare Origin CA certificate, its own `robots.txt` =
 `Disallow: /`), `NOINDEX=false`, R2 binding `SITE` → `sportvatar-web`; attached to `sportvatar.com/*` with a **Worker route** (the
 apex DNS record stays, so removing the route is an instant rollback to the classic site). The account-proof `appIdentifier` stays
 `https://sportvatar.com` (no allowlist change). Prod `.env`: `HEADLESS_ENABLED=true`, `HEADLESS_FRONTEND_URL=https://sportvatar.com`,

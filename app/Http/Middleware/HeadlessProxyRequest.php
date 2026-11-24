@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\IpUtils;
  *    The Worker sends the visitor's CF-Connecting-IP as `X-Headless-Client-IP` (+ `X-Headless-Proxy: 1`);
  *    it is trusted only when the connection itself comes from the Workers range (nginx already resolved
  *    the Cloudflare hop via real_ip). Anyone else sending the header is ignored.
- * 2. Origin host (e.g. origin.sportvatar.com, the Worker's ORIGIN): direct hits get `X-Robots-Tag: noindex`
+ * 2. Origin host (e.g. api.sportvatar.com, the Worker's ORIGIN): direct hits get `X-Robots-Tag: noindex`
  *    so the server-rendered copy of the site is never indexed next to sportvatar.com. Requests through the
  *    Worker don't (it serves them on the frontend host; the Worker also drops the header).
  */
