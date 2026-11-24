@@ -201,7 +201,7 @@
                         </table>
                     </div>
                 </div>
-                @include('partials.pagination')
+                {{-- no list component on this (static preview) page: the shared pagination partial needs nextPage/loadNextPage --}}
             </div>
         </div>
     </div>
