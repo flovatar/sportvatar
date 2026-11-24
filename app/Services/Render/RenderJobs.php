@@ -35,7 +35,7 @@ class RenderJobs
     /** Add / bump a job. Done or failed jobs are re-opened (the item changed or a re-render was requested). */
     public static function enqueue(string $type, int $flowId, int $priority, string $reason = ''): void
     {
-        if (! config('render.jobs.enabled')) {
+        if (! config('render.jobs.enabled') || in_array($type, (array) config('render.jobs.skip_types', []), true)) {
             return;
         }
         try {
@@ -72,6 +72,7 @@ class RenderJobs
                     $q->where('status', 'pending')->where(fn ($q) => $q->whereNull('available_at')->orWhere('available_at', '<=', now()));
                 })->orWhere(fn ($q) => $q->where('status', 'leased')->where('lease_until', '<', now()));
             })
+            ->when(config('render.jobs.skip_types'), fn ($q, $skip) => $q->whereNotIn('item_type', (array) $skip))
             ->orderByDesc('priority')->orderBy('id');
     }
 

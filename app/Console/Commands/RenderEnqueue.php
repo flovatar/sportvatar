@@ -45,6 +45,11 @@ class RenderEnqueue extends Command
         $fixed = $this->option('priority') !== null ? (int) $this->option('priority') : null;
         $total = 0;
         foreach ($types as $type) {
+            if (in_array($type, (array) config('render.jobs.skip_types', []), true)) {
+                $this->info($type.': skipped (render.jobs.skip_types - served as SVG, share JPG from the server render)');
+
+                continue;
+            }
             if (! in_array($type, ItemRenderer::TYPES, true)) {
                 $this->error('unknown type '.$type);
 
