@@ -22,11 +22,13 @@
             window.sportvatarSaleOffer = @json($sportvatarSaleOffer);
         @endif
 
-        window.revealStats = {{ request()->get('reveal') ? 'true' : 'false' }};
+        window.revealStats = {{ request()->get('reveal') ? 'true' : 'false' }} || new URLSearchParams(window.location.search).has('reveal');
     </script>
     <div
         x-data="sportvatarData('{{$address}}', {{$sportvatarId}}, window.series, window.templates, window.sportvatarSales, window.sportvatarSaleOffer, window.revealStats)"
         x-init="initSportvatar($dispatch, '{{$address}}', {{$sportvatarId}})"
+        @item-owner-resolved.window="address = $event.detail.address"
+        @item-listing-resolved.window="loadChainListing($event.detail.listing)"
         @sportvatar-loaded.window="loadSportvatar($event.detail.sportvatar)"
         @sportvatar-sale-loaded.window="loadSale($event.detail.sale)"
         @sportvatar-sale-created.window="handleOfferCreated()"

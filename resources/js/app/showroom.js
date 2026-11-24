@@ -121,7 +121,7 @@ Alpine.data('showroomData', (templates) => ({
         if(this.minMint && this.maxMint && this.minMint > this.maxMint){
             this.minMint = this.maxMint;
         }
-        axios.post('/locker-room/search', this.getSearchParams()).then(function (response) {
+        window.searchApi('/locker-room/search', this.getSearchParams()).then(function (response) {
             self.handleSearchResults(response.data);
         })
             .catch(function (error) {
@@ -136,7 +136,7 @@ Alpine.data('showroomData', (templates) => ({
     loadNextPage(){
         if(this.nextPage) {
             let self = this;
-            axios.post('/locker-room/search', this.getSearchParams()).then(function (response) {
+            window.searchApi('/locker-room/search', this.getSearchParams()).then(function (response) {
                 self.handleNextResults(response.data);
             })
                 .catch(function (error) {

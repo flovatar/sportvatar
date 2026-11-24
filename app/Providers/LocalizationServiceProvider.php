@@ -40,6 +40,10 @@ class LocalizationServiceProvider extends ServiceProvider
             $route = Route::current();
             $base = $route ? LocalizationServiceProvider::baseName($route->getName()) : null;
             if ($base === null || ! Route::has($locale.'.'.$base)) {
+                // headless shell (one static object for many URLs, e.g. /collection/{address}): relative link keeps the path
+                if (\App\Support\Headless::shell()) {
+                    return '?lang='.$locale;
+                }
                 // Not localized: same URL, ?lang= switches the remembered locale (SetLocale).
                 $url = $absolute ? url()->current() : '/'.ltrim(request()->path(), '/');
 

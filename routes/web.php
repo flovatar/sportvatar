@@ -221,5 +221,17 @@ Route::get('/csrf-token', [LoginController::class,'csrfToken'])->name('csrf.toke
 Route::post('/login', [LoginController::class,'submit'])->name('login.submit')->middleware('throttle:10,1');
 Route::post('/logout', [LoginController::class,'logout'])->name('logout');
 
+// Headless API v2 auth (session + CSRF like /login; the Worker proxies it on the frontend's own origin).
+Route::prefix('api/v2/auth')->group(function () {
+    Route::get('nonce', [\App\Http\Controllers\Api\V2\AuthController::class, 'nonce'])->name('api.v2.auth.nonce')->middleware('throttle:60,1');
+    Route::get('csrf', [\App\Http\Controllers\Api\V2\AuthController::class, 'csrfToken'])->name('api.v2.auth.csrf')->middleware('throttle:60,1');
+    Route::get('me', [\App\Http\Controllers\Api\V2\AuthController::class, 'me'])->name('api.v2.auth.me');
+    Route::post('login', [\App\Http\Controllers\Api\V2\AuthController::class, 'loginJson'])->name('api.v2.auth.login')->middleware('throttle:10,1');
+    Route::post('logout', [\App\Http\Controllers\Api\V2\AuthController::class, 'logoutJson'])->name('api.v2.auth.logout');
+});
+
+// Not-found page of the static headless site (stored as 404.html by headless:build).
+Route::view('__headless_404', 'headless.404')->name('headless.404');
+
 // Filament admin (/admin) has no password login: sign in with the wallet, then open /admin.
 Route::view('admin/login', 'admin-login')->name('admin.wallet-login');

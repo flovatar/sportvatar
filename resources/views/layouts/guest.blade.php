@@ -18,7 +18,11 @@
 
 
     <meta name="description" content="{{ __('Sportvatar is a next generation PFP crypto project where people can become creator and choose any combination they like.') }}" />
+    @if(\App\Support\Headless::building())
+    <link rel="canonical" href="{{ \App\Support\Headless::canonicalUrl() }}" />
+    @else
     <link rel="canonical" href="https://sportvatar.com/" />
+    @endif
     <meta property="og:locale" content="{{ app()->getLocale() }}" />
     <meta property="og:type" content="website" />
     @php($ogItem = trim($__env->yieldPushContent('og')))
@@ -28,7 +32,7 @@
     @else
     <meta property="og:title" content="Sportvatar" />
     <meta property="og:description" content="{{ __('Sportvatar is a next generation PFP crypto project where people can become creator and choose any combination they like.') }}" />
-    <meta property="og:url" content="https://sportvatar.com/" />
+    <meta property="og:url" content="{{ \App\Support\Headless::building() ? \App\Support\Headless::canonicalUrl() : 'https://sportvatar.com/' }}" />
     <meta property="og:site_name" content="Sportvatar" />
     <meta property="og:image" content="https://sportvatar.com/images/share.png" />
     <meta property="og:image:width" content="1200" />
@@ -53,6 +57,10 @@
         var svgOpen = '{!! config('sportvatar.svgOpen') !!}';
         var svgClose = '{!! config('sportvatar.svgClose') !!}';
     </script>
+    @if(\App\Support\Headless::building())
+    {{-- static page on R2 (headless:build): runtime config for resources/js/headless.js --}}
+    <script>window.HEADLESS = @json(\App\Support\Headless::bootstrap());</script>
+    @endif
     <script src="{{ mix('js/app.js') }}" defer></script>
 
     <script defer data-domain="sportvatar.com" src="https://plausible.io/js/script.js"></script>

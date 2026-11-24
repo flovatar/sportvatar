@@ -34,7 +34,8 @@ class SetLocale
         } else {
             $locale = $request->hasSession() ? $request->session()->get('locale') : null;
             if (! in_array($locale, $supported, true) && PublicCache::isStateless($request)) {
-                $locale = config('app.locale', 'en');
+                // fallback, not app.locale: App::setLocale() rewrites app.locale (static builds render many pages per process)
+                $locale = config('localized-routes.fallback_locale', 'en');
             } elseif (! in_array($locale, $supported, true)) {
                 $locale = $request->getPreferredLanguage($supported) ?: config('app.locale', 'en');
             }

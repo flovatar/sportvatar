@@ -16,8 +16,48 @@ use DB;
 
 class FilteredController extends Controller
 {
-    protected function getFilteredSales(Request $req){
+    public const SPORTVATAR_LIST_COLUMNS = ['id', 'mint', 'name', 'sportvatar_series_id', 'flow_id', 'rarity', 'ability', 'flow_address', 'created_at', 'updated_at'];
+    public const SPORTBIT_LIST_COLUMNS = ['id', 'sportvatar_template_id', 'flow_id', 'flow_address', 'flow_metadata', 'mint', 'destroyed', 'packed', 'created_at', 'updated_at'];
+    public const OFFER_LIST_COLUMNS = ['id', 'item_id', 'item_type', 'flow_id', 'flow_address', 'price', 'currency', 'is_completed', 'is_dapper', 'listing_id', 'created_at', 'updated_at'];
+
+    /**
+     * Lean eager load of list items (API v2): no svg / full_svg, Sportvatar metadata without its svg, Sportbit rarity
+     * from a lean template row (the legacy shape serialised the full template incl. svg for every Sportbit).
+     */
+    protected function leanItemConstraints(): array
+    {
+        return ['item' => function (MorphTo $morphTo) {
+            $morphTo->constrain([
+                Sportvatar::class => fn ($q) => $q->select(self::SPORTVATAR_LIST_COLUMNS)->selectRaw("JSON_REMOVE(flow_metadata, '$.svg') as flow_metadata"),
+                Sportbit::class => fn ($q) => $q->select(self::SPORTBIT_LIST_COLUMNS)->with(['sportvatarTemplate' => fn ($t) => $t->select(['id', 'name', 'layer', 'rarity', 'flow_id', 'max_mintable'])]),
+            ]);
+        }];
+    }
+
+    /** Hide blobs/relations after a lean load (keeps the legacy keys the Alpine components read). */
+    protected function leanRows($rows){
+        foreach($rows as $row){
+            $item = $row instanceof Sportvatar || $row instanceof Sportbit ? $row : $row->item;
+            if($item instanceof Sportvatar){
+                $item->setAppends([])->makeHidden(['svg']);
+            } elseif($item instanceof Sportbit){
+                $item->makeHidden(['sportvatarTemplate']);
+            }
+        }
+        return $rows;
+    }
+
+    protected function getFilteredSales(Request $req, $lean = false){
         $salesQuery = SaleOffer::query()->notBlocked();
+
+        if($lean){
+            $salesQuery->select(array_map(fn ($c) => 'sale_offers.'.$c, self::OFFER_LIST_COLUMNS))
+                ->selectRaw("JSON_REMOVE(sale_offers.flow_metadata, '$.svg') as flow_metadata")
+                ->with($this->leanItemConstraints());
+            $results = $this->runFilterQuery($req, $salesQuery)->paginate(20);
+            $this->leanRows($results->getCollection());
+            return $results;
+        }
 
         if(!$req->get('nosvg')){
             $salesQuery->with('item' );
@@ -32,8 +72,15 @@ class FilteredController extends Controller
     }
 
 
-    protected function getFilteredTransactions(Request $req){
+    protected function getFilteredTransactions(Request $req, $lean = false){
         $salesQuery = Sale::query()->notBlocked();
+
+        if($lean){
+            $salesQuery->with($this->leanItemConstraints());
+            $results = $this->runFilterQuery($req, $salesQuery)->paginate(50);
+            $this->leanRows($results->getCollection());
+            return $results;
+        }
 
         if($req->get('nosvg')){
             $salesQuery->with(['item' => function($query) {
@@ -120,7 +167,11 @@ class FilteredController extends Controller
         }
 
         if($req->get('address') && $req->get('address') != ''){
-            $salesQuery->where('flow_buyer_address', $req->get('address'))->orWhere('flow_seller_address', $req->get('address'));
+            // grouped: a bare orWhere would bypass the notBlocked()/other filters
+            $address = $req->get('address');
+            $salesQuery->where(function ($q) use ($address) {
+                $q->where('flow_buyer_address', $address)->orWhere('flow_seller_address', $address);
+            });
         }
 
         if($req->get('datemin') && $req->get('datemin') != ''){
@@ -149,8 +200,12 @@ class FilteredController extends Controller
     }
 
 
-    protected function getFilteredSportvatars(Request $req){
+    protected function getFilteredSportvatars(Request $req, $lean = false){
         $sportvatarsQuery = Sportvatar::with('saleOffers');
+        if($lean){
+            $sportvatarsQuery = Sportvatar::with(['saleOffers' => fn ($q) => $q->select(self::OFFER_LIST_COLUMNS)])
+                ->select(self::SPORTVATAR_LIST_COLUMNS)->selectRaw("JSON_REMOVE(flow_metadata, '$.svg') as flow_metadata");
+        }
 
         if($req->get('rarity') && $req->get('rarity') != 'all'){
             $sportvatarsQuery->where('rarity', $req->get('rarity'));
@@ -185,6 +240,9 @@ class FilteredController extends Controller
 
 
         $sportvatars = $sportvatarsQuery->paginate(20);
+        if($lean){
+            $this->leanRows($sportvatars->getCollection());
+        }
 
         return $sportvatars;
     }

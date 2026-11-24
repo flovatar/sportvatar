@@ -1,0 +1,30 @@
+# Cloudflare Worker serving the headless Sportvatar frontend (static HTML/JS/CSS on R2 + same-origin proxy to Laravel).
+# Deploy (needs a token with Workers Scripts:Edit + Workers R2 Storage:Read, or `wrangler login`), or paste worker.js in
+# the dashboard (steps: docs/HEADLESS.md "Deploying the Worker"):
+#   cd headless/worker && npx wrangler@4 deploy            # testnet (default env)
+#   npx wrangler@4 deploy --env production                 # prod, later (sportvatar.com cutover)
+name = "sportvatar-headless"
+main = "worker.js"
+compatibility_date = "2025-09-01"
+workers_dev = true
+preview_urls = false
+
+[vars]
+SITE_PREFIX = "testnet/site/"
+ORIGIN = "https://testnet.sportvatar.com"
+NOINDEX = "true"
+# BUCKET_URL = ""   # only without the SITE binding: public URL of the sportvatar-web bucket
+
+[[r2_buckets]]
+binding = "SITE"
+bucket_name = "sportvatar-web"
+
+# Custom domain for the testnet frontend (or dashboard: Settings -> Domains & Routes -> Custom domain):
+# routes = [ { pattern = "next-testnet.sportvatar.com", custom_domain = true } ]
+
+[env.production]
+name = "sportvatar-headless-prod"
+workers_dev = false
+vars = { SITE_PREFIX = "site/", ORIGIN = "https://api.sportvatar.com", NOINDEX = "false" }
+r2_buckets = [ { binding = "SITE", bucket_name = "sportvatar-web" } ]
+# routes = [ { pattern = "sportvatar.com", custom_domain = true }, { pattern = "www.sportvatar.com", custom_domain = true } ]

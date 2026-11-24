@@ -94,6 +94,12 @@ Alpine.data('sportvatarData', (address, sportvatarId, series, templates, sportva
             window.getAddressOwnerProfile(this.address);
         }
     },
+    // headless: live storefront listing read on chain (null = not listed) replaces the build-time DB snapshot
+    loadChainListing(listing){
+        this.sportvatarSaleOffer = listing;
+        this.currentPrice = listing ? parseFloat(listing.price) : null;
+        this.currentPriceChange = this.currentPrice;
+    },
     loadSale(sale){
         this.sale = sale;
         this.isLoading = false;
@@ -313,7 +319,7 @@ Alpine.data('sportvatarData', (address, sportvatarId, series, templates, sportva
     },
     handleGiftSent(){
         if(this.sportvatar && this.currentGiftAddress){
-            window.location = '/sportvatars/'+this.sportvatar.id+'/'+this.currentGiftAddress;
+            window.location = window.itemUrlAfterTx('sportvatars', this.sportvatar.id, this.currentGiftAddress);
         }
     },
     setBackground(){
@@ -540,7 +546,7 @@ Alpine.data('sportvatarData', (address, sportvatarId, series, templates, sportva
     },
     handlePurchaseCompleted(){
         console.log('purchase completed!');
-        window.location = '/sportvatars/'+this.sportvatar.id+'/'+window.user.addr;
+        window.location = window.itemUrlAfterTx('sportvatars', this.sportvatar.id, window.user.addr);
     },
     handleOfferDeleted(){
         console.log('sale deleted!');
@@ -557,7 +563,8 @@ Alpine.data('sportvatarData', (address, sportvatarId, series, templates, sportva
     }
 }));
 
-window.initSportvatar = function(dispatch, address, sportvatarId){
+window.initSportvatar = async function(dispatch, address, sportvatarId){
     window.dispatch = dispatch;
+    address = await window.resolveItemOwner('sportvatar', sportvatarId, address); // headless: owner + listing confirmed on chain
     window.getSportvatar(address, sportvatarId);
 }

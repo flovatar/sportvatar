@@ -73,3 +73,26 @@ Route::middleware([\App\Http\Middleware\AuthenticateRenderWorker::class, 'thrott
     Route::post('{job}/complete', [\App\Http\Controllers\Api\RenderJobController::class, 'complete'])->whereNumber('job')->name('api.renderjobs.complete');
     Route::post('{job}/fail', [\App\Http\Controllers\Api\RenderJobController::class, 'fail'])->whereNumber('job')->name('api.renderjobs.fail');
 });
+
+/*
+| Headless frontend read API v2 (public, GET, edge-cacheable; docs/HEADLESS.md). No api-group IP throttle:
+| behind Cloudflare/the Worker the client IP is an edge IP, and the edge cache absorbs repeat traffic.
+*/
+Route::prefix('v2')
+    ->withoutMiddleware('throttle:api')
+    ->middleware([\App\Http\Middleware\PublicApiCache::class, 'throttle:6000,1'])
+    ->group(function () {
+        $p = \App\Http\Controllers\Api\V2\PublicController::class;
+        Route::get('meta', [$p, 'meta'])->name('api.v2.meta');
+        Route::get('marketplace', [$p, 'marketplace'])->name('api.v2.marketplace');
+        Route::get('marketplace/stats', [$p, 'stats'])->name('api.v2.stats');
+        Route::get('stats', [$p, 'stats'])->name('api.v2.stats.alias');
+        Route::get('transactions', [$p, 'transactions'])->name('api.v2.transactions');
+        Route::get('locker-room', [$p, 'lockerRoom'])->name('api.v2.lockerroom');
+        Route::get('templates', [$p, 'templates'])->name('api.v2.templates');
+        Route::get('templates/{flowId}', [$p, 'template'])->whereNumber('flowId')->name('api.v2.template');
+        Route::get('packs', [$p, 'packs'])->name('api.v2.packs');
+        Route::get('rankings', [$p, 'rankings'])->name('api.v2.rankings');
+        Route::get('{segment}/{id}', [\App\Http\Controllers\Api\V2\ItemController::class, 'showSegment'])
+            ->where('segment', 'sportvatars|sportbits|components')->whereNumber('id')->name('api.v2.item');
+    });

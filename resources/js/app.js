@@ -1,5 +1,6 @@
 require('./actions');
 require('./utils');
+require('./headless');
 
 import Alpine from 'alpinejs';
 import persist from '@alpinejs/persist'

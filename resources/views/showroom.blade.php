@@ -36,7 +36,7 @@
                         <template x-for="sportvatar in sportvatars" :key="sportvatar.id">
 
                             <div class="col">
-                                <a x-bind:href="'/sportvatars/'+sportvatar.flow_id+'/'+sportvatar.flow_address" class="card" x-bind:class="sportvatar.rarity">
+                                <a x-bind:href="window.itemUrl('sportvatars', sportvatar.flow_id, sportvatar.flow_address)" class="card" x-bind:class="sportvatar.rarity">
                                     <div class="img-hold">
                                         <img x-bind:src="'/api/image/'+sportvatar.flow_id" />
                                     </div>

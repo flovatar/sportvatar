@@ -44,6 +44,12 @@ class Kernel extends ConsoleKernel
             $schedule->command('render:images all --missing --static-only --limit=60 --sleep=500')
                 ->hourlyAt(37)->withoutOverlapping(60)->runInBackground();
         }
+        if (config('headless.enabled')) {
+            // static headless site (R2): shells hourly (home picks, template lists, stats snapshots), full rebuild nightly as
+            // the safety net for the per-item regeneration jobs (HeadlessRegen). Unchanged objects are skipped.
+            $schedule->command('headless:build --shells --sitemap --quiet-puts')->hourlyAt(43)->withoutOverlapping(30)->runInBackground();
+            $schedule->command('headless:build --quiet-puts')->dailyAt('03:40')->withoutOverlapping(120)->runInBackground();
+        }
         // free-pack vouchers reserved by authorize-claim but never claimed on chain go back to 'issued'
         $schedule->command('sportvatar:release-voucher-reservations')->everyFifteenMinutes()->withoutOverlapping(10)->runInBackground();
         //$schedule->command('sportvatar:process-graffle')->everyThirtyMinutes();

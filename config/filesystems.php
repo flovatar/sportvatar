@@ -79,6 +79,19 @@ return [
             'http' => env('R2_FORCE_IPV4', true) ? ['curl' => [CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4]] : [],
         ],
 
+        // Static headless frontend (bucket sportvatar-web; served by the sportvatar-headless Worker). Same scoped token as 'r2'.
+        'r2web' => [
+            'driver' => 's3',
+            'key' => env('R2_ACCESS_KEY_ID'),
+            'secret' => env('R2_SECRET_ACCESS_KEY'),
+            'region' => 'auto',
+            'bucket' => env('R2_WEB_BUCKET', 'sportvatar-web'),
+            'endpoint' => env('R2_ENDPOINT'),
+            'use_path_style_endpoint' => true,
+            'throw' => true,
+            'http' => env('R2_FORCE_IPV4', true) ? ['curl' => [CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4]] : [],
+        ],
+
     ],
 
     /*

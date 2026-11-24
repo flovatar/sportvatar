@@ -1,5 +1,5 @@
 <div class="col">
-    <a x-bind:href="'/sportvatars/'+sportvatar.id+'/'+address" class="card" x-bind:class="getRarityText(sportvatar)">
+    <a x-bind:href="window.itemUrl('sportvatars', sportvatar.id, address)" class="card" x-bind:class="getRarityText(sportvatar)">
         <div class="img-hold">
             <div>
                 <img x-bind:src="'/api/image/'+sportvatar.id">

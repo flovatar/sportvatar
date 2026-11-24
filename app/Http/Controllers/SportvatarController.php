@@ -22,7 +22,9 @@ class SportvatarController extends Controller
         });
         $saleOffer = Cache::remember('sportvatar-sale-offers-'.$sportvatarId.'-'.$address, now()->addMinutes(1), function() use ($sportvatarId, $address) {
             $sportvatar = Sportvatar::where('flow_id', $sportvatarId)->first();
-            return $sportvatar ? $sportvatar->saleOffers()->notBlocked()->whereFlowAddress($address)->where('is_completed', false)->whereNotNull('listing_id')->whereIn('currency', ['DUC', 'FLOW'])->orderBy('created_at', 'desc')->first() : null;
+            // without flow_metadata: it repeats the whole Sportvatar incl. its SVG (~70 KB) and the page only reads price/listing/currency
+            $offer = $sportvatar ? $sportvatar->saleOffers()->notBlocked()->whereFlowAddress($address)->where('is_completed', false)->whereNotNull('listing_id')->whereIn('currency', ['DUC', 'FLOW'])->orderBy('created_at', 'desc')->first() : null;
+            return $offer ? $offer->makeHidden(['flow_metadata']) : null;
         });
         return view('sportvatar')->with(['templatesScript' => static::templatesScriptUrl('all'), 'series' => $series, 'address' => $address, 'sportvatarId' => $sportvatarId, 'sportvatarSales' => $sales, 'sportvatarSaleOffer' => $saleOffer]);
     }

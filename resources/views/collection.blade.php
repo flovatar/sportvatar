@@ -1,4 +1,5 @@
 <x-guest-layout>
+    @php($headlessShell = \App\Support\Headless::shell())
     @isset($templatesScript)
     {{-- window.templates (with SVGs) from a versioned, long-cacheable script --}}
     <script src="{{ $templatesScript }}"></script>
@@ -14,8 +15,13 @@
 
 
     <div
+            @if($headlessShell)
+            x-data="collectionData(window.HEADLESS_ROUTE.address, window.templates, window.saleOffers)"
+            x-init="initCollection($dispatch, window.HEADLESS_ROUTE.address)"
+            @else
             x-data="collectionData('{{$address}}', window.templates, window.saleOffers)"
             x-init="initCollection($dispatch, '{{$address}}')"
+            @endif
             @collections-loaded.window="loadCollections($event.detail.collections)"
             @collections-pack-loaded.window="loadCollectionsPack($event.detail.collections)"
             @collections-sportvatar-loaded.window="loadCollectionsSportvatar($event.detail.collections)"
@@ -33,7 +39,10 @@
         <!-- My collection Page -->
         <div class="my-collection">
             <div class="container">
-                @if(\App\Support\Blocklist::isBlocked($address ?? null))
+                @if($headlessShell)
+                    {{-- static shell (headless): wallet comes from the URL at runtime (resources/js/headless.js) --}}
+                    <div x-data x-show="window.HEADLESS_ROUTE.blocked" x-cloak>@include('partials.incident-notice')</div>
+                @elseif(\App\Support\Blocklist::isBlocked($address ?? null))
                     @include('partials.incident-notice')
                 @endif
 
