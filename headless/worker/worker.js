@@ -157,6 +157,12 @@ async function proxy(request, env, c, url, opts = {}) {
     out.delete("set-cookie");
     for (const ck of cookies) out.append("set-cookie", ck.replace(/;\s*domain=[^;]*/i, ""));
   }
+  // cacheEverything subrequests get the zone's Browser Cache TTL (4 h) written over Laravel's max-age=0: restore it, or
+  // browsers keep marketplace/API JSON and pages for hours (edge TTL stays s-maxage=60). Immutable assets keep theirs.
+  if (cacheable) {
+    const cc = out.get("cache-control") || "";
+    if (/s-maxage=/.test(cc) && !/immutable/.test(cc)) out.set("cache-control", cc.replace(/(^|,\s*)max-age=\d+/, "$1max-age=0"));
+  }
   out.set("X-Headless", opts.fallback ? "origin-fallback" : "origin");
   if (c.noindex) out.set("X-Robots-Tag", "noindex, nofollow, noarchive");
   let resp = new Response(r.body, { status: r.status, statusText: r.statusText, headers: out });
