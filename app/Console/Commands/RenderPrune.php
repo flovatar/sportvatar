@@ -33,7 +33,7 @@ class RenderPrune extends Command
 
     public function handle(): int
     {
-        $days = max(1, (int) $this->option('days'));
+        $days = max(0, (int) $this->option('days')); // 0 = anything superseded before now (tests)
         $dry = (bool) $this->option('dry-run');
         $limit = max(0, (int) $this->option('limit'));
         $types = $this->option('type') ?: ItemRenderer::TYPES;
