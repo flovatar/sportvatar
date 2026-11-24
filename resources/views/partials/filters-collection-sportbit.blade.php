@@ -69,6 +69,10 @@
                 <option value="pricehigh">Price - <small>Highest</small></option>
             </select>
         </div>
+        <div class="select-wrap md collection-search">
+            <span class="label">{{ __('Search') }}</span>
+            <input type="search" x-model.debounce.300ms="searchText" placeholder="{{ __('Name or #id') }}" autocomplete="off" style="background:transparent;border:0;border-bottom:1px solid currentColor;color:inherit;min-width:9em;">
+        </div>
         <span class="item-no"><span x-text="totalResults"></span> <small>items</small></span>
     </div>
     <div class="filter-panel filter-drop" x-show="showFilterPanel">

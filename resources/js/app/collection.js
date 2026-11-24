@@ -1,5 +1,33 @@
 import Alpine from "alpinejs";
 
+/*
+ * Big wallets (contract/admin accounts with thousands of Sportbits): every grid rendered in full (all tabs are x-show),
+ * list functions re-filtered/re-sorted the whole reactive array on every call and template lookups were linear scans in
+ * the sort comparator. Now: O(1) template lookups, memoised filter/sort results and pages of PAGE_SIZE cards per grid.
+ */
+const PAGE_SIZE = 100;
+const memo = new Map();
+function memoized(name, key, fn){
+    const hit = memo.get(name);
+    if(hit && hit.key === key){
+        return hit.value;
+    }
+    const value = fn();
+    memo.set(name, {key: key, value: value});
+    return value;
+}
+let templateMapSource = null;
+let templateMap = new Map();
+function templateByFlowId(templates, id){
+    const raw = Alpine.raw(templates);
+    if(raw !== templateMapSource){
+        templateMapSource = raw;
+        templateMap = new Map();
+        _.each(raw, t => { templateMap.set(parseInt(t.flow_id, 10), t); });
+    }
+    return templateMap.get(parseInt(id, 10));
+}
+
 Alpine.data('collectionData', (address, templates, saleOffers) => ({
     templates: templates,
     address: address,
@@ -40,8 +68,16 @@ Alpine.data('collectionData', (address, templates, saleOffers) => ({
     searchCat2: 'all',
     searchTemplate: 'all',
     showFilterPanel: false,
+    // pagination + text search for the grids (PAGE_SIZE cards per page)
+    pages: {sportvatar: 1, flame: 1, sportbit: 1},
+    pageSize: PAGE_SIZE,
+    searchText: '',
+    dataVersion: 0,
     init(){
         let self = this;
+        ['searchRarity', 'searchCat', 'searchCat2', 'searchTemplate', 'minMint', 'maxMint', 'sortBy', 'searchText'].forEach(prop => {
+            this.$watch(prop, () => { self.resetPages(); });
+        });
         this.$watch('showPackModal', () => {
             if(!self.showPackModal){
                 self.showPackAnimation = false;
@@ -120,6 +156,55 @@ Alpine.data('collectionData', (address, templates, saleOffers) => ({
         this.showFilterPanel = false;
         this.minMint = null;
         this.maxMint = null;
+        this.searchText = '';
+        this.resetPages();
+    },
+    resetPages(){
+        _.each(_.keys(this.pages), key => { if(this.pages[key] != 1){ this.pages[key] = 1; } });
+    },
+    // cache key of everything the list filters read (reading the props here also registers them as Alpine dependencies)
+    filterKey(){
+        return [this.dataVersion, this.sportvatars.length, this.components.length, this.searchRarity, this.searchCat, this.searchCat2,
+            this.searchTemplate, this.minMint, this.maxMint, this.sortBy, this.searchText, this.activeTab, JSON.stringify(this.groupSportbits)].join('|');
+    },
+    matchesText(item){
+        let q = (this.searchText || '').trim().toLowerCase();
+        if(!q){
+            return true;
+        }
+        let meta = (item && item.metadata && item.metadata.layer !== undefined) ? item.metadata : item;
+        let tpl = meta && meta.templateId ? this.getTemplateById(meta.templateId) : null;
+        let hay = [item && item.name ? item.name : '', tpl ? tpl.name : '', meta && meta.category ? meta.category : '', meta && meta.sport ? meta.sport : '',
+            item && item.id != null ? '#'+item.id : '', meta && meta.mint != null ? '#'+meta.mint : ''].join(' ').toLowerCase();
+        return hay.indexOf(q) !== -1;
+    },
+    fullList(tab){
+        switch(tab){
+            case 'sportvatar': return this.filteredSportvatars();
+            case 'flame': return this.componentsFlame();
+            case 'sportbit': return this.filteredSportbits();
+        }
+        return [];
+    },
+    pageCount(tab){
+        return Math.max(1, Math.ceil(this.fullList(tab).length / this.pageSize));
+    },
+    currentPage(tab){
+        return Math.min(Math.max(1, this.pages[tab] || 1), this.pageCount(tab));
+    },
+    paged(tab){
+        let list = this.fullList(tab);
+        let page = Math.min(Math.max(1, this.pages[tab] || 1), Math.max(1, Math.ceil(list.length / this.pageSize)));
+        return list.slice((page - 1) * this.pageSize, page * this.pageSize);
+    },
+    setPage(tab, page, el){
+        this.pages[tab] = Math.min(Math.max(1, page), this.pageCount(tab));
+        if(el && el.closest){
+            let grid = el.closest('[data-grid]');
+            if(grid && grid.getBoundingClientRect().top < 0){
+                grid.scrollIntoView({block: 'start'});
+            }
+        }
     },
     refreshClaimables(){
         window.getClaimables(this.address);
@@ -132,12 +217,15 @@ Alpine.data('collectionData', (address, templates, saleOffers) => ({
         }
     },
     filteredSportvatars(){
+        return memoized('sportvatar', this.filterKey(), () => this.computeFilteredSportvatars());
+    },
+    computeFilteredSportvatars(){
         if(!this.sportvatars){
             return [];
         }
         let self = this;
         let filtered = _.filter(this.sportvatars, item => {
-            let check = true;
+            let check = self.matchesText(item);
             if(self.searchRarity != 'all' && self.searchRarity != self.getRarityText(item)){
                 check = false;
             }
@@ -161,13 +249,16 @@ Alpine.data('collectionData', (address, templates, saleOffers) => ({
         });
     },
     filteredSportbits(){
-        let allSportbits = this.componentsSportbit() ? this.componentsSportbit() : [];
+        return memoized('sportbit', this.filterKey(), () => this.computeFilteredSportbits());
+    },
+    computeFilteredSportbits(){
+        let allSportbits = this.componentsSportbit() ? Alpine.raw(this.componentsSportbit()) : [];
         let self = this;
 
         allSportbits = allSportbits.concat(this.componentsStackedSportbit());
 
         let filtered = _.filter(allSportbits, item => {
-            let check = true;
+            let check = self.matchesText(item);
             if(self.searchRarity != 'all' && self.searchRarity != item.rarity){
                 check = false;
             }
@@ -203,11 +294,14 @@ Alpine.data('collectionData', (address, templates, saleOffers) => ({
         });
     },
     filteredSportbitsUngrouped(){
-        let allSportbits = this.componentsSportbit() ? this.componentsSportbit() : [];
+        return memoized('sportbitUngrouped', this.filterKey(), () => this.computeFilteredSportbitsUngrouped());
+    },
+    computeFilteredSportbitsUngrouped(){
+        let allSportbits = this.componentsSportbit() ? Alpine.raw(this.componentsSportbit()) : [];
         let self = this;
 
         let filtered = _.filter(allSportbits, item => {
-            let check = true;
+            let check = self.matchesText(item);
             if(self.searchRarity != 'all' && self.searchRarity != item.rarity){
                 check = false;
             }
@@ -378,9 +472,9 @@ Alpine.data('collectionData', (address, templates, saleOffers) => ({
     },
     componentsFlame(){
         let self = this;
-        return _.filter(this.components, function(component){
-            return self.isFlame(component);
-        });
+        return memoized('componentsFlame', this.dataVersion + '|' + this.components.length + '|' + this.searchText, () => _.filter(Alpine.raw(this.components), function(component){
+            return self.isFlame(component) && self.matchesText(component);
+        }));
     },
     groupComponent(item){
         if(!this.isFlame(item)){
@@ -395,7 +489,7 @@ Alpine.data('collectionData', (address, templates, saleOffers) => ({
     },
     loadCollections(data){
         //console.log(data);
-        this.sportvatars = data.sportvatars;
+        this.sportvatars = data.sportvatars; this.dataVersion++;
         this.packs = data.packs;
         this.componentsTemp = data.components;
         if(this.address == ''){
@@ -420,7 +514,7 @@ Alpine.data('collectionData', (address, templates, saleOffers) => ({
         }
     },
     loadCollectionsSportvatar(data){
-        this.sportvatars = data.sportvatars;
+        this.sportvatars = data.sportvatars; this.dataVersion++;
         if(this.address == ''){
             this.address = data.address;
         }
@@ -474,6 +568,7 @@ Alpine.data('collectionData', (address, templates, saleOffers) => ({
         //console.log('single sportvatar loaded');
         //console.log(data);
         this.sportvatars.push(data.sportvatar);
+        this.dataVersion++;
     },
     loadComponents(){
         let self = this;
@@ -491,13 +586,14 @@ Alpine.data('collectionData', (address, templates, saleOffers) => ({
             }
         });
 
+        let rawTemplates = Alpine.raw(self.templates);
         this.components = collection.sort(function (l,r){
             let lItem = l.metadata ? l.metadata : l;
             let rItem = r.metadata ? r.metadata : r;
 
             if(lItem.category == rItem.category){
-                let lTemp = self.getTemplateById(lItem.templateId);
-                let rTemp = self.getTemplateById(rItem.templateId);
+                let lTemp = templateByFlowId(rawTemplates, lItem.templateId);
+                let rTemp = templateByFlowId(rawTemplates, rItem.templateId);
 
                 if(lTemp && rTemp) {
                     if (lTemp.name > rTemp.name) {
@@ -530,14 +626,14 @@ Alpine.data('collectionData', (address, templates, saleOffers) => ({
                 }
             }
         });
-
+        this.dataVersion++;
     },
 
     componentsSportbit(){
         let self = this;
-        return _.filter(this.components, function(component){
+        return memoized('componentsSportbit', this.dataVersion + '|' + this.components.length, () => _.filter(Alpine.raw(this.components), function(component){
             return !self.isFlame(component);
-        });
+        }));
     },
     componentsStackedSportbit(){
         let collection = [];
@@ -609,7 +705,7 @@ Alpine.data('collectionData', (address, templates, saleOffers) => ({
         return (component.rarity) ? component.rarity : '';
     },
     getMaxMintable(templateId){
-        let template = _.find(this.templates, (el) => { return el.flow_id == parseInt(templateId,10); });
+        let template = templateByFlowId(this.templates, templateId);
         return template ? template.max_mintable : '';
     },
     getComponentMint(component){
@@ -634,7 +730,7 @@ Alpine.data('collectionData', (address, templates, saleOffers) => ({
         return (this.isFlame(component) || component.layer == 13) ? '' : 'builder-component-thumb'
     },
     getTemplateById(id){
-        return _.find(this.templates, function(item){ return item.flow_id == parseInt(id,10)});
+        return templateByFlowId(this.templates, id);
     },
 
     getPackRarity(pack){

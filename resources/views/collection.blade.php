@@ -83,38 +83,41 @@
                 </div>
 
 
-                <div x-show="activeTab == 'sportvatar'">
+                <div x-show="activeTab == 'sportvatar'" data-grid="sportvatar">
                     @include('partials.filters-collection-sportvatar')
                     <div class="sportvatar-card-list">
-                        <template x-for="sportvatar in filteredSportvatars()" :key="sportvatar.id">
+                        <template x-for="sportvatar in paged('sportvatar')" :key="sportvatar.id">
                             @include('partials.sportvatar')
                         </template>
                     </div>
+                    @include('partials.collection-pager', ['tab' => 'sportvatar'])
                     <div x-show="sportvatars.length == 0">
                         <span class="no-results-msg">{{ __('No Sportvatars yet.') }} <a href="/builder" class="underline">{{ __('Go create some!') }}</a></span>
                     </div>
                 </div>
 
 
-                <div x-show="activeTab == 'flame'">
+                <div x-show="activeTab == 'flame'" data-grid="flame">
                     <div class="sportvatar-card-list">
-                        <template x-for="component in componentsFlame()" :key="component.id">
+                        <template x-for="component in paged('flame')" :key="component.id">
                             @include('partials.component-collection')
                         </template>
                     </div>
+                    @include('partials.collection-pager', ['tab' => 'flame'])
                     <div x-show="componentsFlame().length == 0">
                         <span class="no-results-msg">{{ __('No Sport Flames here.') }} <a href="/marketplace" class="underline">{{ __('Go get some!') }}</a></span>
                     </div>
                 </div>
 
 
-                <div x-show="activeTab == 'sportbit'">
+                <div x-show="activeTab == 'sportbit'" data-grid="sportbit">
                     @include('partials.filters-collection-sportbit')
                     <div class="sportvatar-card-list">
-                        <template x-for="component in filteredSportbits()" :key="(component && component.id) ? component.id : ((component && component.templateId && component.name) ? component.name+component.templateId : component)">
+                        <template x-for="component in paged('sportbit')" :key="(component && component.id) ? component.id : ((component && component.templateId && component.name) ? component.name+component.templateId : component)">
                             @include('partials.component-collection')
                         </template>
                     </div>
+                    @include('partials.collection-pager', ['tab' => 'sportbit'])
                     <div x-show="componentsSportbit().length == 0">
                         <span class="no-results-msg">{{ __('No Sportbits here.') }} <a href="/marketplace" class="underline">{{ __('Go get some!') }}</a></span>
                     </div>
