@@ -2,7 +2,7 @@
 
 Same design as flovatar-web `docs/HEADLESS.md` (built the same night): **static first** (HTML on R2, regenerated per item),
 **chain-first** reads in the browser (FCL), a **cached JSON API** only for cross-wallet questions, **visual design unchanged**
-(the static pages ARE the Blade views, rendered by Laravel). Prod (`main`, sportvatar.com) is not switched; nothing here changes
+(the static pages ARE the Blade views, rendered by Laravel). Prod (`main`, sportvatar.com) runs the same code (classic site + static build to `site/`); the Worker switch is a Cloudflare step; nothing here changes
 the server-rendered site's behaviour except the anonymous-page caching (section 2).
 
 ```
@@ -108,7 +108,18 @@ Vars: `SITE` (R2 binding → `sportvatar-web`), `SITE_PREFIX` (`testnet/site/` |
 `?lang=it|es` → origin → `/collection/{name}` → origin, `/collection/0x…` → shell → R2 object → new Sportvatar not built yet → origin
 fallback → asset not mirrored → origin → `404.html`. `X-Headless: r2|origin|origin-fallback`. Same-origin proxy keeps the Laravel
 session cookie first-party; `cf.cacheEverything` only for user-agnostic GETs (`/api/v2` except auth, `/api/image`, `/templates`,
-Sportbit pages, `/collection/api`). Subrequests use a normal Chrome UA (the zone WAF blocks bot-like agents).
+Sportbit pages, `/collection/api`, meme maker/leaderboard/mosaic, `?lang=` pages). Subrequests use a normal Chrome UA (the zone WAF
+blocks bot-like agents). Such cacheEverything subrequests get the zone's Browser Cache TTL written over Laravel's `max-age=0`; the
+Worker puts `max-age=0` back (otherwise browsers keep API JSON for hours). Proxied server-rendered pages get their own URL as
+canonical/og:url (the classic layout prints the site-wide `https://sportvatar.com/`). Also: `www.` → apex 301, `/collectible/{id}`
+(the contract's `ExternalURL`) → 301 `/sportvatars/{id}`.
+
+**Production** (`wrangler.toml` `[env.production]`, Worker `sportvatar-headless-prod`): `SITE_PREFIX=site/`,
+`ORIGIN=https://origin.sportvatar.com` (Forge alias of the prod site, Cloudflare Origin CA certificate, its own `robots.txt` =
+`Disallow: /`), `NOINDEX=false`, R2 binding `SITE` → `sportvatar-web`; attached to `sportvatar.com/*` with a **Worker route** (the
+apex DNS record stays, so removing the route is an instant rollback to the classic site). The account-proof `appIdentifier` stays
+`https://sportvatar.com` (no allowlist change). Prod `.env`: `HEADLESS_ENABLED=true`, `HEADLESS_FRONTEND_URL=https://sportvatar.com`,
+`HEADLESS_PREFIX=` (empty → `site/`); the deploy script runs `headless:build --assets --shells --sitemap` detached.
 
 ## 8. Environment (`.env`)
 
@@ -119,5 +130,6 @@ allowlist must contain the frontend host (`https://*.sportvatar.com` covers next
 
 ## 9. Rollback
 
-Remove the Worker's custom domain/route (testnet.sportvatar.com keeps serving the classic site the whole time);
+Remove the Worker's custom domain/route (the classic site keeps serving on the same origin the whole time; prod: delete the
+`sportvatar.com/*` route);
 `HEADLESS_ENABLED=false` + `config:cache` stops jobs/schedules; without `window.HEADLESS` the JS behaves exactly as before.
