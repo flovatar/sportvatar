@@ -50,8 +50,8 @@ class RenderItemImages implements ShouldQueue, ShouldBeUniqueUntilProcessing
         }
     }
 
-    /** Debounced dispatch (events for one item tend to arrive in bursts). */
-    public static function queue(string $type, $flowId, int $delaySeconds = 15): void
+    /** Debounced dispatch (events for one item tend to arrive in bursts). Not named queue(): Laravel's dispatcher calls $job->queue() when it exists. */
+    public static function debounced(string $type, $flowId, int $delaySeconds = 15): void
     {
         if (! config('render.enabled') || ! is_numeric($flowId)) {
             return;
