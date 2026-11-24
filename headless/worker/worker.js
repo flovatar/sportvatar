@@ -40,7 +40,7 @@ const PROXY = [
   /^\/components\//,                                             // Sportbit item pages: server-rendered (100k+ on mainnet)
   /^\/((it|es)\/)?pack(\/|$)/,                                   // paid packs + free-pack claims (session)
   /^\/((it|es)\/)?meme-maker\/?$/, /^\/leaderboard\/?$/, /^\/mosaic\/?$/,
-  /^\/subscribe\/?$/, /^\/moonpay\//, /^\/treasure-hunting/, /^\/twitter\//, /^\/graffle\/?$/,
+  /^\/subscribe\/?$/, /^\/treasure-hunting/, /^\/twitter\//, /^\/graffle\/?$/,
   /^\/admin(\/|$)/, /^\/sanctum\//, /^\/livewire\//, /^\/filament\//, /^\/css\/filament\//, /^\/js\/filament\//, /^\/fonts\/filament\//,
   /^\/transactions\/0x[a-f0-9]{16}\/?$/, /^\/collection\/api(\/|$)/,
 ];

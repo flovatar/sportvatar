@@ -37,7 +37,7 @@ class PublicCache
         'pack', 'pack/*', 'it/pack', 'it/pack/*', 'es/pack', 'es/pack/*',
         'twitter/*', 'sportvatars/*/*/twitter',
         'treasure-hunting', 'treasure-hunting/*',
-        'subscribe', 'moonpay/*', 'graffle',
+        'subscribe', 'graffle',
         'admin', 'admin/*', 'livewire/*', 'filament/*', 'sanctum/*',
         'api/v2/auth/*',
     ];

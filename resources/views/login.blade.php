@@ -46,9 +46,6 @@
     <script>
         var svgOpen = '{!! config('sportvatar.svgOpen') !!}';
         var svgClose = '{!! config('sportvatar.svgClose') !!}';
-        var moonpayDomain = '{!! config('sportvatar.moonpayDomain') !!}';
-        var moonpayParams = '{!! config('sportvatar.moonpayParams') !!}';
-        var moonpayPublicKey = '{!! config('sportvatar.moonpayPublicKey') !!}';
         var packPrice = {{ config('sportvatar.price') }};
         var packPrice2 = {{ config('sportvatar.price2') }};
     </script>
@@ -111,7 +108,6 @@
      @waiting-seal.window="loading = false; waitingSeal = true;"
      @loading-completed.window="loading = false; waitingSeal = false; sealCompleted = true; setTimeout(()=>sealCompleted=false,3000);"
      @subscribed-email.window="showSubscription = false"
-     @moonpay-signed.window="moonpaySignature = $event.detail.signature"
      @pack-sealing.window="sealingPack = true"
      @pack-purchased.window="packPurchased = true"
      @user-not-initialized.window="showInitPopup = true;"

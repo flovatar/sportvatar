@@ -19,7 +19,6 @@ use \App\Http\Controllers\DownloadController;
 use \App\Http\Controllers\TwitterController;
 use \App\Http\Controllers\LoginController;
 use \App\Http\Controllers\SubscriberController;
-use \App\Http\Controllers\MoonpayController;
 use \App\Http\Controllers\GraffleController;
 use \App\Http\Controllers\SearchController;
 use \App\Http\Controllers\SearchTransactionController;
@@ -82,7 +81,6 @@ Route::localized(function () {
 
 Route::post('builder/search', BuilderSalesController::class)->name('builder.search');
 Route::post('subscribe', [SubscriberController::class,'store'])->name('subscribe')->middleware('throttle:5,1');
-Route::post('moonpay/sign', [MoonpayController::class,'sign'])->name('moonpay.sign');
 // Legacy Graffle webhook: replaced by the built-in indexer (flow:catchup / flow:stream).
 if(config('services.graffle.enabled')){
     Route::post('graffle', GraffleController::class)->name('grafflepost')->middleware('throttle:600,1');
