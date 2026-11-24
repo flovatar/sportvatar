@@ -43,6 +43,8 @@ class RenderImages extends Command
         if (function_exists('proc_nice')) {
             @proc_nice(10);
         }
+        // renders made by this backfill / safety net queue their browser job at backfill priority, not as "new item"
+        $renderer->browserJobPriority = \App\Services\Render\RenderJobs::P_REST;
         $types = $this->argument('type') === 'all' ? ItemRenderer::TYPES : [$this->argument('type')];
         foreach ($types as $type) {
             if (! in_array($type, ItemRenderer::TYPES, true)) {

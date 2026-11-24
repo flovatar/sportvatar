@@ -26,6 +26,9 @@ class ItemRenderer
 
     public array $timings = [];
 
+    /** Browser-job priority for new renders: null = event path (new item 90 / changed 80); backfills set a low one. */
+    public ?int $browserJobPriority = null;
+
     public function __construct(private SvgFlattener $flattener, private Rasterizer $rasterizer)
     {
     }
@@ -133,7 +136,12 @@ class ItemRenderer
 
             if (! $record || $record->hash !== $hash) {
                 // new item state (mint / update): queue the browser render (PNG/JPG/GIF/MP4) on the agent box
-                RenderJobs::enqueue($type, $flowId, $record ? RenderJobs::P_CHANGED : RenderJobs::P_NEW, $record ? 'changed' : 'new');
+                if ($this->browserJobPriority !== null) {
+                    // backfill / safety net (render:images): low priority, animated items first
+                    RenderJobs::enqueue($type, $flowId, max($this->browserJobPriority, self::isAnimated($src['full']) ? RenderJobs::P_ANIMATED : RenderJobs::P_REST), 'backfill');
+                } else {
+                    RenderJobs::enqueue($type, $flowId, $record ? RenderJobs::P_CHANGED : RenderJobs::P_NEW, $record ? 'changed' : 'new');
+                }
             }
 
             return ['status' => 'rendered', 'hash' => $hash, 'bytes' => $bytes, 'ms' => $ms];
