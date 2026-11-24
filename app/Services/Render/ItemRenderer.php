@@ -50,6 +50,12 @@ class ItemRenderer
         return ['full' => $full, 'nobg' => ($nobg !== null && trim($nobg) !== '' && $nobg !== $full) ? $nobg : null];
     }
 
+    /** CSS @keyframes or SMIL in the composed SVG: a static render shows one frozen frame. */
+    public static function isAnimated(string $svg): bool
+    {
+        return (bool) preg_match('/@(-webkit-)?keyframes|<animate|<set\b/i', $svg);
+    }
+
     public static function hash(string $type, array $src): string
     {
         return substr(sha1(config('render.version').'|'.$type.'|'.$src['full'].'|'.($src['nobg'] ?? '')), 0, 12);
@@ -79,6 +85,10 @@ class ItemRenderer
         }
         $hash = self::hash($type, $src);
         $record = RenderedImage::where('item_type', $type)->where('flow_id', $flowId)->first();
+        if ($record && $record->hash === $hash && $record->source === 'browser' && $record->rendered_at && ! $dryRun) {
+            // a browser (Chromium) render of this exact item state outranks the server render: never overwrite it
+            return ['status' => 'unchanged', 'hash' => $hash];
+        }
         if (! $force && $record && $record->hash === $hash && ! $record->error) {
             return ['status' => 'unchanged', 'hash' => $hash];
         }
@@ -106,7 +116,8 @@ class ItemRenderer
             $bytes = array_sum(array_map(fn ($f) => strlen($f[0]), $files));
             $ms = (int) round((microtime(true) - $t0) * 1000);
             RenderedImage::updateOrCreate(['item_type' => $type, 'flow_id' => $flowId], [
-                'hash' => $hash, 'path' => $base.'/'.$hash, 'variants' => $variants, 'bytes' => $bytes, 'render_ms' => $ms,
+                'hash' => $hash, 'path' => $base.'/'.$hash, 'source' => 'server', 'animated' => self::isAnimated($src['full']),
+                'variants' => $variants, 'bytes' => $bytes, 'render_ms' => $ms,
                 'warnings' => count($this->flattener->warnings), 'error' => null, 'rendered_at' => now(),
             ]);
 
@@ -216,5 +227,40 @@ class ItemRenderer
         imagejpeg($im, null, (int) config('render.jpeg_quality', 88));
 
         return (string) ob_get_clean();
+    }
+    /**
+     * Register a browser (Chromium) render produced elsewhere (agent box) for the CURRENT item state.
+     * $files: variant => local file path (full.png, full.jpg, nobg.png, thumb.jpg, og.jpg). Stored under
+     * {base}/{hash}-b/ and preferred over the server render until the item changes (new hash).
+     */
+    public function importBrowserRender(string $type, int $flowId, array $files, ?string $expectHash = null): array
+    {
+        $src = $this->source($type, $flowId);
+        if (! $src) {
+            return ['status' => 'missing'];
+        }
+        $hash = self::hash($type, $src);
+        if ($expectHash !== null && $expectHash !== $hash) {
+            return ['status' => 'stale', 'error' => 'item changed since the browser render (current hash '.$hash.')', 'hash' => $hash];
+        }
+        $base = self::basePath($type, $flowId);
+        $disk = Storage::disk(config('render.disk'));
+        $mimes = ['png' => 'image/png', 'jpg' => 'image/jpeg', 'gif' => 'image/gif', 'mp4' => 'video/mp4', 'webp' => 'image/webp'];
+        $bytes = 0;
+        foreach ($files as $name => $path) {
+            $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
+            if (! preg_match('/^[a-z0-9]+\.(png|jpg|gif|mp4|webp)$/', $name) || ! is_file($path)) {
+                return ['status' => 'error', 'error' => 'bad variant '.$name];
+            }
+            $data = file_get_contents($path);
+            $bytes += strlen($data);
+            $disk->put($base.'/'.$hash.'-b/'.$name, $data, ['ContentType' => $mimes[$ext], 'CacheControl' => (string) config('render.cache_control')]);
+        }
+        RenderedImage::updateOrCreate(['item_type' => $type, 'flow_id' => $flowId], [
+            'hash' => $hash, 'path' => $base.'/'.$hash.'-b', 'source' => 'browser', 'animated' => self::isAnimated($src['full']),
+            'variants' => array_keys($files), 'bytes' => $bytes, 'error' => null, 'rendered_at' => now(),
+        ]);
+
+        return ['status' => 'imported', 'hash' => $hash, 'bytes' => $bytes];
     }
 }

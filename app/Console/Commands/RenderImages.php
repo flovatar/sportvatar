@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Models\Sportvatar;
 use App\Models\SportvatarTemplate;
 use App\Models\RenderedImage;
+use App\Services\Render\AnimatedItems;
 use App\Services\Render\ItemRenderer;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
@@ -25,6 +26,7 @@ class RenderImages extends Command
         {--ids= : comma list / ranges (e.g. 1,5,10-20)}
         {--missing : only items without a new render AND without a legacy PNG on the CDN bucket}
         {--all : every item; unchanged ones are skipped by content hash}
+        {--static-only : skip animated items (CSS @keyframes / SMIL); their images come from the browser renderer}
         {--rendered : only items that already have a render (with --force: re-upload, e.g. after switching RENDER_DISK)}
         {--force : re-render even if the content hash is unchanged}
         {--dry-run : list/count candidates (with --render-local: render without uploading)}
@@ -48,6 +50,12 @@ class RenderImages extends Command
                 return self::FAILURE;
             }
             $ids = $this->candidates($type);
+            if ($this->option('static-only')) {
+                $animated = $ids ? AnimatedItems::ids($type, $ids) : [];
+                $before = count($ids);
+                $ids = array_values(array_diff($ids, $animated));
+                $this->line(sprintf('  %s: %d animated item(s) skipped (static-only)', $type, $before - count($ids)));
+            }
             $this->info(sprintf('%s: %d candidate(s)%s', $type, count($ids), $ids ? ' (first: '.implode(',', array_slice($ids, 0, 15)).(count($ids) > 15 ? ',…' : '').')' : ''));
             if ($this->option('dry-run') && ! $this->option('render-local')) {
                 continue;

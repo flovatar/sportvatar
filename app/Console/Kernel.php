@@ -40,8 +40,8 @@ class Kernel extends ConsoleKernel
         //$schedule->command('sportvatar:sync-queueit')->everyFiveMinutes();
         $schedule->command('sportvatar:clean-packs')->hourly();
         if (config('render.enabled')) {
-            // safety net for the event hook: render items that have no image at all (throttled, resumable)
-            $schedule->command('render:images all --missing --limit=60 --sleep=500')
+            // safety net for the event hook: static items without any image (throttled, resumable); animated ones come from the browser renderer
+            $schedule->command('render:images all --missing --static-only --limit=60 --sleep=500')
                 ->hourlyAt(37)->withoutOverlapping(60)->runInBackground();
         }
         // free-pack vouchers reserved by authorize-claim but never claimed on chain go back to 'issued'

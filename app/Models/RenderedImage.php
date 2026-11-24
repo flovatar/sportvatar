@@ -12,6 +12,7 @@ class RenderedImage extends Model
     protected $casts = [
         'variants' => 'array',
         'rendered_at' => 'datetime',
+        'animated' => 'boolean',
     ];
 
     public function hasVariant(string $variant): bool
