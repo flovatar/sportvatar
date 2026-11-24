@@ -67,7 +67,8 @@ Free packs waiting: `GET /api/packs/pending/{address}` (existing, private no-sto
 
 - Renders through the HTTP kernel (same controllers/middleware/views) with the frontend host, inside `Headless::begin()`; the layout
   prints `<link rel=canonical>`/`og:url` on the frontend host and `window.HEADLESS = {mode:'static', page, item:{type,id,owner,snapshot}, ...}`.
-  Refuses to upload HTML containing a CSRF token.
+  Refuses to upload HTML containing a CSRF token (`csrf-token`, `_token`, Livewire's `data-csrf`); Livewire asset injection is disabled
+  per render (Filament forces it process-wide once an admin page was rendered).
 - Objects (`{prefix}site/`): shells `index.html`, `it/index.html`, `es/index.html`, `{,it/,es/}how-it-works|builder|packs/index.html`,
   `marketplace/`, `locker-room/`, `transactions/`, `hall-of-fame/`, `privacy/`, `privacy-it/`, `_shells/collection.html`, `404.html`;
   one `sportvatars/{id}/index.html` per Sportvatar (~42 KB each); `sitemap.xml`; `public/` assets + `js/app.js@{mix id}` bundle copies.
