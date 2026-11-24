@@ -21,6 +21,7 @@
         @if(isset($sportvatarSaleOffer))
             window.sportvatarSaleOffer = @json($sportvatarSaleOffer);
         @endif
+        window.sportvatarSnapshot = @json($sportvatarSnapshot ?? null);
 
         window.revealStats = {{ request()->get('reveal') ? 'true' : 'false' }} || new URLSearchParams(window.location.search).has('reveal');
     </script>

@@ -86,6 +86,12 @@ Alpine.data('sportvatarData', (address, sportvatarId, series, templates, sportva
         return '/builder#combination='+this.combination()+extraParams;
     },
     loadSportvatar(sportvatar){
+        if(!sportvatar){
+            // chain read failed / not found at this address: DB snapshot (same shape, svg null)
+            sportvatar = window.sportvatarSnapshot && parseInt(window.sportvatarSnapshot.id, 10) == parseInt(this.sportvatarId, 10) ? window.sportvatarSnapshot : null;
+        } else if(this.sportvatar && !this.sportvatar.fromSnapshot && sportvatar.fromSnapshot){
+            return; // live chain data already shown
+        }
         this.sportvatar = sportvatar;
         this.loadOptionals();
         this.isLoading = false;
@@ -566,5 +572,17 @@ Alpine.data('sportvatarData', (address, sportvatarId, series, templates, sportva
 window.initSportvatar = async function(dispatch, address, sportvatarId){
     window.dispatch = dispatch;
     address = await window.resolveItemOwner('sportvatar', sportvatarId, address); // headless: owner + listing confirmed on chain
-    window.getSportvatar(address, sportvatarId);
+    // Fallback: if the chain read fails or is slow, render the DB snapshot (live data replaces it when it arrives)
+    let settled = false;
+    const fallback = () => { if(!settled){ settled = true; window.dispatch('sportvatar-loaded', {sportvatar: null}); } };
+    const timer = setTimeout(fallback, 12000);
+    try {
+        await window.getSportvatar(address, sportvatarId);
+        settled = true;
+    } catch (e) {
+        console.warn('get-sportvatar failed, showing the stored data', e && e.message ? e.message.slice(0, 200) : e);
+        fallback();
+    } finally {
+        clearTimeout(timer);
+    }
 }

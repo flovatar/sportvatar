@@ -228,6 +228,20 @@ class HeadlessTest extends TestCase
         $this->get('/api/v2/components/32')->assertOk()->assertJsonPath('id', 32);
     }
 
+    public function test_sportvatar_chain_data_snapshot_has_the_script_shape(): void
+    {
+        $snap = \App\Http\Controllers\SportvatarController::chainDataSnapshot(7);
+        $this->assertSame('7', $snap['id']);
+        $this->assertNull($snap['svg']);
+        $this->assertSame('S2-L2_14', $snap['combination']);
+        $this->assertSame('0x2538515561c0c431', $snap['creatorAddress']);
+        $this->assertEquals((object) ['2' => '14'], $snap['layers']);
+        $this->assertEquals((object) ['power' => '3'], $snap['stats']);
+        $this->assertEquals(new \stdClass(), $snap['bio']);
+        $this->assertTrue($snap['fromSnapshot']);
+        $this->assertNull(\App\Http\Controllers\SportvatarController::chainDataSnapshot(999));
+    }
+
     public function test_unknown_item_is_json_404(): void
     {
         $r = $this->get('/api/v2/sportvatars/999');
@@ -325,6 +339,9 @@ class HeadlessTest extends TestCase
         $this->assertStringContainsString('/templates/data/all.js?v=', $html);
         $this->assertStringNotContainsString('BIGSVG', $html);
         $this->assertStringNotContainsString('csrf-token', $html);
+        // DB copy of the chain data for heavy Sportvatars whose get-sportvatar script fails (layers flattened, no svg)
+        $this->assertStringContainsString('window.sportvatarSnapshot = {"id":"7","mint":"7","series":"2"', $html);
+        $this->assertStringContainsString('"layers":{"2":"14"}', $html);
         // second run: unchanged, nothing rewritten
         $this->assertSame(0, \Illuminate\Support\Facades\Artisan::call('headless:build', ['--items' => true, '--type' => 'sportvatar', '--out' => $out]));
         $this->assertStringContainsString(' 0 uploaded', \Illuminate\Support\Facades\Artisan::output());
