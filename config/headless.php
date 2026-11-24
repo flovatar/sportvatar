@@ -32,4 +32,14 @@ return [
 
     // public/ entries that are never uploaded as static assets.
     'asset_exclude' => ['index.php', 'storage', '.htaccess', 'web.config', 'hot', 'robots.txt', 'mix-manifest.json.bak'],
+
+    // Laravel host(s) the Worker proxies to (its ORIGIN, prod: origin.sportvatar.com). Direct hits there get
+    // X-Robots-Tag noindex (App\Http\Middleware\HeadlessProxyRequest). Comma separated; empty = none.
+    'origin_hosts' => array_values(array_filter(array_map(fn ($h) => strtolower(trim($h)),
+        explode(',', (string) env('HEADLESS_ORIGIN_HOSTS', ''))))),
+
+    // Source addresses of Cloudflare Worker subrequests (after nginx real_ip). Only these may pass the
+    // visitor's IP in X-Headless-Client-IP. Cloudflare documents 2a06:98c0:3600::103 for Workers.
+    'worker_ips' => array_values(array_filter(array_map('trim',
+        explode(',', (string) env('HEADLESS_WORKER_IPS', '2a06:98c0::/29'))))),
 ];

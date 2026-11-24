@@ -143,6 +143,11 @@ async function proxy(request, env, c, url, opts = {}) {
   headers.set("X-Forwarded-Host", url.host);
   headers.set("X-Forwarded-Proto", "https");
   headers.set("X-Headless-Proxy", "1");
+  // the origin sees every Worker subrequest from Cloudflare's Workers address: pass the visitor's IP so per-IP
+  // limits (login nonce, POST /login, api group) stay per visitor (Laravel HeadlessProxyRequest trusts it only
+  // from the Workers range)
+  const clientIp = request.headers.get("cf-connecting-ip") || "";
+  if (clientIp) headers.set("X-Headless-Client-IP", clientIp); else headers.delete("X-Headless-Client-IP");
   if (!headers.get("user-agent")) headers.set("User-Agent", FETCH_UA);
   const init = { method: request.method, headers, redirect: "manual" };
   if (!["GET", "HEAD"].includes(request.method)) init.body = request.body;
@@ -164,7 +169,8 @@ async function proxy(request, env, c, url, opts = {}) {
     if (/s-maxage=/.test(cc) && !/immutable/.test(cc)) out.set("cache-control", cc.replace(/(^|,\s*)max-age=\d+/, "$1max-age=0"));
   }
   out.set("X-Headless", opts.fallback ? "origin-fallback" : "origin");
-  if (c.noindex) out.set("X-Robots-Tag", "noindex, nofollow, noarchive");
+  // the origin host itself is noindex; pages served here are indexable unless NOINDEX
+  if (c.noindex) out.set("X-Robots-Tag", "noindex, nofollow, noarchive"); else out.delete("X-Robots-Tag");
   let resp = new Response(r.body, { status: r.status, statusText: r.statusText, headers: out });
   if ((out.get("content-type") || "").includes("text/html") && typeof HTMLRewriter !== "undefined") {
     resp = rewriteOriginHtml(resp, c, url.origin, url);

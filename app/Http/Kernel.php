@@ -33,6 +33,8 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\InvokeDeferredCallbacks::class,
         // \App\Http\Middleware\TrustHosts::class,
         \App\Http\Middleware\TrustProxies::class,
+        // Visitor IP + origin-host noindex for requests proxied by the headless Worker (before any throttle)
+        \App\Http\Middleware\HeadlessProxyRequest::class,
         \Illuminate\Http\Middleware\HandleCors::class,
         \App\Http\Middleware\PreventRequestsDuringMaintenance::class,
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
