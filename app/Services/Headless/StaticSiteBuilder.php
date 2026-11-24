@@ -82,6 +82,14 @@ class StaticSiteBuilder
         Headless::begin($context + ['path' => $path]);
         $locale = app()->getLocale();
         app()->setLocale((string) config('localized-routes.fallback_locale', 'en'));
+        // Livewire (Filament) auto-injects its assets + a data-csrf token into HTML responses once an admin page forced it in this
+        // process (static state survives in queue workers / test runs): never into static pages.
+        $injectAssets = config('livewire.inject_assets');
+        config(['livewire.inject_assets' => false]);
+        if (class_exists(\Livewire\Features\SupportAutoInjectedAssets\SupportAutoInjectedAssets::class)) {
+            \Livewire\Features\SupportAutoInjectedAssets\SupportAutoInjectedAssets::$forceAssetInjection = false;
+            \Livewire\Features\SupportAutoInjectedAssets\SupportAutoInjectedAssets::$hasRenderedAComponentThisRequest = false;
+        }
         try {
             app()->instance('request', $request);
             $response = $kernel->handle($request);
@@ -89,6 +97,7 @@ class StaticSiteBuilder
         } finally {
             Headless::end();
             app()->setLocale($locale);
+            config(['livewire.inject_assets' => $injectAssets]);
         }
         $status = $response->getStatusCode();
         $html = (string) $response->getContent();
@@ -385,7 +394,7 @@ class StaticSiteBuilder
     /** Static HTML must be user-agnostic: no CSRF token / session data may leak into an object on R2. */
     private function assertSessionless(string $html, string $page): void
     {
-        if (preg_match('/name="csrf-token"|name="_token"/', $html)) {
+        if (preg_match('/name="csrf-token"|name="_token"|data-csrf=|livewire[^"]*\.js/i', $html)) {
             throw new RuntimeException("{$page}: rendered HTML contains a CSRF token");
         }
     }
