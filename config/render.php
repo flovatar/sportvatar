@@ -47,6 +47,9 @@ return [
         'enabled' => (bool) env('RENDER_JOBS_ENABLED', true),
         'lease_seconds' => (int) env('RENDER_JOBS_LEASE', 900),
         'max_attempts' => 4,
+        // item types the browser worker does NOT render (Luca 2026-11-24: templates are delivered as SVG everywhere;
+        // their share-preview JPG comes from the server render) - comma separated
+        'skip_types' => array_values(array_filter(array_map('trim', explode(',', (string) env('RENDER_BROWSER_SKIP_TYPES', 'template'))))),
     ],
     // Bucket of the 'r2' disk (told to the worker; it only accepts its own bucket + prefix).
     'bucket' => env('R2_IMAGES_BUCKET', 'sportvatar'),
