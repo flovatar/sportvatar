@@ -16,7 +16,9 @@ class ShowroomController extends FilteredController
 
         $sportvatars = Cache::remember('db-sportvatars-random-20', now()->addMinutes(1), function() {
             // Random ids first: ORDER BY RAND() over full rows is slow.
-            return Sportvatar::whereIn('id', Sportvatar::inRandomOrder()->take(20)->pluck('id'))->get();
+            // lean rows (no svg / metadata svg): the page loads its cards from the search API anyway
+            return Sportvatar::whereIn('id', Sportvatar::inRandomOrder()->take(20)->pluck('id'))
+                ->select(FilteredController::SPORTVATAR_LIST_COLUMNS)->get()->each->setAppends([]);
         });
 
         $templates = $this->getTemplates()->makeHidden(['flow_metadata', 'svg']);
