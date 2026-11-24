@@ -4,33 +4,27 @@ namespace App\Jobs;
 
 use App\Services\Render\ItemRenderer;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUniqueUntilProcessing;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
 /**
- * Re-render one item's static images (PNG/JPG/og) on R2 after a mint/update. Unique per item until it
- * starts, so a burst of events for the same item renders once; unchanged items cost one hash compare.
+ * Re-render one item's static images (PNG/JPG/og) after a mint/update. Deliberately NOT a unique job
+ * (a stale unique lock would silently drop a later update): duplicates from an event burst cost one
+ * source compose + hash compare each and end as 'unchanged'.
  */
-class RenderItemImages implements ShouldQueue, ShouldBeUniqueUntilProcessing
+class RenderItemImages implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public $tries = 3;
     public $timeout = 180;
     public $backoff = [30, 300];
-    public $uniqueFor = 600;
 
     public function __construct(public string $type, public int $flowId, public bool $force = false)
     {
         $this->onQueue('images');
-    }
-
-    public function uniqueId(): string
-    {
-        return $this->type.':'.$this->flowId;
     }
 
     public function handle(ItemRenderer $renderer): void
@@ -40,13 +34,13 @@ class RenderItemImages implements ShouldQueue, ShouldBeUniqueUntilProcessing
         }
         $res = $renderer->render($this->type, $this->flowId, $this->force);
         if ($res['status'] === 'error') {
-            info('RenderItemImages '.$this->uniqueId().' failed: '.$res['error']);
+            info('RenderItemImages '.$this->type.':'.$this->flowId.' failed: '.$res['error']);
             $this->release($this->backoff[min($this->attempts() - 1, count($this->backoff) - 1)]);
 
             return;
         }
         if ($res['status'] === 'rendered') {
-            info('RenderItemImages '.$this->uniqueId().' rendered '.$res['hash'].' ('.$res['ms'].' ms, '.$res['bytes'].' B)');
+            info('RenderItemImages '.$this->type.':'.$this->flowId.' rendered '.$res['hash'].' ('.$res['ms'].' ms, '.$res['bytes'].' B)');
         }
     }
 
