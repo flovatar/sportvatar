@@ -46,7 +46,11 @@ const PROXY = [
 ];
 
 // Anonymous, user-agnostic GETs that may be cached at the edge (honours the origin's Cache-Control).
-const EDGE_CACHEABLE = [/^\/api\/v2\/(?!auth\/)/, /^\/api\/image\//, /^\/templates\//, /^\/components\/\d+\/0x[a-f0-9]{16}\/?$/, /^\/collection\/api(\/|$)/];
+// (Laravel answers them with public, s-maxage=60 when anonymous and private, no-store otherwise; see App\Support\PublicCache.)
+const EDGE_CACHEABLE = [
+  /^\/api\/v2\/(?!auth\/)/, /^\/api\/image\//, /^\/templates\//, /^\/components\/\d+\/0x[a-f0-9]{16}\/?$/, /^\/collection\/api(\/|$)/,
+  /^\/((it|es)\/)?meme-maker\/?$/, /^\/leaderboard\/?$/, /^\/mosaic\/?$/,
+];
 
 const ITEM_OWNER_URL = /^\/(sportvatars)\/(\d+)\/(0x[a-f0-9]{16})\/?$/;
 const ITEM_URL = /^\/(sportvatars)\/(\d+)\/?$/;
@@ -142,7 +146,7 @@ async function proxy(request, env, c, url, opts = {}) {
   if (!headers.get("user-agent")) headers.set("User-Agent", FETCH_UA);
   const init = { method: request.method, headers, redirect: "manual" };
   if (!["GET", "HEAD"].includes(request.method)) init.body = request.body;
-  const cacheable = request.method === "GET" && EDGE_CACHEABLE.some((re) => re.test(url.pathname));
+  const cacheable = request.method === "GET" && (opts.cacheable || EDGE_CACHEABLE.some((re) => re.test(url.pathname)));
   if (cacheable) init.cf = { cacheEverything: true };
   let r = await fetch(upstream, init);
   const out = new Headers(r.headers);
@@ -157,17 +161,26 @@ async function proxy(request, env, c, url, opts = {}) {
   if (c.noindex) out.set("X-Robots-Tag", "noindex, nofollow, noarchive");
   let resp = new Response(r.body, { status: r.status, statusText: r.statusText, headers: out });
   if ((out.get("content-type") || "").includes("text/html") && typeof HTMLRewriter !== "undefined") {
-    resp = rewriteOriginHtml(resp, c, url.origin);
+    resp = rewriteOriginHtml(resp, c, url.origin, url);
   }
   return resp;
 }
 
 // Server-rendered HTML coming through the proxy: canonical/og:url and absolute origin links -> this host.
-function rewriteOriginHtml(resp, c, frontendOrigin) {
+function rewriteOriginHtml(resp, c, frontendOrigin, url) {
   const fix = (v) => (v && v.startsWith(c.origin) ? frontendOrigin + v.slice(c.origin.length) : v);
+  // The classic layout prints a site-wide canonical/og:url (https://sportvatar.com/) on every page -> this page's own URL
+  // (owner URLs -> canonical item URL; ?lang= kept because it selects the page language).
+  const own = url ? (() => {
+    const m = url.pathname.match(ITEM_OWNER_URL);
+    const lang = url.searchParams.get("lang");
+    return frontendOrigin + (m ? `/${m[1]}/${m[2]}` : url.pathname) + (LANGS.includes(lang || "") ? `?lang=${lang}` : "");
+  })() : null;
+  const siteWide = (v) => !v || /^https?:\/\/[^\/]+\/?$/.test(v);
+  const canonical = (v) => (own && siteWide(v) ? own : fix(v));
   return new HTMLRewriter()
-    .on('link[rel="canonical"]', { element(e) { e.setAttribute("href", fix(e.getAttribute("href"))); } })
-    .on('meta[property="og:url"]', { element(e) { e.setAttribute("content", fix(e.getAttribute("content"))); } })
+    .on('link[rel="canonical"]', { element(e) { e.setAttribute("href", canonical(e.getAttribute("href"))); } })
+    .on('meta[property="og:url"]', { element(e) { e.setAttribute("content", canonical(e.getAttribute("content"))); } })
     .on("a[href]", { element(e) { const h = e.getAttribute("href"); if (h && h.startsWith(c.origin)) e.setAttribute("href", fix(h)); } })
     .transform(resp);
 }
@@ -209,7 +222,16 @@ async function handle(request, env) {
   try { path = decodeURIComponent(url.pathname); } catch { path = url.pathname; }
   if (path.includes("..") || path.includes("\0")) return new Response("Bad request", { status: 400 });
 
+  // www.<host> -> apex (only reached if www is attached to this Worker; normally the origin already redirects www)
+  if (url.hostname.startsWith("www.")) {
+    return Response.redirect(`${url.protocol}//${url.hostname.slice(4)}${url.pathname}${url.search}`, 301);
+  }
   if (path === "/robots.txt") return robots(c, url);
+  // contract MetadataViews.ExternalURL = https://sportvatar.com/collectible/{id} (never a route) -> the Sportvatar page
+  const collectible = path.match(/^\/collectible\/(\d+)\/?$/);
+  if (collectible && ["GET", "HEAD"].includes(request.method)) {
+    return Response.redirect(`${url.origin}/sportvatars/${collectible[1]}`, 301);
+  }
   if (path === "/__headless/health") return new Response(JSON.stringify({ ok: true, prefix: c.prefix, origin: c.origin, r2: !!env.SITE }), { headers: { "Content-Type": "application/json", "Cache-Control": "no-store" } });
 
   // canonical item URLs: /sportvatars/{id}/{owner} -> /sportvatars/{id}
@@ -224,7 +246,7 @@ async function handle(request, env) {
 
   // ?lang=it|es on a non-localized page: static objects are English, the origin renders the language (cacheable per URL)
   if (LANGS.includes(url.searchParams.get("lang") || "")) {
-    return proxy(request, env, c, url);
+    return proxy(request, env, c, url, { cacheable: true });
   }
 
   // shells: wallet comes from the URL at runtime (FIND/.find names are resolved by the origin)
