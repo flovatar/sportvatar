@@ -30,8 +30,9 @@ class SportvatarImageController extends Controller
         });
         return $sportvatarSvg ? response($sportvatarSvg)->header('Content-Type', 'image/svg+xml') : abort(404);
     }
+    // GIF/MP4: the browser render (agent box) when present, else the legacy export (prod only)
     public function gif($sportvatarId){
-        return $this->imageFromStorage('/sportvatar/gif/'.$sportvatarId.'.gif');
+        return RenderedImageController::respond('sportvatar', (int) $sportvatarId, 'anim.gif');
     }
     public function gifNoBg($sportvatarId){
         return $this->imageFromStorage('/sportvatar/gif/'.$sportvatarId.'-nobg.gif');
@@ -46,7 +47,7 @@ class SportvatarImageController extends Controller
         return $this->imageFromStorage('/sportvatar/png/'.$sportvatarId.'-nobg.png');
     }
     public function mp4($sportvatarId){
-        return $this->imageFromStorage('/sportvatar/mp4/'.$sportvatarId.'.mp4');
+        return RenderedImageController::respond('sportvatar', (int) $sportvatarId, 'anim.mp4');
     }
     public function mp4NoBg($sportvatarId){
         return $this->imageFromStorage('/sportvatar/mp4/'.$sportvatarId.'-nobg.mp4');

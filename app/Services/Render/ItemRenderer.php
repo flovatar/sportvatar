@@ -50,6 +50,16 @@ class ItemRenderer
         return ['full' => $full, 'nobg' => ($nobg !== null && trim($nobg) !== '' && $nobg !== $full) ? $nobg : null];
     }
 
+    /** Eloquent query over all items of a render type. */
+    public static function query(string $type): \Illuminate\Database\Eloquent\Builder
+    {
+        return match ($type) {
+            'sportvatar' => Sportvatar::query(),
+            'template' => SportvatarTemplate::query(),
+            default => throw new RuntimeException('unknown type '.$type),
+        };
+    }
+
     /** CSS @keyframes or SMIL in the composed SVG: a static render shows one frozen frame. */
     public static function isAnimated(string $svg): bool
     {
@@ -120,6 +130,11 @@ class ItemRenderer
                 'variants' => $variants, 'bytes' => $bytes, 'render_ms' => $ms,
                 'warnings' => count($this->flattener->warnings), 'error' => null, 'rendered_at' => now(),
             ]);
+
+            if (! $record || $record->hash !== $hash) {
+                // new item state (mint / update): queue the browser render (PNG/JPG/GIF/MP4) on the agent box
+                RenderJobs::enqueue($type, $flowId, $record ? RenderJobs::P_CHANGED : RenderJobs::P_NEW, $record ? 'changed' : 'new');
+            }
 
             return ['status' => 'rendered', 'hash' => $hash, 'bytes' => $bytes, 'ms' => $ms];
         } catch (Throwable $e) {
@@ -256,11 +271,33 @@ class ItemRenderer
             $bytes += strlen($data);
             $disk->put($base.'/'.$hash.'-b/'.$name, $data, ['ContentType' => $mimes[$ext], 'CacheControl' => (string) config('render.cache_control')]);
         }
-        RenderedImage::updateOrCreate(['item_type' => $type, 'flow_id' => $flowId], [
-            'hash' => $hash, 'path' => $base.'/'.$hash.'-b', 'source' => 'browser', 'animated' => self::isAnimated($src['full']),
-            'variants' => array_keys($files), 'bytes' => $bytes, 'error' => null, 'rendered_at' => now(),
-        ]);
+        $this->recordBrowserRender($type, $flowId, $hash, array_keys($files), $bytes, self::isAnimated($src['full']));
 
         return ['status' => 'imported', 'hash' => $hash, 'bytes' => $bytes];
+    }
+
+    /**
+     * Record a browser render whose files are already on the render disk under {base}/{hash}-b/ (render:import
+     * above, or the agent-box worker via the job API) and point latest.json at it.
+     */
+    public function recordBrowserRender(string $type, int $flowId, string $hash, array $variants, int $bytes, bool $animated, ?int $renderMs = null): RenderedImage
+    {
+        $base = self::basePath($type, $flowId);
+        $variants = array_values(array_unique($variants));
+        $record = RenderedImage::updateOrCreate(['item_type' => $type, 'flow_id' => $flowId], [
+            'hash' => $hash, 'path' => $base.'/'.$hash.'-b', 'source' => 'browser', 'animated' => $animated,
+            'variants' => $variants, 'bytes' => $bytes, 'render_ms' => $renderMs ?? 0, 'warnings' => 0,
+            'error' => null, 'rendered_at' => now(),
+        ]);
+        try {
+            Storage::disk(config('render.disk'))->put($base.'/latest.json', json_encode([
+                'type' => $type, 'flow_id' => $flowId, 'hash' => $hash, 'source' => 'browser', 'variants' => $variants,
+                'base' => config('render.public_url').'/'.$base.'/'.$hash.'-b/', 'rendered_at' => now()->toIso8601String(),
+            ], JSON_UNESCAPED_SLASHES), ['ContentType' => 'application/json', 'CacheControl' => 'public, max-age=60']);
+        } catch (Throwable $e) {
+            report($e); // latest.json is informational; the DB row is what the site uses
+        }
+
+        return $record;
     }
 }

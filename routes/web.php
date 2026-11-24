@@ -128,11 +128,11 @@ Route::get('api/image/gif/{sportvatarId}', [SportvatarImageController::class,'gi
 Route::get('api/image/mp4/{sportvatarId}', [SportvatarImageController::class,'mp4'])
     ->whereNumber('sportvatarId')
     ->name('sportvatarimageapimp4');
-// full.png | full.jpg | thumb.jpg | og.jpg
+// full.png | full.jpg | thumb.jpg | og.jpg | anim.gif | anim.mp4
 Route::get('api/image/r/{type}/{flowId}/{variant}', \App\Http\Controllers\RenderedImageController::class)
     ->where('type', 'sportvatar|template')
     ->whereNumber('flowId')
-    ->where('variant', 'full\\.png|full\\.jpg|thumb\\.jpg|og\\.jpg')
+    ->where('variant', 'full\\.png|full\\.jpg|thumb\\.jpg|og\\.jpg|anim\\.gif|anim\\.mp4')
     ->name('renderedimage');
 
 

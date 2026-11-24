@@ -14,7 +14,7 @@ use App\Support\ItemImages;
  */
 class RenderedImageController extends Controller
 {
-    public const VARIANTS = ['full.png', 'full.jpg', 'thumb.jpg', 'og.jpg'];
+    public const VARIANTS = ['full.png', 'full.jpg', 'thumb.jpg', 'og.jpg', 'anim.gif', 'anim.mp4'];
 
     public function __invoke(string $type, $flowId, string $variant = 'full.png')
     {
@@ -28,6 +28,9 @@ class RenderedImageController extends Controller
         }
         if ($legacy = ItemImages::legacyUrl($type, $flowId, $variant)) {
             return redirect()->away($legacy, 302)->header('Cache-Control', 'public, max-age=300');
+        }
+        if (str_starts_with($variant, 'anim.')) {
+            abort(404); // GIF/MP4 only come from the browser renderer (agent box) or the legacy export
         }
         $exists = match ($type) {
             'sportvatar' => Sportvatar::where('flow_id', $flowId)->exists(),

@@ -135,13 +135,7 @@
                                 <dd>
                                     <div class="input-panel">
                                         <button @click.prevent.stop="saveSvg()" class="btn btn-sm btn-green"><span class="inner">SVG</span></button>
-                                        <button @click.prevent.stop="savePng()" class="btn btn-sm btn-green"><span class="inner">PNG</span></button>
-                                        <a target="_blank" x-bind:download="'Sportvatar-'+mint()+'.jpg'" x-bind:href="'/api/image/jpg/'+mint()" class="btn btn-sm btn-green"><span class="inner">JPG</span></a>
-                                        @if(config('render.legacy_fallback'))
-                                        {{-- legacy exports on the prod CDN (none for testnet items) --}}
-                                        <a target="_blank" x-bind:href="'/api/image/mp4/'+mint()" class="btn btn-sm btn-green"><span class="inner">MP4</span></a>
-                                        <a target="_blank" x-bind:href="'/api/image/gif/'+mint()" class="btn btn-sm btn-green"><span class="inner">GIF</span></a>
-                                        @endif
+                                        @include('partials.render-downloads', ['dlType' => 'sportvatar', 'dlId' => $sportvatarId, 'dlName' => 'Sportvatar-'.$sportvatarId, 'dlClass' => 'btn btn-sm btn-green'])
                                     </div>
                                 </dd>
                             </dl>

@@ -63,3 +63,13 @@ Route::get('leaderboard/address/{gameId}', [GameScoreController::class, 'byAddre
     ->name('api.leaderboard.address');
 
 Route::post('leaderboard', [GameScoreController::class, 'store'])->name('api.leaderboard.store')->middleware(['auth:sanctum', 'throttle:10,1']);
+
+// Browser render worker (agent box): bearer RENDER_WORKER_TOKEN, stateless, never cached. See RenderJobController.
+Route::middleware([\App\Http\Middleware\AuthenticateRenderWorker::class, 'throttle:240,1'])->prefix('render-jobs')->group(function () {
+    Route::get('/', [\App\Http\Controllers\Api\RenderJobController::class, 'index'])->name('api.renderjobs.index');
+    Route::post('claim', [\App\Http\Controllers\Api\RenderJobController::class, 'claim'])->name('api.renderjobs.claim');
+    Route::get('{job}/svg/{variant}', [\App\Http\Controllers\Api\RenderJobController::class, 'svg'])
+        ->whereNumber('job')->where('variant', 'full|nobg')->name('api.renderjobs.svg');
+    Route::post('{job}/complete', [\App\Http\Controllers\Api\RenderJobController::class, 'complete'])->whereNumber('job')->name('api.renderjobs.complete');
+    Route::post('{job}/fail', [\App\Http\Controllers\Api\RenderJobController::class, 'fail'])->whereNumber('job')->name('api.renderjobs.fail');
+});

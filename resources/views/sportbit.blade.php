@@ -70,6 +70,17 @@
                             <dt>Rarity</dt>
                             <dd x-text="rarity()"></dd>
                         </dl>
+                        @php($dlTemplate = ($templates ?? null) ? $templates->first() : null)
+                        @if($dlTemplate && $dlTemplate->flow_id)
+                        <dl class="details-input-form details-download-btns">
+                            <dt>Assets Download</dt>
+                            <dd>
+                                <div class="input-panel">
+                                    @include('partials.render-downloads', ['dlType' => 'template', 'dlId' => $dlTemplate->flow_id, 'dlName' => 'Sportbit-'.$componentId, 'dlClass' => 'btn btn-sm btn-green'])
+                                </div>
+                            </dd>
+                        </dl>
+                        @endif
 
 
                         <dl x-show="isSale()" class="details-input-form">
