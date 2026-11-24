@@ -26,6 +26,7 @@ class RenderImages extends Command
         {--ids= : comma list / ranges (e.g. 1,5,10-20)}
         {--missing : only items without a new render AND without a legacy PNG on the CDN bucket}
         {--all : every item; unchanged ones are skipped by content hash}
+        {--legacy-list= : file with flow ids that have a legacy PNG (one per line), instead of listing the bucket}
         {--static-only : skip animated items (CSS @keyframes / SMIL); their images come from the browser renderer}
         {--rendered : only items that already have a render (with --force: re-upload, e.g. after switching RENDER_DISK)}
         {--force : re-render even if the content hash is unchanged}
@@ -49,7 +50,12 @@ class RenderImages extends Command
 
                 return self::FAILURE;
             }
-            $ids = $this->candidates($type);
+            try {
+                $ids = $this->candidates($type);
+            } catch (\Throwable $e) {
+                $this->error($type.': '.$e->getMessage());
+                continue;
+            }
             if ($this->option('static-only')) {
                 $animated = $ids ? AnimatedItems::ids($type, $ids) : [];
                 $before = count($ids);
@@ -160,14 +166,24 @@ class RenderImages extends Command
         return $ids;
     }
 
-    /** flow ids that have a legacy {type}/png/{id}.png object in the render bucket */
+    /**
+     * flow ids that have a legacy {type}/png/{id}.png object on the CDN bucket. Listed through the 'r2'
+     * disk (RENDER_LEGACY_DISK), independent of where new renders go. Throws when the bucket can't be
+     * listed: an empty answer would turn --missing into "everything".
+     */
     private function legacyIds(string $type): array
     {
+        if ($file = $this->option('legacy-list')) {
+            return array_values(array_filter(array_map('intval', file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) ?: [])));
+        }
         $ids = [];
-        foreach (Storage::disk(config('render.disk'))->files('sportvatar/png') as $path) {
+        foreach (Storage::disk(config('render.legacy_disk', 'r2'))->files('sportvatar/png') as $path) {
             if (preg_match('#/(\d+)\.png$#', $path, $m)) {
                 $ids[] = (int) $m[1];
             }
+        }
+        if (! $ids) {
+            throw new \RuntimeException('no legacy PNGs listed for '.$type.' - refusing to treat every item as missing (use --legacy-list)');
         }
 
         return $ids;

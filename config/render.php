@@ -26,6 +26,8 @@ return [
     // When an item has no new render yet, fall back to the legacy CDN object (prod only; testnet ids
     // don't exist on the prod CDN).
     'legacy_fallback' => (bool) env('RENDER_LEGACY_FALLBACK', true),
+    // Disk that holds the legacy exports (bucket listing for render:images --missing).
+    'legacy_disk' => env('RENDER_LEGACY_DISK', 'r2'),
 
     'size' => 1000,
     'thumb' => 400,
