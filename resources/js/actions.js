@@ -149,6 +149,9 @@ async function updateUser(user){
     window.user = user;
 
     if(user.addr) {
+        // Connected wallet (fresh connect or stored FCL session): load the login nonce + server login state
+        // (loginAddress, loginIsAdmin) now; anonymous visitors never call /login/nonce.
+        window.ensureLoginNonce();
         // Decide the wallet here, before choosing which init check / transactions to use
         window.currentWallet = window.detectWallet(user);
 
@@ -298,7 +301,7 @@ window.createSignature = async function(message){
 
     try{
         if(!window.accountProofNonce){
-            await window.loadLoginNonce();
+            await window.ensureLoginNonce();
         }
         const user = await fcl.currentUser().snapshot();
         const proof = window.findAccountProof(user);

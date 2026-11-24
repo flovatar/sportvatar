@@ -98,6 +98,27 @@ class PublicCacheTest extends TestCase
         $this->assertSame($nonce, $again->json('nonce'));
     }
 
+    public function test_login_marker_cookie_follows_server_login(): void
+    {
+        $marker = fn ($r) => collect($r->headers->getCookies())->first(fn ($c) => $c->getName() === 'sv_auth');
+
+        // anonymous: no marker (the front end then never calls /login/nonce on page load)
+        $this->assertNull($marker($this->getJson('/login/nonce')));
+
+        // stale marker without a server login: cleared
+        $stale = $marker($this->withCredentials()->withUnencryptedCookie('sv_auth', '1')->getJson('/login/nonce'));
+        $this->assertNotNull($stale);
+        $this->assertTrue($stale->isCleared());
+
+        // logged in: marker '1', readable by JS (not HttpOnly, not encrypted)
+        $user = new \App\Models\User(['email' => '0x00000000000000aa', 'name' => '0x00000000000000aa']);
+        $set = $marker($this->actingAs($user)->getJson('/login/nonce')->assertJson(['authenticated' => true]));
+        $this->assertNotNull($set);
+        $this->assertSame('1', $set->getValue());
+        $this->assertFalse($set->isHttpOnly());
+        $this->assertFalse($set->isCleared());
+    }
+
     private function decryptCookie(string $value): string
     {
         $plain = decrypt($value, false);

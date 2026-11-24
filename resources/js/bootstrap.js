@@ -92,10 +92,18 @@ import {config} from "@onflow/fcl"
 import {send as grpcSend} from "@onflow/transport-grpc"
 
 /**
- * FCL account-proof: the server issues a nonce (bound to the session) that the wallet signs
- * during authentication; POST /login then verifies the proof on chain (FCLCrypto).
- * The nonce is prefetched on page load because Dapper Wallet requires the resolver to
- * resolve immediately (otherwise browsers block the wallet popup).
+ * FCL account-proof: the server issues a nonce (bound to this browser) that the wallet signs
+ * during authentication; /login then verifies the proof on chain.
+ *
+ * Nonce ON DEMAND (2026-11-24): pages are static/edge-cached, so /login/nonce (uncached, origin) is NOT called on
+ * every page view any more. It is loaded only when a login is involved:
+ *  - the server login marker cookie (sv_auth=1, non-HttpOnly, set by the server on login and on /login/nonce while
+ *    logged in, cleared on logout) exists -> load at startup (login state, admin flags);
+ *  - an FCL user is connected (stored FCL session or fresh connect) -> updateUser() calls ensureLoginNonce();
+ *  - intent: pointer/focus on a connect/login button prefetches it, so the account-proof resolver (awaited by FCL
+ *    before it opens the wallet discovery; Dapper needs it to resolve fast) normally finds it ready;
+ *  - the resolver / createSignature() await it in any case.
+ * ensureLoginNonce() = one request per page (the nonce is stable for 30 min); loadLoginNonce() forces a refresh.
  */
 window.accountProofNonce = null;
 window.loginMessage = null;
@@ -104,6 +112,14 @@ window.loginIsAdmin = false;
 // Server-side (Laravel session) login state: {authenticated, address}. Pages are edge-cached / static,
 // so it is read from /login/nonce instead of being rendered into the HTML.
 window.serverAuth = {authenticated: false, address: null};
+window.loginNoncePromise = null;
+window.LOGIN_MARKER_COOKIE = 'sv_auth';
+window.hasServerLoginHint = function(){
+    return document.cookie.split(';').some(function(c){ return c.trim().indexOf(window.LOGIN_MARKER_COOKIE + '=') === 0; });
+};
+window.clearServerLoginHint = function(){
+    document.cookie = window.LOGIN_MARKER_COOKIE + '=; Max-Age=0; path=/; SameSite=Lax';
+};
 window.loadLoginNonce = function(){
     window.loginNoncePromise = window.axios.get('/login/nonce').then(function(response){
         if(response.data && response.data.nonce){
@@ -119,15 +135,55 @@ window.loadLoginNonce = function(){
         return response.data;
     }).catch(function(error){
         console.log(error);
+        window.loginNoncePromise = null;
         return null;
     });
     return window.loginNoncePromise;
 };
-window.loadLoginNonce();
+window.ensureLoginNonce = function(){
+    return window.loginNoncePromise || window.loadLoginNonce();
+};
+// Forget the client-side login state (wallet logout); the next login fetches a fresh nonce.
+window.resetServerAuth = function(){
+    window.accountProofNonce = null;
+    window.loginMessage = null;
+    window.loginAddress = null;
+    window.loginIsAdmin = false;
+    window.loginNoncePromise = null;
+    window.clearServerLoginHint();
+    window.serverAuth = {authenticated: false, address: null};
+    window.dispatchEvent(new CustomEvent('server-auth', {detail: window.serverAuth}));
+};
+if(window.hasServerLoginHint()){
+    window.ensureLoginNonce();
+}
+// Prefetch on login intent (hover/touch/focus on a connect or login button), never on page load for anonymous visitors.
+(function(){
+    const INTENT = /authenticate|connectWallet|chooseWallet|createSignature|walletLogin|signMessage|reservePack|claimWithVoucher/;
+    const isLoginControl = function(el){
+        for(let i = 0; el && el.nodeType === 1 && i < 6; i++, el = el.parentElement){
+            const attrs = el.attributes;
+            for(let j = 0; j < attrs.length; j++){
+                const name = attrs[j].name;
+                if((name.indexOf('@click') === 0 || name.indexOf('x-on:click') === 0) && INTENT.test(attrs[j].value)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    };
+    const onIntent = function(event){
+        if(window.loginNoncePromise || !event.target){ return; }
+        if(isLoginControl(event.target)){ window.ensureLoginNonce(); }
+    };
+    ['pointerover', 'pointerdown', 'touchstart', 'focusin'].forEach(function(type){
+        document.addEventListener(type, onIntent, {capture: true, passive: true});
+    });
+})();
 
 const accountProofResolver = async () => {
     if(!window.accountProofNonce){
-        await window.loadLoginNonce();
+        await window.ensureLoginNonce();
     }
     return window.accountProofNonce ? {appIdentifier: window.location.origin, nonce: window.accountProofNonce} : null;
 };

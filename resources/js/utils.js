@@ -29,10 +29,11 @@ window.logout = function(){
     window.profile = null;
     window.dispatch('logged-out');
     // End the server session too (it belongs to the wallet that logged in)
-    if(window.loginAddress){
-        window.loginAddress = null;
-        window.axios.post('/logout').catch(function(){}).finally(function(){ window.loadLoginNonce(); });
+    // The nonce is fetched again only when the next login needs it (no origin request for anonymous visitors).
+    if(window.loginAddress || window.hasServerLoginHint()){
+        window.axios.post('/logout').catch(function(){});
     }
+    window.resetServerAuth();
 
     //window.location = '/logout';
 }

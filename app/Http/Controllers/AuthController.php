@@ -26,6 +26,12 @@ class AuthController extends Controller
     // anonymous visitors keep getting edge-cached pages until they actually log in.
     const LOGIN_COOKIE = 'sportvatar_login';
 
+    // Non-HttpOnly marker "a server login may exist" ('1', no secret): the front end loads /login/nonce on page load
+    // only when this cookie (or a connected FCL wallet) is present, so anonymous page views make no origin request.
+    // Set on login and refreshed by /login/nonce while logged in (session lifetime), cleared on logout / when the
+    // session is gone. Excluded from EncryptCookies.
+    const LOGIN_MARKER_COOKIE = 'sv_auth';
+
     /** @var array|null per-request login state: ['n' => nonce, 't' => issued at, 'm' => message] */
     protected $loginState = null;
 
@@ -228,8 +234,21 @@ class AuthController extends Controller
         Auth::login($user);
         $request->session()->regenerate();
         $this->forgetLoginNonces();
+        $this->syncLoginMarker(true);
 
         return $user;
+    }
+
+    /**
+     * Keeps the LOGIN_MARKER_COOKIE in line with the server login state (see the constant).
+     */
+    protected function syncLoginMarker($loggedIn){
+        if($loggedIn){
+            $minutes = config('session.expire_on_close') ? 0 : (int) config('session.lifetime', 120);
+            Cookie::queue(Cookie::make(self::LOGIN_MARKER_COOKIE, '1', $minutes, '/', config('session.domain'), config('session.secure'), false, false, 'lax'));
+        } elseif(request()->cookies->has(self::LOGIN_MARKER_COOKIE)){
+            Cookie::queue(Cookie::forget(self::LOGIN_MARKER_COOKIE, '/', config('session.domain')));
+        }
     }
 
     /**

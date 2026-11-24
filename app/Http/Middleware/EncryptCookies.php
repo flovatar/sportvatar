@@ -12,6 +12,8 @@ class EncryptCookies extends Middleware
      * @var array
      */
     protected $except = [
-        'vipcookie'
+        'vipcookie',
+        // login marker read by JS (AuthController::LOGIN_MARKER_COOKIE), value '1'
+        'sv_auth',
     ];
 }

@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+# Server-wide serialisation of heavy batch jobs (headless builds, render batches) across ALL sites on the box
+# (flovatar.com, sportvatar.com and both testnets run as the same Unix user): one shared flock, low CPU + IO
+# priority. Waiting costs only this tiny shell (PHP is not booted until the lock is held).
+# Same file in flovatar/flovatar-web and flovatar/sportvatar; used by app/Console/Kernel.php and the Forge
+# deploy scripts. Why: 4 GB box, mysqld was OOM-killed while overnight builds ran in parallel (2026-11-24).
+#
+# Usage: bin/heavy-job [-w WAIT_SECONDS] [-n NAME] -- command args...
+#   exit 75 = lock not acquired within WAIT_SECONDS (job skipped, the next scheduled run retries)
+# Log (one line per start/end/skip): ~/.locks/heavy.log
+set -u
+WAIT=1800
+NAME=""
+while [ $# -gt 0 ]; do
+    case "$1" in
+        -w) WAIT="$2"; shift 2 ;;
+        -n) NAME="$2"; shift 2 ;;
+        --) shift; break ;;
+        *) break ;;
+    esac
+done
+[ $# -gt 0 ] || { echo "usage: $0 [-w seconds] [-n name] -- command args..." >&2; exit 64; }
+
+LOCK_DIR="${HEAVY_LOCK_DIR:-$HOME/.locks}"
+mkdir -p "$LOCK_DIR" 2>/dev/null || LOCK_DIR="${TMPDIR:-/tmp}"
+LOCK="$LOCK_DIR/heavy.lock"
+LOG="$LOCK_DIR/heavy.log"
+[ -n "$NAME" ] || NAME="$(basename "$PWD"): $*"
+
+log() { printf '%s %s\n' "$(date -u +%FT%TZ)" "$*" >> "$LOG" 2>/dev/null || true; }
+if [ "$(stat -c %s "$LOG" 2>/dev/null || echo 0)" -gt 5000000 ]; then
+    tail -n 5000 "$LOG" > "$LOG.tmp" 2>/dev/null && mv "$LOG.tmp" "$LOG"
+fi
+
+exec 9>>"$LOCK"
+t0=$(date +%s)
+if ! flock -w "$WAIT" 9; then
+    log "SKIP  [$NAME] lock busy for ${WAIT}s"
+    exit 75
+fi
+t1=$(date +%s)
+log "START [$NAME] waited $((t1 - t0))s pid $$"
+# fd 9 is closed for the child: only this shell holds the lock (released when the job ends)
+nice -n 10 ionice -c2 -n7 "$@" 9>&-
+rc=$?
+log "END   [$NAME] rc=$rc $(( $(date +%s) - t1 ))s"
+exit $rc

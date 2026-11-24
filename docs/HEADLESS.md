@@ -61,6 +61,8 @@ browser ──► Flow access node (FCL): wallet contents, owner + live storefro
 Auth (web group, session + CSRF, `private, no-store`): `GET auth/nonce`, `GET auth/csrf`, `GET auth/me` `{authenticated,address,admin}`,
 `POST auth/login`, `POST auth/logout`. The front end keeps using `/login/nonce`, `/csrf-token`, `/login`, `/logout` (same logic).
 **The frontend origin must be in `SPORTVATAR_ACCOUNT_PROOF_ORIGINS`** (testnet: `https://testnet.sportvatar.com,https://next-testnet.sportvatar.com`).
+Login state (nonce on demand, 2026-11-24): anonymous page views make **no** origin request. `/login/nonce` (proxied, no-store → nonce, `authenticated/address`, `admin`) is loaded only when (a) the non-HttpOnly marker cookie `sv_auth=1` exists (set by the server on login and by `/login/nonce` while logged in, cleared on logout/expired session), (b) an FCL user is connected (`updateUser` → `ensureLoginNonce()`), (c) the pointer/focus hits a connect/login control (prefetch for the account-proof resolver, which also awaits it). Silent account-proof login + logout as on the legacy site; `resetServerAuth()` on wallet logout.
+
 Free packs waiting: `GET /api/packs/pending/{address}` (existing, private no-store) — used by the banner on every page.
 
 ## 4. Static build (`headless:build`)
