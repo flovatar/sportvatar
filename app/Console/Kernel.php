@@ -45,12 +45,16 @@ class Kernel extends ConsoleKernel
         //   hourly  :07 sv-testnet render  :11 fw-testnet shells  :13 sv-testnet shells  :23 fw render
         //           :37 sv render  :41 fw shells  :43 sv shells  :53 fw-testnet render
         //   nightly 02:30 fw-testnet full  03:30 fw full  04:15 sv full  05:00 sv-testnet full
+        //   weekly  Sun 05:30 fw render:prune  05:45 sv  06:00 fw-testnet  06:15 sv-testnet
         // Keep the table in sync with flovatar-web's Kernel (same bin/heavy-job) and KB notes/server-flovatar.md.
         $mainnet = config('services.flow.network') === 'mainnet';
         if (config('render.enabled')) {
             // safety net for the event hook: static items without any image (throttled, resumable); animated ones come from the browser renderer
             $this->heavy($schedule, 'render:images all --missing --static-only --limit=60 --sleep=500', 900)
                 ->hourlyAt($mainnet ? 37 : 7)->withoutOverlapping(60)->runInBackground();
+            // weekly R2 clean-up: render versions superseded > 30 days ago (current versions always kept, see RenderPrune)
+            $this->heavy($schedule, 'render:prune --days=30', 1800)
+                ->weeklyOn(0, $mainnet ? '05:45' : '06:15')->withoutOverlapping(120)->runInBackground();
         }
         if (config('headless.enabled')) {
             // static headless site (R2): shells hourly (home picks, template lists, stats snapshots), full rebuild nightly as
