@@ -15,7 +15,6 @@ class SportvatarController extends Controller
     public function __invoke($sportvatarId, $address)
     {
 
-        $templates = $this->getTemplates();
         $series = $this->getSeries();
         $sales = Cache::remember('sportvatar-sales-'.$sportvatarId, now()->addMinutes(10), function() use ($sportvatarId) {
             $sportvatar = Sportvatar::where('flow_id', $sportvatarId)->first();
@@ -25,6 +24,6 @@ class SportvatarController extends Controller
             $sportvatar = Sportvatar::where('flow_id', $sportvatarId)->first();
             return $sportvatar ? $sportvatar->saleOffers()->notBlocked()->whereFlowAddress($address)->where('is_completed', false)->whereNotNull('listing_id')->whereIn('currency', ['DUC', 'FLOW'])->orderBy('created_at', 'desc')->first() : null;
         });
-        return view('sportvatar')->with(['templates' => $templates, 'series' => $series, 'address' => $address, 'sportvatarId' => $sportvatarId, 'sportvatarSales' => $sales, 'sportvatarSaleOffer' => $saleOffer]);
+        return view('sportvatar')->with(['templatesScript' => static::templatesScriptUrl('all'), 'series' => $series, 'address' => $address, 'sportvatarId' => $sportvatarId, 'sportvatarSales' => $sales, 'sportvatarSaleOffer' => $saleOffer]);
     }
 }

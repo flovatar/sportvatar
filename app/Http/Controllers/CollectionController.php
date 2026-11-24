@@ -13,7 +13,6 @@ class CollectionController extends Controller
 {
     public function __invoke($address)
     {
-        $templates = $this->getTemplates();
-        return view('collection')->with(['templates' => $templates, 'address' => $address, 'addressName' => '']);
+        return view('collection')->with(['templatesScript' => static::templatesScriptUrl('all'), 'address' => $address, 'addressName' => '']);
     }
 }

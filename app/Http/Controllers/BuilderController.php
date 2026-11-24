@@ -15,15 +15,10 @@ class BuilderController extends Controller
     {
 
         $series = $this->getSeries();
-        $templates = $this->getTemplates();
-        // Only the templates of the Builder's series (a Sport Flame and its traits must belong to the same series).
-        // Mainnet has a single series, so nothing changes there.
-        $seriesRow = $series->first();
-        if ($seriesRow) {
-            $templates = $templates->where('sportvatar_series_id', $seriesRow->id)->values();
-        }
+        // Only the templates of the Builder's series (a Sport Flame and its traits must belong to the same series),
+        // served as a versioned script (/templates/data/series{N}.js). Mainnet has a single series.
         $flameSales = $this->getFlameSales();
 
-        return view('builder')->with(['templates' => $templates, 'series' => $series, 'flameSales' => $flameSales]);
+        return view('builder')->with(['templatesScript' => static::templatesScriptUrl($this->builderTemplateSet()), 'series' => $series, 'flameSales' => $flameSales]);
     }
 }

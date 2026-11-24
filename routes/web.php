@@ -104,6 +104,10 @@ Route::get('templates/svg/{templateId}.svg', [DownloadController::class,'templat
     ->whereNumber('templateId')
     ->name('templatesvg');
 
+// Template list with SVGs as a versioned, long-cacheable script (Builder, Sportvatar pages, collection)
+Route::get('templates/data/{set}.js', \App\Http\Controllers\TemplateDataController::class)
+    ->where('set', 'all|series[0-9]{1,3}')
+    ->name('templates.data');
 
 Route::get('api/image/{sportvatarId}', [SportvatarImageController::class,'svg'])
     ->whereNumber('sportvatarId')
@@ -213,6 +217,7 @@ Route::get('sportvatars/{sportvatarId}/{address}/twitter', [TwitterController::c
 
 // Wallet login: every login is verified on chain (FCL account-proof or user signature, FCLCrypto).
 Route::get('/login/nonce', [LoginController::class,'nonce'])->name('login.nonce')->middleware('throttle:60,1');
+Route::get('/csrf-token', [LoginController::class,'csrfToken'])->name('csrf.token')->middleware('throttle:60,1');
 Route::post('/login', [LoginController::class,'submit'])->name('login.submit')->middleware('throttle:10,1');
 Route::post('/logout', [LoginController::class,'logout'])->name('logout');
 

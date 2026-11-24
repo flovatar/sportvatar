@@ -29,6 +29,8 @@ class Kernel extends HttpKernel
 
 
     protected $middleware = [
+        // Runs defer() callbacks after the response is sent (Cache::flexible background refresh)
+        \Illuminate\Foundation\Http\Middleware\InvokeDeferredCallbacks::class,
         // \App\Http\Middleware\TrustHosts::class,
         \App\Http\Middleware\TrustProxies::class,
         \Illuminate\Http\Middleware\HandleCors::class,
@@ -45,9 +47,12 @@ class Kernel extends HttpKernel
      */
     protected $middlewareGroups = [
         'web' => [
+            // Outermost: Cache-Control for the edge cache / headless Worker (App\Support\PublicCache)
+            \App\Http\Middleware\PublicCacheHeaders::class,
             \App\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
-            \Illuminate\Session\Middleware\StartSession::class,
+            // No session for anonymous public GETs (edge-cacheable), Laravel's otherwise
+            \App\Http\Middleware\StartSession::class,
             \Illuminate\Session\Middleware\AuthenticateSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
@@ -77,7 +82,8 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
-        'throttle' => \Illuminate\Routing\Middleware\ThrottleRequestsWithRedis::class,
+        // plain throttle:N,M limits counted per route (Laravel's default key is shared by every throttled route)
+        'throttle' => \App\Http\Middleware\ThrottleRequestsPerRoute::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'queueit' => \App\Http\Middleware\QueueIt::class,
         'locale' => \App\Http\Middleware\SetLocale::class,

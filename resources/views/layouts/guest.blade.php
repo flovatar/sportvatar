@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    {{-- No CSRF token here: pages are edge-cached / static. JS fetches one from /csrf-token (resources/js/bootstrap.js). --}}
 
     <title>{{ config('app.name', 'Sportvatar') }}</title>
 

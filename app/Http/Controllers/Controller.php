@@ -42,6 +42,57 @@ class Controller extends BaseController
         return implode('--', request()->all());
     }
 
+    // sportvatar_templates columns without the svg / flow_metadata blobs (~33 MB on mainnet)
+    public const TEMPLATE_LEAN_COLUMNS = ['id', 'name', 'description', 'layer', 'rarity', 'sport', 'max_mintable', 'minted', 'sportvatar_series_id', 'flow_id', 'flow_address', 'created_at', 'updated_at'];
+
+    /** Template data sets served as scripts: all | series{flow id} (Builder: config sportvatar.series). */
+    public static function isTemplateSet(string $set): bool
+    {
+        return $set === 'all' || (bool) preg_match('/^series[0-9]{1,3}$/', $set);
+    }
+
+    protected static function templateQuery(string $set){
+        $query = SportvatarTemplate::query()->orderBy('id', 'asc');
+        if(str_starts_with($set, 'series')){
+            $seriesDbId = SportvatarSeries::whereFlowId((int) substr($set, 6))->orderBy('id')->value('id');
+            $query->where('sportvatar_series_id', $seriesDbId ?? -1);
+        }
+        return $query;
+    }
+
+    /** Version of a template set (changes when templates are added/updated). */
+    public static function templatesVersion(string $set){
+        return Cache::flexible('tpl-version-v1-'.$set, [60, 600], function() use ($set) {
+            $row = static::templateQuery($set)->reorder()
+                ->selectRaw('count(*) c, max(id) i, max(updated_at) u')
+                ->toBase()->first();
+            return substr(md5(json_encode($row)), 0, 12);
+        });
+    }
+
+    /**
+     * JS that sets window.templates (with svg, without flow_metadata) for pages that draw Sportvatars
+     * client side (Sportvatar page, collection, Builder). Served by TemplateDataController as a separate,
+     * versioned, long-cacheable script instead of being inlined in every page (~1.3 MB gzip per page on mainnet).
+     */
+    public static function templatesScript(string $set){
+        $version = static::templatesVersion($set);
+        return Cache::flexible('tpl-script-v1-'.$set.'-'.$version, [3600, 86400], function() use ($set) {
+            $templates = static::templateQuery($set)->get()->makeHidden(['flow_metadata'])->toArray();
+            return 'window.templates = '.json_encode($templates, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT).';';
+        });
+    }
+
+    public static function templatesScriptUrl(string $set){
+        return route('templates.data', ['set' => $set, 'v' => static::templatesVersion($set)], false);
+    }
+
+    /** Builder template set (series of SPORTVATAR_SERIES). */
+    protected function builderTemplateSet(): string
+    {
+        return 'series'.(int) config('sportvatar.series', 1);
+    }
+
     protected function getTemplates(){
         return Cache::remember('db-templates', now()->addMinutes(60), function() {
             return SportvatarTemplate::orderBy('id', 'asc')->get();

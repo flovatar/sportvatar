@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Support\FlowAccountProof;
 use Auth;
 use Flow;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Redirect;
@@ -20,32 +22,76 @@ class AuthController extends Controller
     // Account-proof nonces are valid for this many seconds.
     const ACCOUNT_PROOF_TTL = 1800;
 
-    protected function getMessage(){
-        if(!Session::has('login_hash')){
-            Session::put('login_hash', Str::random(32));
+    // Encrypted cookie holding the login nonce + message. It is NOT the session cookie, so
+    // anonymous visitors keep getting edge-cached pages until they actually log in.
+    const LOGIN_COOKIE = 'sportvatar_login';
+
+    /** @var array|null per-request login state: ['n' => nonce, 't' => issued at, 'm' => message] */
+    protected $loginState = null;
+
+    /**
+     * Login nonce/message for this browser. Stored in an encrypted, HttpOnly cookie
+     * (EncryptCookies) instead of the session, so /login/nonce works without a session.
+     * Falls back to nonces issued into the session before this change.
+     */
+    protected function loginState(){
+        if($this->loginState){
+            return $this->loginState;
         }
-        return Session::get('login_hash');
+
+        $state = null;
+        $raw = request()->cookie(self::LOGIN_COOKIE);
+        if(is_string($raw)){
+            $decoded = json_decode($raw, true);
+            if(is_array($decoded) && isset($decoded['n'], $decoded['t'], $decoded['m'])
+                && FlowAccountProof::isValidNonce((string) $decoded['n'])
+                && (time() - (int) $decoded['t']) <= self::ACCOUNT_PROOF_TTL){
+                $state = ['n' => (string) $decoded['n'], 't' => (int) $decoded['t'], 'm' => (string) $decoded['m']];
+            }
+        }
+
+        if(!$state && request()->hasSession() && request()->session()->has('account_proof_nonce')){
+            $session = request()->session();
+            $issuedAt = (int) $session->get('account_proof_nonce_at', 0);
+            if((time() - $issuedAt) <= self::ACCOUNT_PROOF_TTL){
+                $state = ['n' => (string) $session->get('account_proof_nonce'), 't' => $issuedAt, 'm' => (string) $session->get('login_hash', Str::random(32))];
+            }
+        }
+
+        if(!$state){
+            $state = ['n' => bin2hex(random_bytes(32)), 't' => time(), 'm' => Str::random(32)];
+            Cookie::queue(Cookie::make(self::LOGIN_COOKIE, json_encode($state), (int) ceil(self::ACCOUNT_PROOF_TTL / 60), '/', config('session.domain'), config('session.secure'), true, false, 'lax'));
+        }
+
+        return $this->loginState = $state;
+    }
+
+    protected function getMessage(){
+        return $this->loginState()['m'];
     }
 
     /**
      * Server-issued nonce (32 random bytes, hex) used by the FCL account-proof
-     * service. It is bound to the session and expires after ACCOUNT_PROOF_TTL.
+     * service. It is bound to this browser (encrypted cookie), expires after
+     * ACCOUNT_PROOF_TTL and can be used for one successful login only.
      */
     protected function getAccountProofNonce(){
-        $nonce = Session::get('account_proof_nonce');
-        $issuedAt = (int) Session::get('account_proof_nonce_at', 0);
-
-        if(!$nonce || (time() - $issuedAt) > self::ACCOUNT_PROOF_TTL){
-            $nonce = bin2hex(random_bytes(32));
-            Session::put('account_proof_nonce', $nonce);
-            Session::put('account_proof_nonce_at', time());
-        }
-
-        return $nonce;
+        return $this->loginState()['n'];
     }
 
     protected function forgetLoginNonces(){
-        Session::forget(['login_hash', 'account_proof_nonce', 'account_proof_nonce_at']);
+        if($this->loginState){
+            Cache::put('login-nonce-used:'.hash('sha256', $this->loginState['n']), 1, self::ACCOUNT_PROOF_TTL + 60);
+        }
+        $this->loginState = null;
+        Cookie::queue(Cookie::forget(self::LOGIN_COOKIE, '/', config('session.domain')));
+        if(request()->hasSession()){
+            request()->session()->forget(['login_hash', 'account_proof_nonce', 'account_proof_nonce_at']);
+        }
+    }
+
+    protected function loginNonceUsed($nonce){
+        return Cache::has('login-nonce-used:'.hash('sha256', (string) $nonce));
     }
 
     /**
@@ -102,9 +148,10 @@ class AuthController extends Controller
             return false;
         }
 
-        $expected = Session::get('account_proof_nonce');
-        $issuedAt = (int) Session::get('account_proof_nonce_at', 0);
-        if(!$expected || !hash_equals($expected, $nonce) || (time() - $issuedAt) > self::ACCOUNT_PROOF_TTL){
+        $state = $this->loginState();
+        $expected = $state['n'];
+        $issuedAt = (int) $state['t'];
+        if(!$expected || !hash_equals($expected, $nonce) || (time() - $issuedAt) > self::ACCOUNT_PROOF_TTL || $this->loginNonceUsed($nonce)){
             return false;
         }
 
@@ -128,7 +175,7 @@ class AuthController extends Controller
             return false;
         }
 
-        if(!hash_equals(bin2hex($this->getMessage()), $message)){
+        if(!hash_equals(bin2hex($this->getMessage()), $message) || $this->loginNonceUsed($this->getAccountProofNonce())){
             return false;
         }
 

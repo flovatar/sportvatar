@@ -1,11 +1,13 @@
+{{-- non-localized pages keep the chosen language via ?lang= (edge-cached pages ignore the browser language) --}}
+@php($langQuery = app()->isLocale(config('app.locale', 'en')) ? '' : '?lang='.app()->getLocale())
 <footer id="footer">
     <div class="container">
         <div class="footer-links-row">
             <ul class="footer-links">
                 <li><strong class="title">Sportvatar</strong></li>
                 <li><a href="{{ route('builder') }}">{{ __('Builder') }}</a></li>
-                <li><a href="{{ route('marketplace') }}">{{ __('Marketplace') }}</a></li>
-                <li><a href="{{ route('showroom') }}">{{ __('Locker Room') }}</a></li>
+                <li><a href="{{ route('marketplace') }}{{ $langQuery }}">{{ __('Marketplace') }}</a></li>
+                <li><a href="{{ route('showroom') }}{{ $langQuery }}">{{ __('Locker Room') }}</a></li>
             </ul>
             <ul class="footer-links">
                 <li><strong class="title">{{ __('GETTING STARTED') }}</strong></li>

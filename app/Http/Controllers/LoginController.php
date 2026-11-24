@@ -24,15 +24,30 @@ class LoginController extends AuthController
      * (fcl.accountProof.resolver) and the message for signUserMessage.
      */
     public function nonce() {
+        $address = $this->authenticatedFlowAddress();
+
         return response()
             ->json([
                 'nonce' => $this->getAccountProofNonce(),
                 'message' => $this->getMessage(),
-                'address' => $this->authenticatedFlowAddress(),
+                // Server-side login state for the front end: pages are edge-cached / static and
+                // contain nothing user specific.
+                'authenticated' => $address !== null,
+                'address' => $address,
                 // Lets the page show admin-only previews (e.g. the paused free-pack claim page). Only about the
                 // session's own user; every admin endpoint checks this again on the server.
                 'admin' => Auth::check() && method_exists(Auth::user(), 'isAdmin') && Auth::user()->isAdmin(),
             ])
+            ->header('Cache-Control', 'no-store, private');
+    }
+
+    /**
+     * CSRF token for the front end (axios interceptor in resources/js/bootstrap.js).
+     * Cached pages carry no token; this starts the session.
+     */
+    public function csrfToken(Request $request) {
+        return response()
+            ->json(['token' => $request->session()->token()])
             ->header('Cache-Control', 'no-store, private');
     }
 

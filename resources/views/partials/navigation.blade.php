@@ -1,3 +1,5 @@
+{{-- non-localized pages keep the chosen language via ?lang= (edge-cached pages ignore the browser language) --}}
+@php($langQuery = app()->isLocale(config('app.locale', 'en')) ? '' : '?lang='.app()->getLocale())
 <nav id="main-nav">
     <div class="container">
         <div class="logo">
@@ -11,8 +13,8 @@
             <ul class="nav">
                 <li class="{{request()->routeIs('getstarted') ? 'active ' : ''}}"><a href="{{ route('getstarted') }}">{{ __('How it works') }}</a></li>
                 <li class="{{request()->routeIs('builder') ? 'active ' : ''}}"><a href="{{ route('builder') }}">{{ __('Builder') }}</a></li>
-                <li class="{{request()->routeIs('marketplace') ? 'active ' : ''}}"><a href="{{ route('marketplace') }}">{{ __('Marketplace') }}</a></li>
-                <li class="{{request()->routeIs('showroom') ? 'active ' : ''}}"><a href="{{ route('showroom') }}">{{ __('Locker Room') }}</a></li>
+                <li class="{{request()->routeIs('marketplace') ? 'active ' : ''}}"><a href="{{ route('marketplace') }}{{ $langQuery }}">{{ __('Marketplace') }}</a></li>
+                <li class="{{request()->routeIs('showroom') ? 'active ' : ''}}"><a href="{{ route('showroom') }}{{ $langQuery }}">{{ __('Locker Room') }}</a></li>
                 <li class="{{ request()->routeIs('pack.comparison')  ? 'active ' : ''}}"><a href="{{ route('pack.comparison') }}">{{ __('Packs') }}</a></li>
                 <li x-show="!loggedIn() && !userCheckLoading" class="jshidden">
                     <button @click.prevent.stop="connectWallet()" class="btn-o btn-green">{{ __('Login/Signup') }}</button>
