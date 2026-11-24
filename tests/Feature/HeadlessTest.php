@@ -326,7 +326,8 @@ class HeadlessTest extends TestCase
         $this->assertStringNotContainsString('BIGSVG', $html);
         $this->assertStringNotContainsString('csrf-token', $html);
         // second run: unchanged, nothing rewritten
-        $this->artisan('headless:build', ['--items' => true, '--type' => 'sportvatar', '--out' => $out])->expectsOutputToContain('0 uploaded')->assertExitCode(0);
+        $this->assertSame(0, \Illuminate\Support\Facades\Artisan::call('headless:build', ['--items' => true, '--type' => 'sportvatar', '--out' => $out]));
+        $this->assertStringContainsString(' 0 uploaded', \Illuminate\Support\Facades\Artisan::output());
     }
 
     public function test_static_build_writes_shells_without_session_data(): void
