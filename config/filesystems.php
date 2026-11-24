@@ -74,6 +74,9 @@ return [
             'url' => env('RENDER_PUBLIC_URL', 'https://images.sportvatar.com'),
             'use_path_style_endpoint' => true,
             'throw' => true,
+            // R2 answers over IPv6 too and PHP's curl prefers it, but the scoped token's IP filter only lists
+            // the server's IPv4 address (403 AccessDenied over IPv6, while the aws CLI used IPv4 and worked).
+            'http' => env('R2_FORCE_IPV4', true) ? ['curl' => [CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4]] : [],
         ],
 
     ],

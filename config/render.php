@@ -37,4 +37,17 @@ return [
 
     // Bump to re-render everything (changes every content hash).
     'version' => 1,
+
+    // Browser (Chromium) render worker on the agent box: pulls jobs from /api/render-jobs with this bearer
+    // token (server .env only, never committed; empty = job API disabled -> 404), renders PNG/JPG/GIF/MP4
+    // and uploads them itself to {prefix}{type}/r/{id}/{hash}-b/ on the render bucket.
+    'worker_token' => env('RENDER_WORKER_TOKEN'),
+    'jobs' => [
+        // enqueue a browser job whenever the server renders a new item state (mint/update events)
+        'enabled' => (bool) env('RENDER_JOBS_ENABLED', true),
+        'lease_seconds' => (int) env('RENDER_JOBS_LEASE', 900),
+        'max_attempts' => 4,
+    ],
+    // Bucket of the 'r2' disk (told to the worker; it only accepts its own bucket + prefix).
+    'bucket' => env('R2_IMAGES_BUCKET', 'sportvatar'),
 ];
