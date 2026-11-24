@@ -110,7 +110,9 @@ class RenderJobs
             }
             $hash = ItemRenderer::hash($job->item_type, $src);
             $record = RenderedImage::where('item_type', $job->item_type)->where('flow_id', $job->flow_id)->first();
-            if ($record && $record->source === 'browser' && $record->hash === $hash && $record->rendered_at) {
+            if ($record && $record->source === 'browser' && $record->hash === $hash && $record->rendered_at
+                && $record->hasVariant('anim.gif') && $record->hasVariant('anim.mp4')) {
+                // already complete for this state (render:import may have stored PNG/JPG only -> render again)
                 $job->update(['status' => 'done', 'hash' => $hash, 'lease_until' => null, 'done_at' => now(), 'attempts' => max(0, $job->attempts - 1)]);
                 continue;
             }
