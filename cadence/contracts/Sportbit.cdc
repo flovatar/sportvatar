@@ -1,5 +1,7 @@
 import "FungibleToken"
 import "ViewResolver"
+import "EVM"
+import "CrossVMMetadataViews"
 import "NonFungibleToken"
 import "FlowToken"
 import "SportvatarTemplate"
@@ -179,16 +181,19 @@ contract Sportbit: NonFungibleToken{
 		// available on the market.
 		access(all)
 		view fun getViews(): [Type]{ 
-			return [
-                Type<MetadataViews.NFTCollectionData>(),
-                Type<MetadataViews.NFTCollectionDisplay>(),
-                Type<MetadataViews.Display>(),
-                Type<MetadataViews.Royalties>(),
-                Type<MetadataViews.Edition>(),
-                Type<MetadataViews.ExternalURL>(),
-                Type<MetadataViews.Serial>(),
-                Type<MetadataViews.Traits>()
+			let views: [Type] = [
+				Type<MetadataViews.NFTCollectionData>(),
+				Type<MetadataViews.NFTCollectionDisplay>(),
+				Type<MetadataViews.Display>(),
+				Type<MetadataViews.Royalties>(),
+				Type<MetadataViews.Editions>(),
+				Type<MetadataViews.ExternalURL>(),
+				Type<MetadataViews.Serial>(),
+				Type<MetadataViews.Traits>(),
+				Type<MetadataViews.Rarity>(),
+				Type<MetadataViews.EVMBridgedMetadata>()
 			]
+			return Sportbit.hasEVMPointer() ? views.concat([Type<CrossVMMetadataViews.EVMPointer>()]) : views
 		}
 		
 		access(all)
@@ -227,11 +232,23 @@ contract Sportbit: NonFungibleToken{
 				let template = self.getTemplate()
 				let trait = MetadataViews.Trait(name: "Name", value: template.name, displayType: "String", rarity: MetadataViews.Rarity(score: nil, max: nil, description: template.rarity))
 				traits.append(trait)
+				if SportvatarTemplate.isRestricted(nftType: Type<@Sportbit.NFT>(), id: self.id, owner: self.owner?.address) {
+					traits.append(MetadataViews.Trait(name: "restricted", value: true, displayType: "Boolean", rarity: nil))
+				}
 				return MetadataViews.Traits(traits)
 			}
 			if type == Type<MetadataViews.Rarity>(){ 
 				let template = self.getTemplate()
 				return MetadataViews.Rarity(score: nil, max: nil, description: template.rarity)
+			}
+			if type == Type<MetadataViews.EVMBridgedMetadata>(){ 
+				let contractLevel = Sportbit.resolveContractView(resourceType: nil, viewType: Type<MetadataViews.EVMBridgedMetadata>()) as! MetadataViews.EVMBridgedMetadata?
+					?? panic("Could not resolve contract-level EVMBridgedMetadata")
+				// tokenURI = live ERC-721 JSON (name, description, image, attributes) served by the project API (EVM-A 2026-11)
+				return MetadataViews.EVMBridgedMetadata(name: contractLevel.name, symbol: contractLevel.symbol, uri: MetadataViews.URI(baseURI: Sportbit.getEVMHost().concat("/sportbits/json/"), value: self.id.toString()))
+			}
+			if type == Type<CrossVMMetadataViews.EVMPointer>(){ 
+				return Sportbit.getEVMPointer()
 			}
 			if type == Type<MetadataViews.NFTCollectionData>(){ 
 				return MetadataViews.NFTCollectionData(storagePath: Sportbit.CollectionStoragePath, publicPath: Sportbit.CollectionPublicPath, publicCollection: Type<&Sportbit.Collection>(), publicLinkedType: Type<&Sportbit.Collection>(), createEmptyCollectionFunction: fun (): @{NonFungibleToken.Collection}{ 
@@ -300,6 +317,7 @@ contract Sportbit: NonFungibleToken{
 		// withdraw removes an NFT from the collection and moves it to the caller
 		access(NonFungibleToken.Withdraw)
 		fun withdraw(withdrawID: UInt64): @{NonFungibleToken.NFT}{ 
+			SportvatarTemplate.assertTransferAllowed(nftType: Type<@Sportbit.NFT>(), id: withdrawID, owner: self.owner?.address)
 			let token <- self.ownedNFTs.remove(key: withdrawID) ?? panic("missing NFT")
 			emit Withdraw(id: token.id, from: self.owner?.address)
 			return <-token
@@ -311,6 +329,7 @@ contract Sportbit: NonFungibleToken{
 		fun deposit(token: @{NonFungibleToken.NFT}){ 
 			let token <- token as! @Sportbit.NFT
 			let id: UInt64 = token.id
+			SportvatarTemplate.assertDepositAllowed(nftType: Type<@Sportbit.NFT>(), id: id, to: self.owner?.address)
 			
 			// add the new token to the dictionary which removes the old one
 			let oldToken <- self.ownedNFTs[id] <- token
@@ -361,12 +380,12 @@ contract Sportbit: NonFungibleToken{
 		
 		access(all)
 		view fun getSupportedNFTTypes():{ Type: Bool}{ 
-			panic("implement me")
+			return {Type<@Sportbit.NFT>(): true}
 		}
 		
 		access(all)
 		view fun isSupportedNFTType(type: Type): Bool{ 
-			panic("implement me")
+			return type == Type<@Sportbit.NFT>()
 		}
 		
 		access(all)
@@ -379,14 +398,61 @@ contract Sportbit: NonFungibleToken{
 
 
 
+	// Restriction status of a Sportbit (see SportvatarTemplate restrictions)
+	access(all)
+	view fun isRestricted(id: UInt64, owner: Address?): Bool {
+		return SportvatarTemplate.isRestricted(nftType: Type<@Sportbit.NFT>(), id: id, owner: owner)
+	}
+
 	access(all)
 	view fun getContractViews(resourceType: Type?): [Type] {
-		return [
+		let views: [Type] = [
 			Type<MetadataViews.NFTCollectionData>(),
 			Type<MetadataViews.NFTCollectionDisplay>(),
 			Type<MetadataViews.EVMBridgedMetadata>()
 		]
+		return Sportbit.hasEVMPointer() ? views.concat([Type<CrossVMMetadataViews.EVMPointer>()]) : views
 	}
+	// ---- EVM-A (2026-11): cross-VM / Flow EVM metadata helpers. Functions only, no new state. ----
+
+	/// Web host serving the ERC-721 metadata JSON for this network (identical code on testnet and mainnet).
+	access(all)
+	view fun getEVMHost(): String {
+		return self.account.address == 0xca5c31c0c03e11be ? "https://sportvatar.com" : "https://testnet.sportvatar.com"
+	}
+
+	/// Account-wide cross-VM config written by an admin tx: {NFT type identifier: project ERC-721 address}.
+	access(all)
+	view fun getCrossVMConfigPath(): StoragePath {
+		return /storage/sportvatarCrossVMConfig
+	}
+
+	/// True once the account stored a project ERC-721 address for this NFT type (usable in view functions).
+	access(all)
+	view fun hasEVMPointer(): Bool {
+		if let cfg = self.account.storage.borrow<&{String: EVM.EVMAddress}>(from: /storage/sportvatarCrossVMConfig) {
+			return cfg[Type<@Sportbit.NFT>().identifier] != nil
+		}
+		return false
+	}
+
+	/// FLIP-318 EVMPointer to the project-owned ERC-721 (Cadence-native). nil until the account stored one for
+	/// this NFT type, so the permissionless bridge path keeps working unchanged until then.
+	access(all)
+	fun getEVMPointer(): CrossVMMetadataViews.EVMPointer? {
+		if let cfg = self.account.storage.copy<{String: EVM.EVMAddress}>(from: /storage/sportvatarCrossVMConfig) {
+			if let evmAddress = cfg[Type<@Sportbit.NFT>().identifier] {
+				return CrossVMMetadataViews.EVMPointer(
+					cadenceType: Type<@Sportbit.NFT>(),
+					cadenceContractAddress: self.account.address,
+					evmContractAddress: evmAddress,
+					nativeVM: CrossVMMetadataViews.VM.Cadence
+				)
+			}
+		}
+		return nil
+	}
+
 
 
 	access(all) fun resolveContractView(resourceType: Type?, viewType: Type): AnyStruct? {
@@ -428,6 +494,8 @@ contract Sportbit: NonFungibleToken{
 						"tiktok": MetadataViews.ExternalURL("https://www.tiktok.com/@sportvatar")
 					}
 				)
+			case Type<CrossVMMetadataViews.EVMPointer>():
+				return Sportbit.getEVMPointer()
 			case Type<MetadataViews.EVMBridgedMetadata>():
 				// Implementing this view gives the project control over how the bridged NFT is represented as an ERC721
 				// when bridged to EVM on Flow via the public infrastructure bridge.
@@ -438,8 +506,8 @@ contract Sportbit: NonFungibleToken{
 					name: "Sportbit",
 					symbol: "SPTB",
 					uri: MetadataViews.URI(
-						baseURI: nil, // setting baseURI as nil sets the given value as the uri field value
-						value: "https://sportvatar.com"
+						baseURI: nil, // contractURI JSON (EVM-A 2026-11)
+						value: Sportbit.getEVMHost().concat("/evm/collections/sportbits.json")
 					)
 				)
 		}

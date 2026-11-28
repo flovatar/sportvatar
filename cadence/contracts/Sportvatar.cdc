@@ -1,5 +1,7 @@
 import "FungibleToken"
 import "ViewResolver"
+import "EVM"
+import "CrossVMMetadataViews"
 import "NonFungibleToken"
 import "FlowToken"
 import "SportvatarTemplate"
@@ -20,6 +22,12 @@ This contract contains also the Admin resource that can be used to manage and ge
 
 access(all)
 contract Sportvatar: NonFungibleToken{ 
+
+	// Entitlement required to change the equipped Sportbits / Flovatar background of a Sportvatar.
+	// Only references borrowed from the owner's storage (or issued capabilities with this entitlement)
+	// carry it; the public collection capability does not.
+	access(all) entitlement PrivateEnt
+
 	access(all)
 	let CollectionStoragePath: StoragePath
 	
@@ -240,25 +248,25 @@ contract Sportvatar: NonFungibleToken{
 	//for the Sportvatar and is accessible only to the owner of the NFT
 	access(all)
 	resource interface Private{ 
-		access(all)
+		access(Sportvatar.PrivateEnt)
 		fun setName(name: String): String
 		
-		access(all)
+		access(Sportvatar.PrivateEnt)
 		fun addStory(text: String): String
 		
-		access(all)
+		access(Sportvatar.PrivateEnt)
 		fun setPosition(latitude: Fix64, longitude: Fix64): String
 		
-		access(all)
+		access(Sportvatar.PrivateEnt)
 		fun setSportbit(layer: UInt32, sportbit: @Sportbit.NFT): @Sportbit.NFT?
 		
-		access(all)
+		access(Sportvatar.PrivateEnt)
 		fun removeAccessory(layer: UInt32): @Sportbit.NFT?
 		
-		access(all)
+		access(Sportvatar.PrivateEnt)
 		fun setFlovatarBackground(component: @FlovatarComponent.NFT): @FlovatarComponent.NFT?
 		
-		access(all)
+		access(Sportvatar.PrivateEnt)
 		fun removeFlovatarBackground(): @FlovatarComponent.NFT?
 	}
 	
@@ -380,7 +388,7 @@ contract Sportvatar: NonFungibleToken{
 		
 		// This will allow to change the Name of the Sportvatar only once.
 		// It checks for the current name is empty, otherwise it will throw an error.
-		access(all)
+		access(Sportvatar.PrivateEnt)
 		fun setName(name: String): String{ 
 			pre{ 
 				// TODO: Make sure that the text of the name is sanitized
@@ -412,7 +420,7 @@ contract Sportvatar: NonFungibleToken{
 		// This will allow to add a text Story to the Sportvatar Bio.
 		// The String will be concatenated each time.
 		// There is a limit of 300 characters per story but there is no limit in the full concatenated story length
-		access(all)
+		access(Sportvatar.PrivateEnt)
 		fun addStory(text: String): String{ 
 			pre{ 
 				// TODO: Make sure that the text of the name is sanitized
@@ -438,7 +446,7 @@ contract Sportvatar: NonFungibleToken{
 		
 		// This will allow to set the GPS location of a Sportvatar
 		// It can be run multiple times and each time it will override the previous state
-		access(all)
+		access(Sportvatar.PrivateEnt)
 		fun setPosition(latitude: Fix64, longitude: Fix64): String{ 
 			pre{ 
 				latitude >= -90.0:
@@ -482,8 +490,10 @@ contract Sportvatar: NonFungibleToken{
 		
 		// This will allow to change the Accessory of the Sportvatar any time.
 		// It checks for the right category and series before executing.
-		access(all)
+		access(Sportvatar.PrivateEnt)
 		fun setSportbit(layer: UInt32, sportbit: @Sportbit.NFT): @Sportbit.NFT?{ 
+			SportvatarTemplate.assertUsable(nftType: Type<@Sportbit.NFT>(), id: sportbit.id)
+			SportvatarTemplate.assertUsable(nftType: Type<@Sportvatar.NFT>(), id: self.id)
 
 			if(sportbit.getSeries() != self.series) {
 			    panic("The accessory belongs to a different series")
@@ -498,7 +508,7 @@ contract Sportvatar: NonFungibleToken{
 		}
 		
 		// This will allow to remove the Accessory of the Sportvatar any time.
-		access(all)
+		access(Sportvatar.PrivateEnt)
 		fun removeAccessory(layer: UInt32): @Sportbit.NFT?{ 
 			if SportvatarTemplate.isCollectibleLayerAccessory(layer: layer, series: self.series){ 
 				emit Updated(id: self.id)
@@ -516,8 +526,10 @@ contract Sportvatar: NonFungibleToken{
 		
 		// This will allow to change the Background of the Flobot any time.
 		// It checks for the right category and series before executing.
-		access(all)
+		access(Sportvatar.PrivateEnt)
 		fun setFlovatarBackground(component: @FlovatarComponent.NFT): @FlovatarComponent.NFT?{
+			FlovatarComponentTemplate.assertUsable(nftType: Type<@FlovatarComponent.NFT>(), id: component.id)
+			SportvatarTemplate.assertUsable(nftType: Type<@Sportvatar.NFT>(), id: self.id)
 			if(component.getCategory() != "background"){
 			    panic("The component needs to be a background")
 			}
@@ -527,7 +539,7 @@ contract Sportvatar: NonFungibleToken{
 		}
 		
 		// This will allow to remove the Background of the Flobot any time.
-		access(all)
+		access(Sportvatar.PrivateEnt)
 		fun removeFlovatarBackground(): @FlovatarComponent.NFT?{ 
 			emit Updated(id: self.id)
 			let compNFT <- self.background <- nil
@@ -570,16 +582,18 @@ contract Sportvatar: NonFungibleToken{
 		
 		access(all)
 		view fun getViews(): [Type]{ 
-			return [
-                Type<MetadataViews.NFTCollectionData>(),
-                Type<MetadataViews.NFTCollectionDisplay>(),
-                Type<MetadataViews.Display>(),
-                Type<MetadataViews.Royalties>(),
-                Type<MetadataViews.Edition>(),
-                Type<MetadataViews.ExternalURL>(),
-                Type<MetadataViews.Serial>(),
-                Type<MetadataViews.Traits>()
+			let views: [Type] = [
+				Type<MetadataViews.NFTCollectionData>(),
+				Type<MetadataViews.NFTCollectionDisplay>(),
+				Type<MetadataViews.Display>(),
+				Type<MetadataViews.Royalties>(),
+				Type<MetadataViews.Editions>(),
+				Type<MetadataViews.ExternalURL>(),
+				Type<MetadataViews.Serial>(),
+				Type<MetadataViews.Traits>(),
+				Type<MetadataViews.EVMBridgedMetadata>()
 			]
+			return Sportvatar.hasEVMPointer() ? views.concat([Type<CrossVMMetadataViews.EVMPointer>()]) : views
 		}
 		
 		access(all)
@@ -633,7 +647,19 @@ contract Sportvatar: NonFungibleToken{
 						}
 					}
 				}
+				if SportvatarTemplate.isRestricted(nftType: Type<@Sportvatar.NFT>(), id: self.id, owner: self.owner?.address) {
+					traits.append(MetadataViews.Trait(name: "restricted", value: true, displayType: "Boolean", rarity: nil))
+				}
 				return MetadataViews.Traits(traits)
+			}
+			if type == Type<MetadataViews.EVMBridgedMetadata>(){ 
+				let contractLevel = Sportvatar.resolveContractView(resourceType: nil, viewType: Type<MetadataViews.EVMBridgedMetadata>()) as! MetadataViews.EVMBridgedMetadata?
+					?? panic("Could not resolve contract-level EVMBridgedMetadata")
+				// tokenURI = live ERC-721 JSON (name, description, image, attributes) served by the project API (EVM-A 2026-11)
+				return MetadataViews.EVMBridgedMetadata(name: contractLevel.name, symbol: contractLevel.symbol, uri: MetadataViews.URI(baseURI: Sportvatar.getEVMHost().concat("/sportvatars/json/"), value: self.id.toString()))
+			}
+			if type == Type<CrossVMMetadataViews.EVMPointer>(){ 
+				return Sportvatar.getEVMPointer()
 			}
 			if type == Type<MetadataViews.NFTCollectionData>(){ 
 				return MetadataViews.NFTCollectionData(storagePath: Sportvatar.CollectionStoragePath, publicPath: Sportvatar.CollectionPublicPath, publicCollection: Type<&Sportvatar.Collection>(), publicLinkedType: Type<&Sportvatar.Collection>(), createEmptyCollectionFunction: fun (): @{NonFungibleToken.Collection}{ 
@@ -687,6 +713,7 @@ contract Sportvatar: NonFungibleToken{
 		// withdraw removes an NFT from the collection and moves it to the caller
 		access(NonFungibleToken.Withdraw)
 		fun withdraw(withdrawID: UInt64): @{NonFungibleToken.NFT}{ 
+			SportvatarTemplate.assertTransferAllowed(nftType: Type<@Sportvatar.NFT>(), id: withdrawID, owner: self.owner?.address)
 			let token <- self.ownedNFTs.remove(key: withdrawID) ?? panic("missing NFT")
 			emit Withdraw(id: token.id, from: self.owner?.address)
 			return <-token
@@ -698,6 +725,7 @@ contract Sportvatar: NonFungibleToken{
 		fun deposit(token: @{NonFungibleToken.NFT}){ 
 			let token <- token as! @Sportvatar.NFT
 			let id: UInt64 = token.id
+			SportvatarTemplate.assertDepositAllowed(nftType: Type<@Sportvatar.NFT>(), id: id, to: self.owner?.address)
 			
 			// add the new token to the dictionary which removes the old one
 			let oldToken <- self.ownedNFTs[id] <- token
@@ -731,13 +759,14 @@ contract Sportvatar: NonFungibleToken{
 			}
 		}
 		
-		// borrowSportvatarPrivate returns a borrowed reference to a Sportvatar using the Private interface
-		// so that the caller can read data and call methods from it, like setting the optional components.
-		access(all)
-		fun borrowSportvatarPrivate(id: UInt64): &{Sportvatar.Private}?{ 
+		// borrowSportvatarPrivate returns an entitled reference to a Sportvatar so that the owner can
+		// set or remove the optional components (Sportbits, Flovatar background).
+		// It requires the PrivateEnt entitlement, which is only available through the owner's storage.
+		access(Sportvatar.PrivateEnt)
+		fun borrowSportvatarPrivate(id: UInt64): auth(Sportvatar.PrivateEnt) &Sportvatar.NFT?{ 
 			if self.ownedNFTs[id] != nil{ 
-				let ref = (&self.ownedNFTs[id] as &{NonFungibleToken.NFT}?)!
-				return ref as! &Sportvatar.NFT
+				let ref = (&self.ownedNFTs[id] as auth(Sportvatar.PrivateEnt) &{NonFungibleToken.NFT}?)!
+				return ref as! auth(Sportvatar.PrivateEnt) &Sportvatar.NFT
 			} else{ 
 				return nil
 			}
@@ -756,12 +785,12 @@ contract Sportvatar: NonFungibleToken{
 		
 		access(all)
 		view fun getSupportedNFTTypes():{ Type: Bool}{ 
-			panic("implement me")
+			return {Type<@Sportvatar.NFT>(): true}
 		}
 		
 		access(all)
 		view fun isSupportedNFTType(type: Type): Bool{ 
-			panic("implement me")
+			return type == Type<@Sportvatar.NFT>()
 		}
 		
 		access(all)
@@ -780,14 +809,61 @@ contract Sportvatar: NonFungibleToken{
 
 
 
+	// Restriction status of a Sportvatar (see SportvatarTemplate restrictions)
+	access(all)
+	view fun isRestricted(id: UInt64, owner: Address?): Bool {
+		return SportvatarTemplate.isRestricted(nftType: Type<@Sportvatar.NFT>(), id: id, owner: owner)
+	}
+
 	access(all)
 	view fun getContractViews(resourceType: Type?): [Type] {
-		return [
+		let views: [Type] = [
 			Type<MetadataViews.NFTCollectionData>(),
 			Type<MetadataViews.NFTCollectionDisplay>(),
 			Type<MetadataViews.EVMBridgedMetadata>()
 		]
+		return Sportvatar.hasEVMPointer() ? views.concat([Type<CrossVMMetadataViews.EVMPointer>()]) : views
 	}
+	// ---- EVM-A (2026-11): cross-VM / Flow EVM metadata helpers. Functions only, no new state. ----
+
+	/// Web host serving the ERC-721 metadata JSON for this network (identical code on testnet and mainnet).
+	access(all)
+	view fun getEVMHost(): String {
+		return self.account.address == 0xca5c31c0c03e11be ? "https://sportvatar.com" : "https://testnet.sportvatar.com"
+	}
+
+	/// Account-wide cross-VM config written by an admin tx: {NFT type identifier: project ERC-721 address}.
+	access(all)
+	view fun getCrossVMConfigPath(): StoragePath {
+		return /storage/sportvatarCrossVMConfig
+	}
+
+	/// True once the account stored a project ERC-721 address for this NFT type (usable in view functions).
+	access(all)
+	view fun hasEVMPointer(): Bool {
+		if let cfg = self.account.storage.borrow<&{String: EVM.EVMAddress}>(from: /storage/sportvatarCrossVMConfig) {
+			return cfg[Type<@Sportvatar.NFT>().identifier] != nil
+		}
+		return false
+	}
+
+	/// FLIP-318 EVMPointer to the project-owned ERC-721 (Cadence-native). nil until the account stored one for
+	/// this NFT type, so the permissionless bridge path keeps working unchanged until then.
+	access(all)
+	fun getEVMPointer(): CrossVMMetadataViews.EVMPointer? {
+		if let cfg = self.account.storage.copy<{String: EVM.EVMAddress}>(from: /storage/sportvatarCrossVMConfig) {
+			if let evmAddress = cfg[Type<@Sportvatar.NFT>().identifier] {
+				return CrossVMMetadataViews.EVMPointer(
+					cadenceType: Type<@Sportvatar.NFT>(),
+					cadenceContractAddress: self.account.address,
+					evmContractAddress: evmAddress,
+					nativeVM: CrossVMMetadataViews.VM.Cadence
+				)
+			}
+		}
+		return nil
+	}
+
 
 
 	access(all) fun resolveContractView(resourceType: Type?, viewType: Type): AnyStruct? {
@@ -829,6 +905,8 @@ contract Sportvatar: NonFungibleToken{
 						"tiktok": MetadataViews.ExternalURL("https://www.tiktok.com/@sportvatar")
 					}
 				)
+			case Type<CrossVMMetadataViews.EVMPointer>():
+				return Sportvatar.getEVMPointer()
 			case Type<MetadataViews.EVMBridgedMetadata>():
 				// Implementing this view gives the project control over how the bridged NFT is represented as an ERC721
 				// when bridged to EVM on Flow via the public infrastructure bridge.
@@ -839,8 +917,8 @@ contract Sportvatar: NonFungibleToken{
 					name: "Sportvatar",
 					symbol: "SPTV",
 					uri: MetadataViews.URI(
-						baseURI: nil, // setting baseURI as nil sets the given value as the uri field value
-						value: "https://sportvatar.com"
+						baseURI: nil, // contractURI JSON (EVM-A 2026-11)
+						value: Sportvatar.getEVMHost().concat("/evm/collections/sportvatars.json")
 					)
 				)
 		}
@@ -1016,6 +1094,14 @@ contract Sportvatar: NonFungibleToken{
 	// for each component used
 	access(all)
 	fun createSportvatar(sportflame: @Sportbit.NFT, series: UInt64, layers: [UInt32], templateIds: [UInt64?], sportbits: @[Sportbit.NFT?], address: Address): @Sportvatar.NFT{ 
+		// Restricted Sportbits (see SportvatarTemplate restrictions) can't be used to build a Sportvatar
+		SportvatarTemplate.assertAddressAllowed(address)
+		SportvatarTemplate.assertUsable(nftType: Type<@Sportbit.NFT>(), id: sportflame.id)
+		var r = 0
+		while r < sportbits.length {
+			if sportbits[r] != nil { SportvatarTemplate.assertUsable(nftType: Type<@Sportbit.NFT>(), id: sportbits[r]?.id!) }
+			r = r + 1
+		}
 		let seriesData = SportvatarTemplate.getSeries(id: series)
 		if seriesData == nil{ 
 			panic("Dust Collectible Series not found!")
@@ -1189,6 +1275,9 @@ contract Sportvatar: NonFungibleToken{
 			} else{ 
 				destroy sportbitTemp
 			}
+			// Advance to the next Sportbit (the loop never advanced before, so any non-empty
+			// `sportbits` array ran into the computation limit).
+			i = i + UInt32(1)
 		}
 		destroy sportbits
 		destroy sportflame
